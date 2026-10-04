@@ -1,0 +1,4 @@
+IDX:15809
+BEFORE_JSON:"'nav.groupOrders')}</div>\n                        {userData?.role === 'vendor' && <div className='text-[#ff4d2d] font-semibold cursor-pointer' onClick={() => navigate('/vendor/dashboard')}>{t('vendor."
+BEFORE_LIT:'nav.groupOrders')}</div>
+                        {userData?.role === 'vendor' && <div className='text-[#ff4d2d] font-semibold cursor-pointer' onClick={() => navigate('/vendor/dashboard')}>{t('vendor.

@@ -8,6 +8,7 @@ function GetItemsByCity() {
     const dispatch=useDispatch()
     const {currentCity}=useSelector(state=>state.user)
   useEffect(()=>{
+  if (!currentCity) return
   const fetchItems=async () => {
     try {
            const result=await axios.get(`${serverUrl}/api/item/getbycity/${currentCity}`,{withCredentials:true})

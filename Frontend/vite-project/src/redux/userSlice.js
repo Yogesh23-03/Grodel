@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    userData: null,
+    userData: undefined,
     currentCity: null,
     currentState: null,
     currentAddress: null,
@@ -84,20 +84,28 @@ const userSlice = createSlice({
       const { orderId, shopId, status } = action.payload;
       const order = state.myOrders.find(o => o._id === orderId);
 
-      if (order && order.shopOrders?.shop?._id === shopId) {
+      const orderShopId = order?.shopOrders?.shop?._id || order?.shopOrders?.shop;
+      if (order && String(orderShopId) === String(shopId)) {
         order.shopOrders.status = status;
+        if (status === "cancelled") {
+          order.shopOrders.assignedDeliveryBoy = null;
+        }
       }
     },
     updateRealtimeOrderStatus: (state, action) => {
       const { orderId, shopId, status } = action.payload;
       const order = state.myOrders.find(o => o._id === orderId);
       if (order) {
-        const shopOrder = order.shopOrders.find(
-          so => so.shop._id === shopId
+        const shopOrders = Array.isArray(order.shopOrders) ? order.shopOrders : [order.shopOrders];
+        const shopOrder = shopOrders.find(
+          so => String(so?.shop?._id || so?.shop) === String(shopId)
         );
         
         if (shopOrder) {
           shopOrder.status = status;
+          if (status === "cancelled") {
+            shopOrder.assignedDeliveryBoy = null;
+          }
         }
       }
     },

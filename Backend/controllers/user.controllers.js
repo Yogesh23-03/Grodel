@@ -40,9 +40,23 @@ const updateUserLocation=async (req,res) => {
     }
 }
 
+const getAllUsers=async (req,res) => {
+    try {
+        const currentUser=await User.findById(req.userId)
+        if(currentUser?.role!=="admin"){
+            return res.status(403).json({message:"Only admin can view users"})
+        }
+        const users=await User.find().select("-password -resetOtp -otpExpires").sort({createdAt:-1})
+        return res.status(200).json(users)
+    } catch (error) {
+        return res.status(500).json({message:`get users error ${error}`})
+    }
+}
+
 
 module.exports={
     getCurrentUser,
-    updateUserLocation
+    updateUserLocation,
+    getAllUsers
 }
 

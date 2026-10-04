@@ -53,7 +53,6 @@ const getShopByCity = async (req, res) => {
             city: { $regex: city, $options: "i" }
         }).populate("items")
 
-        // ← Return empty array instead of 404
         return res.status(200).json(shops)
 
     } catch (error) {
@@ -61,8 +60,18 @@ const getShopByCity = async (req, res) => {
     }
 }
 
+const getAllShops = async (req, res) => {
+    try {
+        const shops = await Shop.find({}).populate("items")
+        return res.status(200).json(shops)
+    } catch (error) {
+        return res.status(500).json({ message: `get all shops error ${error}` })
+    }
+}
+
 module.exports={
     createEditShop,
     getMyShop,
-    getShopByCity
+    getShopByCity,
+    getAllShops
 }

@@ -1,0 +1,4 @@
+﻿LINE_NUMBER: 262
+LINE_LITERAL:
+                        {userData?.role=="user" && <div className='text-[#ff4d2d] font-semibold cursor-pointer' onClick={() => navigate("/my-group-orders")}>{t('nav.groupOrders')}</div>}
+LINE_JSON: "                        {userData?.role==\"user\" && <div className='text-[#ff4d2d] font-semibold cursor-pointer' onClick={() => navigate(\"/my-group-orders\")}>{t('nav.groupOrders')}</div>}"

@@ -1,0 +1,8 @@
+IDX:16020
+BEFORE:
+')}</div>}
+                        {userData?.role === 'vendor' && <div className='text-[#ff4d2d] font-semibold cursor-pointer' onClick={() => navigate('/vendor/add-produce')}>{t('vendor.addProduct')}
+AFTER:
+}
+                        {canDonate && <div className='text-[#ff4d2d] font-semibold cursor-pointer' onClick={()=>navigate("/donate-food")}>{t('nav.donateFood')}</div>}
+                        {userData?.role !== "owner" && <div className='text-[#ff4d2d] font-semibold cursor-pointer' onClick=

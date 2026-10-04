@@ -1,20 +1,42 @@
 import React from 'react'
-import { FaCircleCheck } from "react-icons/fa6";
-import { useNavigate } from 'react-router-dom';
+import { FaCircleCheck, FaReceipt } from "react-icons/fa6"
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import MarketNav from '../components/MarketNav.jsx'
+
 function OrderPlaced() {
-    const navigate=useNavigate()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+
   return (
-    <div className='min-h-screen bg-[#fff9f6] flex flex-col justify-center items-center px-4 text-center relative overflow-hidden'>
-      <FaCircleCheck className='text-green-500 text-6xl mb-4'/>
-      <h1 className='text-3xl font-bold text-gray-800 mb-2'>Order Placed!
-      </h1>
-      <p className='text-gray-600 max-w-md mb-6'>Thank you for your purchase. Your order is being prepared.  
-        You can track your order status in the "My Orders" section.
-     </p>
-     <button className='bg-[#ff4d2d] hover:bg-[#e64526] text-white px-6 py-3 rounded-lg text-lg font-medium transition' onClick={()=>navigate("/my-orders")}>Back to my orders</button>
+    <div className='min-h-screen lg:pl-[76px]'>
+      <MarketNav />
+      <main className='relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 text-center'>
+      <div className='animate-rise-in flex flex-col items-center'>
+        <span className='flex h-24 w-24 items-center justify-center rounded-full' style={{ background: 'var(--success-soft)', boxShadow: '0 0 0 12px var(--success-soft)' }}>
+          <FaCircleCheck className='animate-rise-in text-6xl' style={{ color: 'var(--success)' }} />
+        </span>
+        <h1 className='t-display mt-6'>{t('order.placedTitle')}</h1>
+        <p className='mt-3 max-w-md text-[#8a7d75]'>{t('order.placedBody')}</p>
+
+        <div className='mt-8 flex flex-wrap justify-center gap-3'>
+          <button
+            className='btn-primary'
+            onClick={() => navigate("/my-orders")}
+          >
+            <FaReceipt /> {t('order.trackCta')}
+          </button>
+          <button
+            className='btn-ghost'
+            onClick={() => navigate("/")}
+          >
+            {t('order.orderMore')}
+          </button>
+        </div>
+      </div>
+      </main>
     </div>
   )
 }
 
 export default OrderPlaced
-

@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type:String,
-        enum:["user","owner","deliveryBoy"],
+        enum:["user","owner","deliveryBoy","supplier","trustMember","admin","vendor","helper"],
         required:true
     },
     resetOtp:{
@@ -52,6 +52,15 @@ location: {
         type: [Number],
         default: [0, 0]
     }
+},
+buyerProfile: {
+    buyerType: { type: String, enum: ['consumer', 'retailer', 'hotel', 'canteen', 'exporter'] },
+    businessName: String,
+    gstin: String,
+    typicalMonthlyVolume: String,
+    preferredCategories: [String],
+    deliveryPincodes: [String],
+    onboardingComplete: { type: Boolean, default: false }
 }
   
 }, { timestamps: true })

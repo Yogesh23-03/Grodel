@@ -26,7 +26,7 @@ const shopOrderSchema = new mongoose.Schema({
     shopOrderItems: [shopOrderItemSchema],
     status:{
         type:String,
-        enum:["pending","preparing","out of delivery","delivered"],
+        enum:["pending","preparing","out of delivery","delivered","cancelled"],
         default:"pending"
     },
   assignment:{
@@ -82,9 +82,10 @@ const orderSchema = new mongoose.Schema({
         type:String,
         default:""
     },
-   razorpayPaymentId:{
+    razorpayPaymentId:{
     type:String,
        default:""
    }
+   ,autoOrderSource:{ type:String, enum:['selection','default'], default:null }
 }, { timestamps: true })
 module.exports = mongoose.models.Order || mongoose.model("Order", orderSchema)

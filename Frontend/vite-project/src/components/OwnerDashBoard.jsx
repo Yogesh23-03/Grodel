@@ -1,94 +1,246 @@
-import React from 'react'
-import Nav from './Nav'
-import axios from 'axios';
-import { useEffect } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { FaUtensils } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
-import { FaPen } from "react-icons/fa";
-import { setMyShopData } from '../redux/ownerSlice'
-import { useDispatch } from 'react-redux';
-import OwnerItemCard from './OwnerItemCard';
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import {
+  HiOutlineBuildingStorefront, HiOutlinePencilSquare, HiOutlinePlusCircle,
+  HiOutlineClock, HiOutlineChartBar, HiOutlineBellAlert, HiOutlineTruck, HiOutlineFire
+} from 'react-icons/hi2'
+import axios from 'axios'
+import { serverUrl } from '../App'
+import MarketNav from './MarketNav.jsx'
+import OwnerItemCard from './OwnerItemCard.jsx'
+import OwnerOrderCard from './OwnerOrderCard.jsx'
+
+/*
+ * OWNER — "The Kitchen Studio": today's ledger in bento tiles, a live
+ * order dock fed by the existing `newOrder` socket (subtle pulse, no
+ * refresh), menu management, and delivery tracking inline.
+ */
+
 function OwnerDashboard() {
   const { myShopData } = useSelector(state => state.owner)
+  const { userData, socket } = useSelector(state => state.user)
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-//   useEffect(() => {
-//   const fetchMyShop = async () => {
-//     try {
-//       const { data } = await axios.get(
-//   `${serverUrl}/api/shop/getmy`,
-//   { withCredentials: true }
-// )
-//       dispatch(setMyShopData(data.shop))
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   }
+  const { t } = useTranslation()
 
-//   fetchMyShop()
-// }, [])
+  const [myOrders, setMyOrders] = useState([])
+  const [incomingCount, setIncomingCount] = useState(0)
+  const [pulseId, setPulseId] = useState(null)
+  const pulseTimer = useRef(null)
+
+  const loadOrders = () => axios.get(`${serverUrl}/api/order/my-orders`, { withCredentials: true })
+    .then(res => setMyOrders(res.data || []))
+    .catch(() => {})
+
+  useEffect(() => { loadOrders() }, [])
+
+  /* Live: new orders arrive without refresh, with a one-shot pulse */
+  useEffect(() => {
+    if (!socket || userData?.role !== 'owner') return
+    const onNewOrder = (data) => {
+      setIncomingCount(count => count + 1)
+      setPulseId(data?._id || 'incoming')
+      window.clearTimeout(pulseTimer.current)
+      pulseTimer.current = window.setTimeout(() => setPulseId(null), 3200)
+      loadOrders()
+    }
+    socket.on('newOrder', onNewOrder)
+    return () => socket.off('newOrder', onNewOrder)
+  }, [socket, userData?.role])
+
+  useEffect(() => () => window.clearTimeout(pulseTimer.current), [])
+
+  const orders = useMemo(() => myOrders
+    .filter(order => order?.shopOrders)
+    .flatMap(order => order.shopOrders.map(shopOrder => ({ order, shopOrder }))), [myOrders])
+
+  const activeOrders = orders.filter(({ shopOrder }) => ['pending', 'preparing', 'out of delivery'].includes(shopOrder?.status))
+  const pendingPrep = orders.filter(({ shopOrder }) => shopOrder?.status === 'pending').length
+  const outForDelivery = orders.filter(({ shopOrder }) => shopOrder?.status === 'out of delivery').length
+  const todayRevenue = useMemo(() => {
+    const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0)
+    return orders
+      .filter(({ shopOrder }) => ['delivered', 'out of delivery', 'preparing'].includes(shopOrder?.status))
+      .reduce((sum, { order }) => sum + (order.totalAmount || 0) / Math.max(1, order.shopOrders.length), 0)
+  }, [orders])
+  const topItems = useMemo(() => {
+    const counts = {}
+    activeOrders.concat(orders).forEach(({ shopOrder }) => {
+      (shopOrder?.shopOrderItems || []).forEach(item => {
+        counts[item.name] = (counts[item.name] || 0) + (item.quantity || 1)
+      })
+    })
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 3)
+  }, [orders])
+
   return (
-    <div className='w-full min-h-screen bg-[#fff9f6] flex flex-col items-center'>
-      <Nav />
-      {!myShopData &&
-        <div className='flex justify-center items-center p-4 sm:p-6'>
-          <div className='w-full max-w-md bg-white shadow-lg rounded-2xl p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300'>
-            <div className='flex flex-col items-center text-center'>
-              <FaUtensils className='text-[#ff4d2d] w-16 h-16 sm:w-20 sm:h-20 mb-4' />
-              <h2 className='text-xl sm:text-2xl font-bold text-gray-800 mb-2'>Add Your Restaurant</h2>
-              <p className='text-gray-600 mb-4 text-sm sm:text-base'>Join our food delivery platform and reach thousands of hungry customers every day.
+    <div className='min-h-screen lg:pl-[76px]'>
+      <MarketNav />
+
+      <main className='mx-auto w-full max-w-[1100px] px-4 pb-16 pt-6 sm:px-6'>
+        {!myShopData ? (
+          /* ---------- no shop yet: a doorway, not a form ---------- */
+          <section className='grain card mx-auto mt-10 max-w-md p-10 text-center'>
+            <span className='mx-auto flex h-16 w-16 items-center justify-center rounded-2xl' style={{ background: 'var(--accent-2-soft)', color: 'var(--accent-2)' }}>
+              <HiOutlineBuildingStorefront size={30} />
+            </span>
+            <h2 className='t-title mt-5'>{t('owner.noShopTitle', 'Open your kitchen on GroDel')}</h2>
+            <p className='mx-auto mt-2 max-w-sm text-sm' style={{ color: 'var(--ink-soft)' }}>
+              {t('owner.noShopCopy', 'Set up your storefront once — then neighbours order, and the market does the rest.')}
+            </p>
+            <button className='btn-primary mt-6' onClick={() => navigate('/create-edit-shop')}>
+              {t('owner.getStarted', 'Open my kitchen')}
+            </button>
+          </section>
+        ) : (
+          <>
+            {/* ---------- masthead ---------- */}
+            <header className='flex flex-wrap items-end justify-between gap-4'>
+              <div>
+                <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent-2)' }}>
+                  <HiOutlineFire /> {t('owner.studioEyebrow', 'Kitchen studio')}
+                </p>
+                <h1 className='t-display mt-2'>
+                  {t('owner.welcome', 'Welcome to')} <span className='gradient-text'>{myShopData.name}</span>
+                </h1>
+                <p className='mt-1 text-sm' style={{ color: 'var(--ink-soft)' }}>
+                  {myShopData.city}, {myShopData.state} · {t('owner.manageLine', 'orders arrive here live')}
+                </p>
+              </div>
+              <div className='flex gap-2'>
+                <button className='btn-ghost' onClick={() => navigate('/create-edit-shop')}>
+                  <HiOutlinePencilSquare /> {t('owner.editShop', 'Edit shop')}
+                </button>
+                <button className='btn-primary' onClick={() => navigate('/add-item')}>
+                  <HiOutlinePlusCircle /> {t('owner.addItem', 'Add item')}
+                </button>
+              </div>
+            </header>
+
+            {/* ---------- live order pulse ---------- */}
+            {pulseId && (
+              <div className='animate-soft-pulse mt-5 flex items-center gap-3 rounded-2xl px-5 py-4 text-sm font-bold'
+                style={{ background: 'var(--accent)', color: 'var(--accent-ink)', boxShadow: 'var(--shadow-lime)' }}>
+                <HiOutlineBellAlert size={20} />
+                {t('owner.newOrderBanner', 'A new order just landed — check the dock below.')}
+              </div>
+            )}
+
+            {/* ---------- bento ledger ---------- */}
+            <div className='stagger mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4'>
+              <div className='tile tile-eat grain p-5'>
+                <p className='t-eyebrow'>{t('owner.todayRevenue', "Today's revenue")}</p>
+                <p className='mt-2 font-display text-3xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-2)' }}>
+                  ₹{Math.round(todayRevenue)}
+                </p>
+              </div>
+              <div className='tile grain p-5' style={{ '--tile-tint': 'var(--accent-soft)' }}>
+                <p className='t-eyebrow'>{t('owner.pendingPrep', 'Pending prep')}</p>
+                <p className='mt-2 font-display text-3xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>
+                  {pendingPrep}
+                </p>
+              </div>
+              <div className='tile grain p-5' style={{ '--tile-tint': 'var(--vendor-soft)' }}>
+                <p className='t-eyebrow'>{t('owner.onTheRoad', 'On the road')}</p>
+                <p className='mt-2 font-display text-3xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--vendor)' }}>
+                  {outForDelivery}
+                </p>
+              </div>
+              <div className='tile grain p-5' style={{ '--tile-tint': 'var(--plan-soft)' }}>
+                <p className='t-eyebrow'>{t('owner.activeOrders', 'Active orders')}</p>
+                <p className='mt-2 font-display text-3xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--plan)' }}>
+                  {activeOrders.length}
+                </p>
+              </div>
+            </div>
+
+            {/* ---------- live order dock ---------- */}
+            <section className='mt-8'>
+              <div className='flex items-center justify-between gap-3'>
+                <h2 className='t-title flex items-center gap-2'>
+                  <HiOutlineBellAlert style={{ color: 'var(--accent-2)' }} /> {t('owner.orderDock', 'Live order dock')}
+                  {incomingCount > 0 && <span className='badge badge-brand px-2.5 py-1'>{incomingCount}</span>}
+                </h2>
+                <button onClick={() => navigate('/my-orders')} className='link-brand text-sm'>
+                  {t('owner.viewAll', 'Open order book')} →
+                </button>
+              </div>
+
+              <div className='mt-4 space-y-4'>
+                {orders.length === 0 && (
+                  <div className='card p-10 text-center' style={{ color: 'var(--ink-muted)' }}>
+                    {t('owner.noOrders', 'No orders yet today. The pans are warming up.')}
+                  </div>
+                )}
+                {activeOrders.length === 0 && orders.length > 0 && (
+                  <div className='card p-8 text-center' style={{ color: 'var(--ink-muted)' }}>
+                    {t('owner.allCaughtUp', 'All caught up — every order is delivered.')}
+                  </div>
+                )}
+                {activeOrders.slice(0, 6).map(({ order, shopOrder }) => (
+                  <OwnerOrderCard data={order} key={`${order._id}-${shopOrder._id}`} />
+                ))}
+              </div>
+            </section>
+
+            {/* ---------- top items + delivery line ---------- */}
+            {topItems.length > 0 && (
+              <section className='tile grain mt-8 p-6' style={{ '--tile-tint': 'var(--accent-2-soft)' }}>
+                <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent-2)' }}>
+                  <HiOutlineChartBar /> {t('owner.topItems', 'Most loved this stretch')}
+                </p>
+                <div className='mt-4 flex flex-wrap gap-2'>
+                  {topItems.map(([name, count]) => (
+                    <span key={name} className='rounded-full px-3.5 py-1.5 text-sm font-bold'
+                      style={{ background: 'var(--surface-2)', color: 'var(--ink-soft)', border: '1px solid var(--border)' }}>
+                      {name} · {count}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {outForDelivery > 0 && (
+              <p className='mt-4 flex items-center gap-2 text-sm' style={{ color: 'var(--ink-soft)' }}>
+                <HiOutlineTruck style={{ color: 'var(--vendor)' }} />
+                {t('owner.roadHint', '{{count}} order(s) are out with riders right now.', { count: outForDelivery })}
               </p>
-              <button className='bg-[#ff4d2d] text-white px-5 sm:px-6 py-2 rounded-full font-medium shadow-md hover:bg-orange-600 transition-colors duration-200' onClick={() => navigate("/create-edit-shop")}>
-                Get Started
-              </button>
-            </div>
-          </div>
-        </div>
-      }
+            )}
 
-      {myShopData &&
-        <div className='w-full flex flex-col items-center gap-6 px-4 sm:px-6'>
-          <h1 className='text-2xl sm:text-3xl text-gray-900 flex items-center gap-3 mt-8 text-center'><FaUtensils className='text-[#ff4d2d] w-14 h-14 ' />Welcome to {myShopData.name}</h1>
+            {/* ---------- menu management ---------- */}
+            <section className='mt-10'>
+              <div className='flex items-center justify-between gap-3'>
+                <h2 className='t-title'>{t('owner.menu', 'Your menu')}</h2>
+                <button onClick={() => navigate('/add-item')} className='link-brand text-sm'>
+                  <HiOutlinePlusCircle className='inline' /> {t('owner.addItem', 'Add item')}
+                </button>
+              </div>
 
-          <div className='bg-white shadow-lg rounded-xl overflow-hidden border border-orange-100 hover:shadow-2xl transition-all duration-300 w-full max-w-3xl relative'>
-            <div className='absolute top-4 right-4 bg-[#ff4d2d] text-white p-2 rounded-full shadow-md hover:bg-orange-600 transition-colors cursor-pointer' onClick={()=>navigate("/create-edit-shop")}>
-<FaPen size={20}/>
-            </div>
-             <img src={myShopData.image} alt={myShopData.name} className='w-full h-48 sm:h-64 object-cover'/>
-             <div className='p-4 sm:p-6'>
-              <h1 className='text-xl sm:text-2xl font-bold text-gray-800 mb-2'>{myShopData.name}</h1>
-              <p className='text-gray-500 '>{myShopData.city},{myShopData.state}</p>
-              <p className='text-gray-500 mb-4'>{myShopData.address}</p>
-            </div>
-          </div>
+              <div className='glass-panel mt-4 overflow-hidden'>
+                <img src={myShopData.image} alt={myShopData.name} className='h-44 w-full object-cover sm:h-56' />
+                <div className='p-5'>
+                  <p className='font-display text-xl font-semibold' style={{ fontFamily: 'var(--font-display)' }}>{myShopData.name}</p>
+                  <p className='mt-0.5 text-sm' style={{ color: 'var(--ink-muted)' }}>{myShopData.address}</p>
+                </div>
+              </div>
 
-          {myShopData.items.length==0 && 
-            <div className='flex justify-center items-center p-4 sm:p-6'>
-          <div className='w-full max-w-md bg-white shadow-lg rounded-2xl p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300'>
-            <div className='flex flex-col items-center text-center'>
-              <FaUtensils className='text-[#ff4d2d] w-16 h-16 sm:w-20 sm:h-20 mb-4' />
-              <h2 className='text-xl sm:text-2xl font-bold text-gray-800 mb-2'>Add Your Food Item</h2>
-              <p className='text-gray-600 mb-4 text-sm sm:text-base'>Share your delicious creations with our customers by adding them to the menu.
-              </p>
-              <button className='bg-[#ff4d2d] text-white px-5 sm:px-6 py-2 rounded-full font-medium shadow-md hover:bg-orange-600 transition-colors duration-200' onClick={() => navigate("/add-item")}>
-              Add Food
-              </button>
-            </div>
-          </div>
-        </div>
-            }
-
-            {myShopData.items.length>0 && <div className='flex flex-col items-center gap-4 w-full max-w-3xl '>
-              {myShopData.items.map((item,index)=>(
-                <OwnerItemCard data={item} key={index}/>
-              ))}
-              </div>}
-            
-        </div>} 
-
-
-
+              {myShopData.items.length === 0 ? (
+                <div className='grain card mt-4 p-10 text-center'>
+                  <span className='text-4xl' aria-hidden='true'>🥘</span>
+                  <p className='mt-3' style={{ color: 'var(--ink-muted)' }}>
+                    {t('owner.noItems', 'The menu is empty — add your first dish.')}
+                  </p>
+                </div>
+              ) : (
+                <div className='stagger mt-4 space-y-4'>
+                  {myShopData.items.map((item, index) => <OwnerItemCard data={item} key={index} />)}
+                </div>
+              )}
+            </section>
+          </>
+        )}
+      </main>
     </div>
   )
 }

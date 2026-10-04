@@ -9,23 +9,31 @@ const userRouter = require("./routes/user.routes")
 const shopRouter = require("./routes/shop.routes")
 const itemRouter = require("./routes/item.routes")
 const orderRouter = require("./routes/order.routes")
+const donationRouter = require("./routes/donationRoutes")
+const trustRouter = require("./routes/trustRoutes")
+const vendorRouter = require("./routes/vendorRoutes")
+const translationRouter = require("./routes/translationRoutes")
 const http = require('http');
 const { Server } = require('socket.io');
-const User = require("./models/user.model.js") // ← added
+const User = require("./models/user.Model.js")
+const { setIo } = require("./utils/socket")
 
-connectDb()
 const app = express()
 const port = process.env.PORT || 5000
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173"
+]
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true
 }))
 
 const server = http.createServer(app);
 const io = new Server(server, {           // ← io is created here
     cors: {
-        origin: "http://localhost:5173",
+        origin: allowedOrigins,
         credentials: true,
         methods: ["GET", "POST"]
     }
@@ -89,6 +97,7 @@ io.on("connection", (socket) => {
 });
 
 app.set('io', io);
+setIo(io);
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -101,7 +110,24 @@ app.get("/", function (req, res) {
 app.use("/api/shop", shopRouter)
 app.use("/api/item", itemRouter)
 app.use("/api/order", orderRouter)
+app.use("/api", donationRouter)
+app.use("/api", translationRouter)
+app.use("/api", require("./routes/groupOrderRoutes"))
+app.use("/api/trusts", trustRouter)
+app.use("/api/vendor", vendorRouter)
+app.use("/api/dm", require("./routes/directMarket.routes"))
+app.use("/api/meal-schedule", require("./routes/mealScheduleRoutes"))
 
-server.listen(port, () => {
-    console.log(`server is running on port ${port}`)
+connectDb().then(() => {
+    server.listen(port, () => {
+        console.log(`server is running on port ${port}`)
+    })
+
+    // TODO: Replace setInterval with a proper cron job (node-cron) for production
+    setInterval(() => {
+        require("./controllers/groupOrder.controllers").processScheduledOrders()
+            .catch(error => console.log("scheduled group order error:", error.message))
+        require("./controllers/mealSchedule.controllers").processMealSchedules()
+            .catch(error => console.log("scheduled meal order error:", error.message))
+    }, 60 * 1000)
 })

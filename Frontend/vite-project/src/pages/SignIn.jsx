@@ -12,10 +12,8 @@ import { serverUrl } from '../App';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
 function SignIn() {
-    const primaryColor = "#ff4d2d";
-    const hoverColor = "#e64323";
-    const bgColor = "#fff9f6";
-    const borderColor = "#ddd";
+    const bgColor = "var(--bg)";
+    const borderColor = "var(--border-strong)";
     const [showPassword, setShowPassword] = useState(false)
     const navigate=useNavigate()
     const [email,setEmail]=useState("")
@@ -56,12 +54,15 @@ function SignIn() {
 
 
     return (
-        <div className='min-h-screen w-full flex items-center justify-center p-4' style={{ backgroundColor: bgColor }}>
-            <div className={`bg-white rounded-xl shadow-lg w-full max-w-md p-8 border-[1px] `} style={{
+        <div className='relative min-h-screen w-full overflow-hidden flex items-center justify-center p-4' style={{ backgroundColor: bgColor }}>
+            <div className='absolute left-[8%] top-[12%] h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl [animation:soft-pulse_7s_ease-in-out_infinite]' />
+            <div className='absolute bottom-[8%] right-[8%] h-72 w-72 rounded-full bg-orange-400/10 blur-3xl [animation:soft-pulse_9s_ease-in-out_infinite]' />
+            <div className='glass-panel relative w-full max-w-md rounded-[2rem] p-8 md:p-10' style={{
                 border: `1px solid ${borderColor}`
             }}>
-                <h1 className={`text-3xl font-bold mb-2 `} style={{ color: primaryColor }}>Vingo</h1>
-                <p className='text-gray-600 mb-8'> Sign In to your account to get started with delicious food deliveries
+                <div className='mb-8'><span className='rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-300'>Welcome back</span></div>
+                <h1 className='gradient-text mb-2 text-4xl font-black tracking-[-0.06em]'>GroDel</h1>
+                <p className='text-gray-600 mb-8'>Sign in to discover local food and order together.
                 </p>
 
               
@@ -86,12 +87,12 @@ function SignIn() {
                 </div>
               
 
-            <button className={`w-full font-semibold py-2 rounded-lg transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleSignIn} disabled={loading}>
-                {loading?<ClipLoader size={20} color='white'/>:"Sign Up"}
+            <button className='w-full rounded-full bg-[#ff4d2d] py-3 font-bold text-white cursor-pointer' onClick={handleSignIn} disabled={loading}>
+                {loading?<ClipLoader size={20} color='white'/>:"Sign In"}
             </button>
       {err && <p className='text-red-500 text-center my-[10px]'>*{err}</p>}
 
-            <button className='w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition cursor-pointer duration-200 border-gray-400 hover:bg-gray-100' onClick={handleGoogleAuth}>
+            <button className='w-full mt-4 flex items-center justify-center gap-2 border rounded-full px-4 py-3 cursor-pointer border-gray-400 hover:bg-gray-100' onClick={handleGoogleAuth}>
 <FcGoogle size={20}/>
 <span>Sign In with Google</span>
             </button>

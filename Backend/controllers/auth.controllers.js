@@ -1,4 +1,5 @@
 const User = require("../models/user.Model")
+const VendorProfile = require("../models/VendorProfile")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
@@ -8,7 +9,7 @@ dotenv.config()
 
 const signUp = async (req, res) => {
     try {
-        const { fullName, email, password, mobile, role } = req.body
+        const { fullName, email, password, mobile, role, preferredLanguage } = req.body
 
         let user = await User.findOne({ email })
         if (user) {
@@ -32,6 +33,19 @@ const signUp = async (req, res) => {
             mobile,
             password: hashedPassword
         })
+
+        if (role === "vendor") {
+            const vendorLanguage = ["en", "kn", "ta", "te", "hi"].includes(preferredLanguage)
+                ? preferredLanguage
+                : "en"
+            await VendorProfile.create({
+                userId: user._id,
+                displayName: fullName,
+                phoneNumber: mobile,
+                preferredLanguage: vendorLanguage,
+                registeredVia: "web"
+            })
+        }
 
         const token = await genToken(user._id)
 
@@ -147,12 +161,24 @@ const resetPassword=async (req,res) => {
 }
 const googleAuth=async (req,res) => {
     try {
-        const {fullName,email,mobile,role}=req.body
+        const {fullName,email,mobile,role,preferredLanguage}=req.body
         let user=await User.findOne({email})
         if(!user){
             user=await User.create({
                 fullName,email,mobile,role
             })
+            if (role === "vendor") {
+                const vendorLanguage = ["en", "kn", "ta", "te", "hi"].includes(preferredLanguage)
+                    ? preferredLanguage
+                    : "en"
+                await VendorProfile.create({
+                    userId: user._id,
+                    displayName: fullName,
+                    phoneNumber: mobile,
+                    preferredLanguage: vendorLanguage,
+                    registeredVia: "web"
+                })
+            }
         }
 
         const token=await genToken(user._id)

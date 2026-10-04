@@ -1,13 +1,19 @@
 import React from 'react'
 
-function CategoryCard({name,image,onClick}) {
+/* J — Category as an arched market signboard: a doorway into a stall. */
+function CategoryCard({ name, image, onClick }) {
   return (
-    <div className='w-[120px] h-[120px] md:w-[180px] md:h-[180px] rounded-2xl border-2 border-[#ff4d2d] shrink-0 overflow-hidden bg-white shadow-xl shadow-gray-200 hover:shadow-lg transition-shadow relative' onClick={onClick}>
-     <img src={image} alt="" className=' w-full h-full object-cover transform hover:scale-110 transition-transform duration-300'/>
-     <div className='absolute  bottom-0 w-full left-0  bg-[#ffffff96] bg-opacity-95 px-3 py-1 rounded-t-xl text-center shadow text-sm font-medium text-gray-800 backdrop-blur'>
-{name}
-     </div>
-    </div>
+    <button
+      className='group relative h-[140px] w-[130px] shrink-0 overflow-hidden border shadow-lg transition-transform duration-300 hover:-translate-y-1 active:scale-95 md:h-[190px] md:w-[180px]'
+      style={{ borderRadius: '50% 50% 18px 18px / 34% 34% 18px 18px', borderColor: 'var(--border-strong)', background: 'var(--surface-2)' }}
+      onClick={onClick}
+    >
+      {image && <img src={image} alt='' className='h-full w-full object-cover transition-transform duration-700 group-hover:scale-110' />}
+      <div className='absolute inset-0' style={{ background: 'linear-gradient(to top, rgba(8,12,9,0.88) 8%, rgba(8,12,9,0.12) 46%, transparent 70%)' }} />
+      <div className='absolute bottom-0 left-0 w-full px-3 py-4 text-center font-display text-sm font-semibold tracking-tight text-white' style={{ fontFamily: 'var(--font-display)' }}>
+        {name}
+      </div>
+    </button>
   )
 }
 

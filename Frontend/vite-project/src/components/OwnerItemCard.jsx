@@ -1,45 +1,55 @@
-import axios from 'axios';
+import axios from 'axios'
 import React from 'react'
-import { FaPen } from "react-icons/fa";
-import { FaTrashAlt } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
-import { serverUrl } from '../App';
-import { useDispatch } from 'react-redux';
-import { setMyShopData } from '../redux/ownerSlice';
-function OwnerItemCard({data}) {
-    const navigate=useNavigate()
-    const dispatch=useDispatch()
-    const handleDelete=async () => {
-      try {
-        const result=await axios.get(`${serverUrl}/api/item/delete/${data._id}`,{withCredentials:true})
-        dispatch(setMyShopData(result.data))
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  return (
-    <div className='flex bg-white rounded-lg shadow-md overflow-hidden border border-[#ff4d2d] w-full max-w-2xl'>
-      <div className='w-36  flex-shrink-0 bg-gray-50'>
-        <img src={data.image} alt="" className='w-full h-full object-cover'/>
-      </div>
-      <div className='flex flex-col justify-between p-3 flex-1'>
-          <div>
-<h2 className='text-base font-semibold text-[#ff4d2d]'>{data.name}</h2>
-<p><span className='font-medium text-gray-70'>Category:</span> {data.category}</p>
-<p><span className='font-medium text-gray-70'>Food Type:</span> {data.foodType}</p>
-          </div>
-          <div className='flex items-center justify-between'>
-            <div className='text-[#ff4d2d] font-bold'>{data.price}</div>
-          <div className='flex items-center gap-2'>
-<div className='p-2 cursor-pointer rounded-full hover:bg-[#ff4d2d]/10  text-[#ff4d2d]' onClick={()=>navigate(`/edit-item/${data._id}`)}>
-<FaPen size={16}/>
-</div>
-<div className='p-2 cursor-pointer rounded-full hover:bg-[#ff4d2d]/10  text-[#ff4d2d]' onClick={handleDelete}>
-<FaTrashAlt size={16}/>
-</div>
-          </div>
+import { FaPen, FaTrashCan } from 'react-icons/fa6'
+import { useNavigate } from 'react-router-dom'
+import { serverUrl } from '../App'
+import { useDispatch } from 'react-redux'
+import { setMyShopData } from '../redux/ownerSlice'
+import { useTranslation } from 'react-i18next'
 
+function OwnerItemCard({ data }) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+
+  const handleDelete = async () => {
+    try {
+      const result = await axios.get(`${serverUrl}/api/item/delete/${data._id}`, { withCredentials: true })
+      dispatch(setMyShopData(result.data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <div className='card card-hover flex overflow-hidden'>
+      <div className='w-32 shrink-0 sm:w-36' style={{ background: 'var(--surface-3)' }}>
+        <img src={data.image} alt='' className='h-full w-full object-cover' />
+      </div>
+      <div className='flex flex-1 flex-col justify-between p-4'>
+        <div>
+          <h2 className='font-display text-base font-semibold' style={{ fontFamily: 'var(--font-display)' }}>{data.name}</h2>
+          <p className='mt-0.5 text-xs capitalize' style={{ color: 'var(--ink-muted)' }}>
+            {t(`category.${data.category}`, { defaultValue: data.category })} · {data.foodType}
+          </p>
+        </div>
+        <div className='flex items-center justify-between'>
+          <span className='font-display text-xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-2)' }}>
+            ₹{data.price}
+          </span>
+          <div className='flex items-center gap-1'>
+            <button className='flex h-9 w-9 items-center justify-center rounded-full transition-transform hover:scale-110 active:scale-95'
+              style={{ background: 'var(--surface-2)', color: 'var(--accent-2)' }}
+              onClick={() => navigate(`/edit-item/${data._id}`)} aria-label={`Edit ${data.name}`}>
+              <FaPen size={14} />
+            </button>
+            <button className='flex h-9 w-9 items-center justify-center rounded-full transition-transform hover:scale-110 active:scale-95'
+              style={{ background: 'var(--danger-soft)', color: 'var(--danger)' }}
+              onClick={handleDelete} aria-label={`Delete ${data.name}`}>
+              <FaTrashCan size={14} />
+            </button>
           </div>
+        </div>
       </div>
     </div>
   )

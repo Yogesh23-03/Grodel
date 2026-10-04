@@ -1,41 +1,68 @@
 import React from 'react'
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import CartItemCard from '../components/CartItemCard';
-function CartPage() {
-    const navigate = useNavigate()
-    const { cartItems, totalAmount } = useSelector(state => state.user)
-    return (
-        <div className='min-h-screen bg-[#fff9f6] flex justify-center p-6'>
-            <div className='w-full max-w-[800px]'>
-                <div className='flex items-center gap-[20px] mb-6 '>
-                    <div className=' z-[10] ' onClick={() => navigate("/")}>
-                        <IoIosArrowRoundBack size={35} className='text-[#ff4d2d]' />
-                    </div>
-                    <h1 className='"text-2xl font-bold  text-start'>Your Cart</h1>
-                </div>
-                {cartItems?.length == 0 ? (
-                    <p className='text-gray-500 text-lg text-center'>Your Cart is Empty</p>
-                ) : (<>
-                    <div className='space-y-4'>
-                        {cartItems?.map((item, index) => (
-                            <CartItemCard data={item} key={index} />
-                        ))}
-                    </div>
-                    <div className='mt-6 bg-white p-4 rounded-xl shadow flex justify-between items-center border'>
+import { FaCircleCheck } from "react-icons/fa6"
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import CartItemCard from '../components/CartItemCard'
+import { useTranslation } from 'react-i18next'
+import { HiOutlineShoppingBag, HiOutlineArrowLeft } from 'react-icons/hi2'
+import MarketNav from '../components/MarketNav.jsx'
 
-                        <h1 className='text-lg font-semibold'>Total Amount</h1>
-                        <span className='text-xl font-bold text-[#ff4d2d]'>₹{totalAmount}</span>
-                    </div>
-                    <div className='mt-4 flex justify-end' > 
-                        <button className='bg-[#ff4d2d] text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-[#e64526] transition cursor-pointer' onClick={()=>navigate("/checkout")}>Proceed to CheckOut</button>
-                    </div>
-                </>
-                )}
-            </div>
+function CartPage() {
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+  const { cartItems, totalAmount } = useSelector(state => state.user)
+
+  return (
+    <div className='min-h-screen lg:pl-[76px]'>
+      <MarketNav />
+      <div className='mx-auto w-full max-w-[800px] px-4 pb-28 pt-6 sm:px-6'>
+        <div className='mb-6 flex items-center gap-3'>
+          <button onClick={() => navigate("/")} className='btn-ghost !h-10 !w-10 !p-0' aria-label={t('common.back')}>
+            <HiOutlineArrowLeft size={18} />
+          </button>
+          <h1 className='t-title'>{t('cart.myCart')}</h1>
+          {cartItems?.length > 0 && (
+            <span className='badge badge-brand ml-auto px-3 py-1.5'>
+              {cartItems.reduce((s, i) => s + i.quantity, 0)} {t('cart.itemsCount')}
+            </span>
+          )}
         </div>
-    )
+
+        {cartItems?.length === 0 ? (
+          <div className='card mt-10 flex flex-col items-center gap-4 p-14 text-center'>
+            <span className='mode-eat flex h-20 w-20 items-center justify-center rounded-full'>
+              <HiOutlineShoppingBag className='text-3xl' />
+            </span>
+            <p className='text-lg font-semibold'>{t('cart.emptyCart')}</p>
+            <button onClick={() => navigate('/')} className='btn-primary'>
+              {t('cart.browseFood')}
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className='stagger space-y-4'>
+              {cartItems?.map((item, index) => (
+                <CartItemCard data={item} key={index} />
+              ))}
+            </div>
+
+            <div className='glass-panel sticky bottom-24 mt-6 flex items-center justify-between gap-3 p-5 lg:bottom-6'>
+              <div>
+                <h1 className='t-eyebrow'>{t('cart.total')}</h1>
+                <span className='font-display text-2xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>₹{totalAmount}</span>
+              </div>
+              <button
+                className='btn-primary'
+                onClick={() => navigate("/checkout")}
+              >
+                <FaCircleCheck /> {t('cart.proceedToCheckout')}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  )
 }
 
 export default CartPage

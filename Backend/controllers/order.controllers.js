@@ -1,7 +1,7 @@
 const DeliveryAssignment = require("../models/deliveryAssignment.model.js")
 const Order = require("../models/order.model.js")
-const Shop = require("../models/shop.model.js")
-const User = require("../models/user.model.js")
+const Shop = require("../models/shop.Model.js")
+const User = require("../models/user.Model.js")
 const { sendDeliveryOtpMail } = require("../utils/mail.js")
 const RazorPay = require("razorpay")
 const dotenv = require("dotenv")
@@ -203,11 +203,12 @@ const getMyOrders = async (req, res) => {
                 _id: order._id,
                 paymentMethod: order.paymentMethod,
                 user: order.user,
-                shopOrders: order.shopOrders.find(o => o.owner._id == req.userId),
+                shopOrders: order.shopOrders.find(o => String(o.owner?._id || o.owner) == String(req.userId)),
                 createdAt: order.createdAt,
                 deliveryAddress: order.deliveryAddress,
-                payment: order.payment
-            })))
+                payment: order.payment,
+                totalAmount: order.totalAmount
+            }))).filter(order => order.shopOrders)
 
 
             return res.status(200).json(filteredOrders)
@@ -284,10 +285,13 @@ const updateOrderStatus = async (req, res) => {
                                 io.to(boy.socketId).emit('newAssignment', {
                                     assignmentId: deliveryAssignment._id,
                                     orderId: order._id,
+                                    shopId: shopOrder.shop,
+                                    shopOrderId: shopOrder._id,
                                     shopName: deliveryAssignment.shop.name,
                                     deliveryAddress: order.deliveryAddress,
                                     subtotal: shopOrder.subtotal,
-                                    items: shopOrder.shopOrderItems
+                                    items: shopOrder.shopOrderItems,
+                                    status: shopOrder.status
                                 });
                             }
                         });
@@ -321,6 +325,67 @@ const updateOrderStatus = async (req, res) => {
         return res.status(500).json({ message: `Internal server error: ${error.message}` });
     }
 };
+
+const cancelOrder = async (req, res) => {
+    try {
+        const { orderId, shopOrderId } = req.params;
+
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(401).json({ message: "User not found" });
+
+        const order = await Order.findById(orderId).populate("user", "socketId");
+        if (!order) return res.status(404).json({ message: "Order not found" });
+
+        const shopOrder = order.shopOrders.id(shopOrderId);
+        if (!shopOrder) return res.status(404).json({ message: "Shop order not found" });
+
+        const isCustomer = order.user?._id?.toString() === req.userId.toString();
+        const isOwner = shopOrder.owner?.toString() === req.userId.toString();
+        const isDeliveryBoy = shopOrder.assignedDeliveryBoy?.toString() === req.userId.toString();
+
+        if (!isCustomer && !isOwner && !isDeliveryBoy) {
+            return res.status(403).json({ message: "You are not authorized to cancel this order" });
+        }
+
+        if (shopOrder.status === "delivered") {
+            return res.status(400).json({ message: "Delivered orders cannot be cancelled" });
+        }
+
+        if (shopOrder.status === "cancelled") {
+            return res.status(400).json({ message: "Order is already cancelled" });
+        }
+
+        shopOrder.status = "cancelled";
+        shopOrder.assignedDeliveryBoy = null;
+        shopOrder.deliveryOtp = null;
+        shopOrder.otpExpires = null;
+
+        if (shopOrder.assignment) {
+            await DeliveryAssignment.findByIdAndUpdate(shopOrder.assignment, {
+                status: "cancelled"
+            });
+        }
+
+        await order.save();
+
+        const io = req.app.get("io");
+        if (io) {
+            io.emit("update-status", {
+                orderId: order._id,
+                shopId: shopOrder.shop,
+                status: "cancelled"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Order cancelled successfully",
+            shopOrder
+        });
+    } catch (error) {
+        console.error("Cancel Order Error:", error);
+        return res.status(500).json({ message: `cancel order error ${error.message}` });
+    }
+};
 const getDeliveryBoyAssignment = async (req, res) => {
     try {
         const deliveryBoyId = req.userId
@@ -334,15 +399,50 @@ const getDeliveryBoyAssignment = async (req, res) => {
         const formated = assignments.map(a => ({
             assignmentId: a._id,
             orderId: a.order._id,
+            shopId: a.shop._id,
+            shopOrderId: a.shopOrderId,
             shopName: a.shop.name,
             deliveryAddress: a.order.deliveryAddress,
             items: a.order.shopOrders.find(so => so._id.equals(a.shopOrderId)).shopOrderItems || [],
-            subtotal: a.order.shopOrders.find(so => so._id.equals(a.shopOrderId))?.subtotal
+            subtotal: a.order.shopOrders.find(so => so._id.equals(a.shopOrderId))?.subtotal,
+            status: a.order.shopOrders.find(so => so._id.equals(a.shopOrderId))?.status
         }))
 
         return res.status(200).json(formated)
     } catch (error) {
         return res.status(500).json({ message: `get Assignment error ${error}` })
+    }
+}
+
+const getCancelledDeliveryOrders = async (req, res) => {
+    try {
+        const deliveryBoyId = req.userId
+        const assignments = await DeliveryAssignment.find({
+            assignedTo: deliveryBoyId,
+            status: "cancelled"
+        })
+            .sort({ updatedAt: -1 })
+            .populate("order")
+            .populate("shop")
+
+        const formatted = assignments.map(a => {
+            const shopOrder = a.order?.shopOrders?.find(so => so._id.equals(a.shopOrderId))
+            return {
+                assignmentId: a._id,
+                orderId: a.order?._id,
+                shopOrderId: a.shopOrderId,
+                shopName: a.shop?.name,
+                deliveryAddress: a.order?.deliveryAddress,
+                items: shopOrder?.shopOrderItems || [],
+                subtotal: shopOrder?.subtotal,
+                status: shopOrder?.status || "cancelled",
+                cancelledAt: a.updatedAt
+            }
+        }).filter(a => a.orderId)
+
+        return res.status(200).json(formatted)
+    } catch (error) {
+        return res.status(500).json({ message: `get cancelled delivery orders error ${error}` })
     }
 }
 
@@ -360,7 +460,7 @@ const acceptOrder = async (req, res) => {
 
         const alreadyAssigned = await DeliveryAssignment.findOne({
             assignedTo: req.userId,
-            status: { $nin: ["brodcasted", "completed"] }
+            status: { $nin: ["brodcasted", "completed", "cancelled"] }
         })
 
         if (alreadyAssigned) {
@@ -580,7 +680,7 @@ const cancelAssignment = async (req, res) => {
         if (!assignment) return res.status(404).json({ message: "Assignment not found" });
 
         // 2. Security Check: Only the assigned delivery boy can cancel it
-        if (assignment.assignedTo.toString() !== deliveryBoyId.toString()) {
+        if (!assignment.assignedTo || assignment.assignedTo.toString() !== deliveryBoyId.toString()) {
             return res.status(403).json({ message: "You are not authorized to cancel this assignment" });
         }
 
@@ -594,10 +694,18 @@ const cancelAssignment = async (req, res) => {
         if (order) {
             const shopOrder = order.shopOrders.id(assignment.shopOrderId);
             if (shopOrder) {
-                shopOrder.assignedDeliveryBoy = null; // Clear the assignment
-                // Optional: Revert status to 'preparing' or keep as 'out of delivery' 
-                // so it's available for others
+                shopOrder.assignedDeliveryBoy = null;
+                shopOrder.status = "out of delivery";
                 await order.save();
+
+                const io = req.app.get("io");
+                if (io) {
+                    io.emit("update-status", {
+                        orderId: order._id,
+                        shopId: shopOrder.shop,
+                        status: shopOrder.status
+                    });
+                }
             }
         }
 
@@ -609,7 +717,7 @@ const cancelAssignment = async (req, res) => {
         assignment.acceptedAt = null;
         await assignment.save();
 
-        return res.status(200).json({ message: "Assignment cancelled. It is now available for other delivery boys." });
+        return res.status(200).json({ message: "Assignment cancelled. It is now available for delivery boys." });
 
     } catch (error) {
         console.error("Cancel Assignment Error:", error);
@@ -630,6 +738,8 @@ module.exports = {
     sendDeliveryOtp,
     verifyDeliveryOtp,
     getTodayDeliveries,
-    cancelAssignment
+    cancelAssignment,
+    cancelOrder,
+    getCancelledDeliveryOrders
 }
 

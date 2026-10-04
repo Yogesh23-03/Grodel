@@ -72,7 +72,7 @@ const [loading,setLoading]=useState(false)
                 <button className={`w-full font-semibold py-2 rounded-lg transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleSendOtp} disabled={loading}>
                 {loading?<ClipLoader size={20} color='white'/>:"Send Otp"}
             </button>
-                 {err && <p className='text-red-500 text-center my-[10px]'>*{err}</p>}
+                 {err && <p className='text-red-600 text-center my-[10px]'>*{err}</p>}
           </div>}
 
          {step == 2
@@ -85,7 +85,7 @@ const [loading,setLoading]=useState(false)
                 <button className={`w-full font-semibold py-2 rounded-lg transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleVerifyOtp} disabled={loading}>
                 {loading?<ClipLoader size={20} color='white'/>:"Verify"}
             </button>
-                {err && <p className='text-red-500 text-center my-[10px]'>*{err}</p>}
+                {err && <p className='text-red-600 text-center my-[10px]'>*{err}</p>}
           </div>}
           {step == 3
           &&
@@ -101,7 +101,7 @@ const [loading,setLoading]=useState(false)
                 <button className={`w-full font-semibold py-2 rounded-lg transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleResetPassword} disabled={loading}>
                 {loading?<ClipLoader size={20} color='white'/>:"Reset Password"}
             </button>
-                {err && <p className='text-red-500 text-center my-[10px]'>*{err}</p>}
+                {err && <p className='text-red-600 text-center my-[10px]'>*{err}</p>}
           </div>}
       </div>
     </div>

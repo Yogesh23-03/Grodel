@@ -1,0 +1,1354 @@
+export const supportedLanguages = [
+  { code: 'en', label: 'English', native: 'English' },
+  { code: 'hi', label: 'Hindi', native: 'हिन्दी' },
+  { code: 'kn', label: 'Kannada', native: 'ಕನ್ನಡ' },
+  { code: 'ta', label: 'Tamil', native: 'தமிழ்' },
+  { code: 'te', label: 'Telugu', native: 'తెలుగు' },
+  { code: 'ml', label: 'Malayalam', native: 'മലയാളം' },
+  { code: 'bn', label: 'Bengali', native: 'বাংলা' },
+  { code: 'mr', label: 'Marathi', native: 'मराठी' },
+  { code: 'gu', label: 'Gujarati', native: 'ગુજરાતી' },
+  { code: 'pa', label: 'Punjabi', native: 'ਪੰਜਾਬੀ' },
+  { code: 'or', label: 'Odia', native: 'ଓଡ଼ିଆ' },
+  { code: 'es', label: 'Spanish', native: 'Español' },
+  { code: 'fr', label: 'French', native: 'Français' },
+  { code: 'de', label: 'German', native: 'Deutsch' },
+  { code: 'ar', label: 'Arabic', native: 'العربية' }
+];
+
+export const resources = {
+  en: {
+    translation: {
+      nav: {
+        freshFood: "Fresh food delivery with trust support",
+        currentCity: "Current City",
+        searchPlaceholder: "Search delicious food...",
+        groupOrder: "Group Order",
+        mealSchedule: "Meal Schedule",
+        startGroupOrder: "Start group order",
+        donateFood: "Donate Food",
+        donateFoodLabel: "Donate food",
+        addFoodItem: "Add Food Item",
+        myOrders: "My Orders",
+        groupOrders: "Group Orders",
+        myDonations: "My Donations",
+        trusts: "Trusts",
+        admin: "Admin",
+        logOut: "Log Out",
+        openProfileMenu: "Open profile menu",
+        language: "Language",
+        selectLanguage: "Select Language",
+        myShop: "My Shop",
+        addProduct: "Add Product",
+        localVendors: "Local Vendors",
+        registerVendor: "Register Vendor",
+        features: "Features",
+        eatMode: "Eat",
+        marketMode: "Market",
+        rescueMode: "Rescue",
+        planMode: "Plan",
+        basket: "Basket",
+        you: "You",
+        searchAction: "Search",
+        searchTitle: "Search food",
+        searchHint: "Search dishes across your city's kitchens.",
+        deliveries: "Deliveries"
+      },
+      dashboard: {
+        deliveringIn: "Now delivering in",
+        heroTitle: "Good food. Better together.",
+        heroSubtitle: "Discover local favourites, build a shared order, and let everyone pay their own way.",
+        startGroupOrder: "Start a group order",
+        exploreFood: "Explore food",
+        searchResults: "Search Results",
+        curatedForYou: "Curated for you",
+        cravingTitle: "What are you craving?",
+        neighbourhoodFavourites: "Neighbourhood favourites",
+        bestRestaurantsIn: "Best restaurants in",
+        suggestedFood: "Suggested Food Items"
+      },
+      category: {
+        "All": "All",
+        "Snacks": "Snacks",
+        "Main Course": "Main Course",
+        "Desserts": "Desserts",
+        "Pizza": "Pizza",
+        "Burgers": "Burgers",
+        "Sandwiches": "Sandwiches",
+        "South Indian": "South Indian",
+        "North Indian": "North Indian",
+        "Chinese": "Chinese",
+        "Fast Food": "Fast Food"
+      },
+      food: {
+        veg: "Veg",
+        nonVeg: "Non-Veg",
+        addToCart: "Add to cart",
+        added: "Added",
+        rating: "Rating"
+      },
+      auth: {
+        role: "Choose your role",
+        roles: {
+          user: { label: "Customer", desc: "Order food & donate" },
+          owner: { label: "Restaurant Owner", desc: "List your restaurant & menu" },
+          vendor: { label: "Farmer / Vendor", desc: "Sell fresh produce locally" },
+          deliveryBoy: { label: "Delivery Partner", desc: "Deliver orders & earn" },
+          trustMember: { label: "Trust / NGO", desc: "Receive food donations" }
+        }
+      },
+      common: {
+        loading: "Loading...",
+        save: "Save",
+        cancel: "Cancel",
+        view: "View",
+        close: "Close",
+        back: "Back"
+      },
+      cart: {
+        myCart: "My Cart",
+        emptyCart: "Your cart is empty",
+        subtotal: "Subtotal",
+        deliveryFee: "Delivery Fee",
+        total: "Total",
+        proceedToCheckout: "Proceed to Checkout",
+        itemsCount: "items",
+        browseFood: "Browse food",
+        basket: "Basket",
+        checkoutNow: "Checkout"
+      },
+      shop: {
+        ourMenu: "Our Menu",
+        noItems: "No items available right now"
+      },
+      order: {
+        placedTitle: "Order placed!",
+        placedBody: "Thank you for your order. Restaurants are already preparing it — track every step in My Orders.",
+        trackCta: "Track my order",
+        orderMore: "Order more food"
+      },
+      schedule: {
+        title: "Meal schedules",
+        subtitle: "Pick a default restaurant for each meal and GroDel will place the order for you at your cutoff time — pay cash on delivery.",
+        breakfast: "Breakfast",
+        lunch: "Lunch",
+        snacks: "Snacks",
+        dinner: "Dinner",
+        deliveryAddress: "Delivery address",
+        addressPlaceholder: "House / street / landmark...",
+        addressHint: "Applied to every enabled meal slot. Auto-orders use cash on delivery.",
+        saveAddress: "Save address",
+        addressSaved: "Delivery address updated for all active meals",
+        needShop: "Choose a restaurant first",
+        needItems: "Add at least one item",
+        needAddress: "Add a delivery address first",
+        savedOn: "{{type}} schedule enabled",
+        savedOff: "{{type}} schedule saved",
+        saveFailed: "Could not save the schedule",
+        menuFailed: "Could not load the menu",
+        emptyMenu: "This restaurant has no items on the menu yet",
+        pickRestaurant: "Default restaurant",
+        selectRestaurant: "Select a restaurant",
+        chooseDefaults: "Choose defaults",
+        edit: "Edit",
+        enable: "Enable",
+        enabled: "Enabled",
+        on: "ON",
+        notSet: "Not set up yet",
+        orderBy: "Order by",
+        noShop: "No restaurant chosen",
+        itemsChosen: "{{count}} items · ≈ {{total}}",
+        noItemsChosen: "No items chosen yet",
+        clearItems: "Clear",
+        saveDefaults: "Save defaults",
+        activeCount: "{{count}} active",
+        howTitle: "How auto-orders work",
+        how1: "Enable a meal and pick your usual restaurant plus items.",
+        how2: "Before your cutoff time you can still tweak today's order from the home banner.",
+        how3: "At the cutoff time GroDel places the order automatically — pay cash when it arrives.",
+        closesAt: "closes at",
+        bannerHint: "Choose today's items or your saved default will be ordered.",
+        chooseItems: "Choose items",
+        saveToday: "Save today's order",
+        todayConfirmed: "order set for today",
+        manageLink: "Manage schedules"
+      },
+      vendorShop: {
+        inStock: "in stock",
+        basketCount: "{{count}} items in basket",
+        codOnly: "Cash on delivery",
+        checkout: "Checkout",
+        checkoutTitle: "Checkout with vendor",
+        needAddress: "Enter a delivery address",
+        needItems: "Your basket is empty",
+        phone: "Contact number",
+        note: "Note for the vendor (optional)",
+        notePlaceholder: "e.g. choose slightly ripe tomatoes",
+        placeOrder: "Place order",
+        placed: "Order sent to vendor",
+        placedTitle: "Order placed!",
+        placedHint: "The vendor got your order and will confirm shortly. Track it below or from your orders.",
+        placeFailed: "Could not place the order",
+        cancelled: "Order cancelled",
+        keepShopping: "Keep shopping",
+        shareText: "I just ordered fresh produce from {{vendor}} on GroDel for ₹{{total}}!",
+        myOrdersHere: "My orders here ({{count}})",
+        status: {
+          pending: "Pending",
+          confirmed: "Confirmed",
+          ready: "Ready",
+          out_of_delivery: "Out for delivery",
+          delivered: "Delivered",
+          cancelled: "Cancelled"
+        }
+      },
+      vendor: {
+        locating: "Finding vendors near you...",
+        tryAgain: "Try again",
+        moreItems: "more items",
+        locationPending: "Location not shared yet",
+        ratingThanks: "Thanks for rating!",
+        listingAdded: "Product listed successfully",
+        incomingOrders: "Incoming orders",
+        showOrders: "Show orders",
+        noActiveOrders: "No active orders right now",
+        pastOrders: "Past orders",
+        orderMarked: "Marked as {{status}}",
+        newOrderToast: "New produce order received!",
+        portalTitle: "Farmer & Street Vendor Portal",
+        portalSubtitle: "Sell your fresh produce directly to your neighbourhood",
+        vendorSubtext: "From the farm or the street straight to the customer — list your produce by photo, voice or WhatsApp.",
+        joinButton: "Join as Vendor",
+        browseButton: "Browse Local Vendors",
+        voiceRegister: "Register by Speaking",
+        helperRegister: "Get Help to Register",
+        photoListing: "Add Product by Photo",
+        whatsappMode: "Manage via WhatsApp",
+        howItWorks: "How it works",
+        howPhoto: "Snap a photo, our AI identifies the produce and lists it in seconds",
+        howVoice: "Speak your name and what you sell — no typing needed",
+        howWhatsapp: "Open or close your shop and update prices from WhatsApp",
+        whatsappInstructions: "Send a WhatsApp message to our number to manage your shop",
+        whatsappStart: "Send us a WhatsApp message to get started",
+        whatsappNumberLabel: "WhatsApp number",
+        openOnWhatsapp: "Open WhatsApp",
+        statsTitle: "Growing with our community",
+        totalVendors: "Vendors on platform",
+        totalProduce: "Products listed",
+        totalOrdersFulfilled: "Orders fulfilled",
+        openToday: "I am Open Today",
+        closedToday: "I am Closed Today",
+        openHint: "Tap to open your shop for today",
+        closedHint: "Tap to close your shop for today",
+        myListings: "My Products",
+        addProduct: "Add Product",
+        freshToday: "Fresh Today",
+        freshBadgeEarned: "🌿 Fresh Today badge earned!",
+        nearYou: "Near You",
+        setPrice: "Set Your Price",
+        aiSuggestedPrice: "AI Suggested Price",
+        useAIPrice: "Use AI Price",
+        typePrice: "Type Price",
+        speakPrice: "Say the Price",
+        confirmListing: "Confirm & List Product",
+        listening: "Listening...",
+        tapToSpeak: "Tap to Speak",
+        speakNow: "Speak now...",
+        retake: "Retake Photo",
+        uploading: "Uploading photo...",
+        analysing: "AI is identifying your produce...",
+        priceConfirm: "Is this price correct?",
+        dashboard: "My Vendor Dashboard",
+        todayEarnings: "Today's Earnings",
+        todayOrders: "Today's Orders",
+        totalOrders: "Total Orders",
+        noListings: "No products added yet. Tap + to add your first product.",
+        vendorStory: "About this Vendor",
+        rating: "Rating",
+        distance: "km away",
+        category: "Category",
+        allCategories: "All",
+        vegetables: "Vegetables",
+        fruits: "Fruits",
+        grains: "Grains",
+        dairy: "Dairy",
+        herbs: "Herbs",
+        spices: "Spices",
+        flowers: "Flowers",
+        other: "Other",
+        pricePerKg: "per kg",
+        available: "Available",
+        unavailable: "Unavailable",
+        speakRegistration: "Speak your name, location and what you sell",
+        processingVoice: "Processing your voice...",
+        registrationSuccess: "Successfully registered!",
+        helperName: "Helper's Name",
+        helperOrg: "Organisation (optional)",
+        vendorName: "Vendor's Name",
+        vendorPhone: "Vendor's Phone Number",
+        landmark: "Landmark (e.g. near bus stand)",
+        district: "District",
+        state: "State",
+        goToLogin: "Go to Login",
+        registerVendor: "Register Vendor",
+        paymentMethod: "Payment Method",
+        cash: "Cash on Delivery",
+        upi: "UPI",
+        both: "Cash & UPI",
+        chooseMethod: "Choose how you want to register",
+        yourPhoneNumber: "Your phone number",
+        enterPhoneNumber: "Enter phone number",
+        loginDetails: "Your login details",
+        loginEmail: "Email",
+        loginPassword: "Password",
+        getStartedHint: "Keep these details to log in later",
+        takeShopPhoto: "Take a photo of yourself or your shop",
+        photoHelp: "AI will read your shop details and pre-fill the form",
+        needVendorAccount: "Complete voice or helper registration first to use photo registration",
+        quantity: "Quantity",
+        viewShop: "View Shop",
+        back: "Back",
+        rateVendor: "Rate this vendor",
+        submitRating: "Submit Rating",
+        addToCart: "Add",
+        addedToCart: "Added",
+        noVendorsNearby: "No vendors are open near you right now",
+        loadingVendors: "Finding vendors near you...",
+        locateVendors: "Find vendors near me",
+        locationUnavailable: "Location access was denied",
+        topPicks: "Top sellers near you",
+        editsSaved: "Changes saved",
+        itemRemoved: "Product removed",
+        choosePhoto: "Choose Photo",
+        analyse: "Analyse Photo",
+        noPhoto: "No photo selected",
+        speakInstruction: "Speak your price clearly, e.g. \"thirty rupees\"",
+        helperRegistrationTitle: "Helper Registration",
+        helperRegistrationSubtitle: "Register as a helper to bring street vendors online",
+        organisation: "Organisation",
+        scanToRegister: "Scan this QR to let a helper register you",
+        loginHint: "You can log in with this email and your phone number as password",
+        perUnit: "per {unit}",
+        filteringBy: "Filtering by",
+        aiPhotoChoice: "Let AI read my photo",
+        aiPhotoChoiceHelp: "Upload a photo and let AI suggest the product details.",
+        manualChoice: "I'll enter details myself",
+        manualChoiceHelp: "Type or dictate your product details yourself.",
+        switchToManual: "Enter details manually instead",
+        productName: "Product name",
+        unit: "Unit",
+        optionalPhoto: "Photo (optional)",
+        dictateField: "Dictate {{field}}",
+        manualRequired: "Product name, price and quantity are required"
+      }
+    }
+  },
+
+  hi: {
+    translation: {
+      nav: {
+        freshFood: "ट्रस्ट सहयोग के साथ ताजा भोजन वितरण",
+        currentCity: "वर्तमान शहर",
+        searchPlaceholder: "स्वादिष्ट भोजन खोजें...",
+        groupOrder: "ग्रुप ऑर्डर",
+        startGroupOrder: "ग्रुप ऑर्डर शुरू करें",
+        donateFood: "भोजन दान करें",
+        donateFoodLabel: "भोजन दान करें",
+        addFoodItem: "नया भोजन जोड़ें",
+        myOrders: "मेरे ऑर्डर",
+        groupOrders: "ग्रुप ऑर्डर्स",
+        myDonations: "मेरे दान",
+        trusts: "ट्रस्ट्स",
+        admin: "एडमिन",
+        logOut: "लॉग आउट",
+        openProfileMenu: "प्रोफ़ाइल मेनू खोलें",
+        language: "भाषा",
+        selectLanguage: "भाषा चुनें"
+      },
+      dashboard: {
+        deliveringIn: "अब डिलीवरी उपलब्ध है",
+        heroTitle: "स्वादिष्ट भोजन। सबके साथ और बेहतर।",
+        heroSubtitle: "स्थानीय पसंदीदा भोजन खोजें, साझा ऑर्डर बनाएं और हर कोई अपना भुगतान स्वयं करे।",
+        startGroupOrder: "ग्रुप ऑर्डर शुरू करें",
+        exploreFood: "भोजन देखें",
+        searchResults: "खोज परिणाम",
+        curatedForYou: "आपके लिए विशेष",
+        cravingTitle: "आज आपका क्या खाने का मन है?",
+        neighbourhoodFavourites: "आस-पड़ोस के पसंदीदा",
+        bestRestaurantsIn: "में सर्वश्रेष्ठ रेस्तरां",
+        suggestedFood: "सुझाए गए भोजन"
+      },
+      category: {
+        "All": "सभी",
+        "Snacks": "स्नैक्स",
+        "Main Course": "मुख्य भोजन",
+        "Desserts": "मिठाइयां",
+        "Pizza": "पिज़्ज़ा",
+        "Burgers": "बर्गर",
+        "Sandwiches": "सैंडविच",
+        "South Indian": "दक्षिण भारतीय",
+        "North Indian": "उत्तर भारतीय",
+        "Chinese": "चाइनीज",
+        "Fast Food": "फ़ास्ट फ़ूड"
+      },
+      food: {
+        veg: "शाकाहारी",
+        nonVeg: "मांसाहारी",
+        addToCart: "कार्ट में जोड़ें",
+        added: "जोड़ा गया",
+        rating: "रेटिंग"
+      },
+      cart: {
+        myCart: "मेरी कार्ट",
+        emptyCart: "आपकी कार्ट खाली है",
+        subtotal: "उप-योग",
+        deliveryFee: "डिलीवरी शुल्क",
+        total: "कुल योग",
+        proceedToCheckout: "चेकआउट के लिए आगे बढ़ें"
+      },
+      common: {
+        loading: "लोड हो रहा है...",
+        save: "सहेजें",
+        cancel: "रद्द करें",
+        view: "देखें",
+        close: "बंद करें"
+      }
+    }
+  },
+
+  kn: {
+    translation: {
+      nav: {
+        freshFood: "ಟ್ರಸ್ಟ್ ಬೆಂಬಲದೊಂದಿಗೆ ತಾಜಾ ಆಹಾರ ವಿತರಣೆ",
+        currentCity: "ಪ್ರಸ್ತುತ ನಗರ",
+        searchPlaceholder: "ರುಚಿಕರವಾದ ಆಹಾರವನ್ನು ಹುಡುಕಿ...",
+        groupOrder: "ಗುಂಪು ಆರ್ಡರ್",
+        startGroupOrder: "ಗುಂಪು ಆರ್ಡರ್ ಪ್ರಾರಂಭಿಸಿ",
+        donateFood: "ಆಹಾರ ದಾನ ಮಾಡಿ",
+        donateFoodLabel: "ಆಹಾರ ದಾನ ಮಾಡಿ",
+        addFoodItem: "ಆಹಾರ ಐಟಂ ಸೇರಿಸಿ",
+        myOrders: "ನನ್ನ ಆರ್ಡರ್‌ಗಳು",
+        groupOrders: "ಗುಂಪು ಆರ್ಡರ್‌ಗಳು",
+        myDonations: "ನನ್ನ ದಾನಗಳು",
+        trusts: "ಟ್ರಸ್ಟ್‌ಗಳು",
+        admin: "ನಿರ್ವಾಹಕ",
+        logOut: "ಲಾಗ್ ಔಟ್",
+        openProfileMenu: "ಪ್ರೊಫೈಲ್ ಮೆನು ತೆರೆಯಿರಿ",
+        language: "ಭಾಷೆ",
+        selectLanguage: "ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ"
+      },
+      dashboard: {
+        deliveringIn: "ಈಗ ವಿತರಣೆ ಮಾಡಲಾಗುತ್ತಿದೆ",
+        heroTitle: "ಉತ್ತಮ ಆಹಾರ. ಜೊತೆಯಾಗಿ ಇನ್ನಷ್ಟು ಮಧುರ.",
+        heroSubtitle: "ಸ್ಥಳೀಯ ನೆಚ್ಚಿನ ತಿನಿಸುಗಳನ್ನು ಅನ್ವೇಷಿಸಿ, ಹಂಚಿಕೆಯ ಆರ್ಡರ್ ರಚಿಸಿ ಮತ್ತು ಪ್ರತಿಯೊಬ್ಬರೂ ತಮ್ಮ ಪಾಲನ್ನು ಪಾವತಿಸಿ.",
+        startGroupOrder: "ಗುಂಪು ಆರ್ಡರ್ ಪ್ರಾರಂಭಿಸಿ",
+        exploreFood: "ಆಹಾರವನ್ನು ಅನ್ವೇಷಿಸಿ",
+        searchResults: "ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳು",
+        curatedForYou: "ನಿಮಗಾಗಿ ಆಯ್ದದ್ದು",
+        cravingTitle: "ನೀವು ಏನನ್ನು ಸವಿಯಲು ಬಯಸುತ್ತೀರಿ?",
+        neighbourhoodFavourites: "ನೆರೆಹೊರೆಯ ನೆಚ್ಚಿನ ಸ್ಥಳಗಳು",
+        bestRestaurantsIn: "ರಲ್ಲಿ ಅತ್ಯುತ್ತಮ ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು",
+        suggestedFood: "ಸೂಚಿಸಲಾದ ಆಹಾರ ಪದಾರ್ಥಗಳು"
+      },
+      category: {
+        "All": "ಎಲ್ಲವೂ",
+        "Snacks": "ಸ್ನ್ಯಾಕ್ಸ್",
+        "Main Course": "ಮುಖ್ಯ ಊಟ",
+        "Desserts": "ಸಿಹಿತಿಂಡಿಗಳು",
+        "Pizza": "ಪಿಜ್ಜಾ",
+        "Burgers": "ಬರ್ಗರ್ಸ್",
+        "Sandwiches": "ಸ್ಯಾಂಡ್‌ವಿಚ್‌ಗಳು",
+        "South Indian": "ದಕ್ಷಿಣ ಭಾರತೀಯ",
+        "North Indian": "ಉತ್ತರ ಭಾರತೀಯ",
+        "Chinese": "ಚೈನೀಸ್",
+        "Fast Food": "ಫಾಸ್ಟ್ ಫುಡ್"
+      },
+      food: {
+        veg: "ಸಸ್ಯಾಹಾರಿ",
+        nonVeg: "ಮಾಂಸಾಹಾರಿ",
+        addToCart: "ಕಾರ್ಟ್‌ಗೆ ಸೇರಿಸಿ",
+        added: "ಸೇರಿಸಲಾಗಿದೆ",
+        rating: "ರೇಟಿಂಗ್"
+      },
+      cart: {
+        myCart: "ನನ್ನ ಕಾರ್ಟ್",
+        emptyCart: "ನಿಮ್ಮ ಕಾರ್ಟ್ ಖಾಲಿಯಾಗಿದೆ",
+        subtotal: "ಉಪಮೊತ್ತ",
+        deliveryFee: "ವಿತರಣಾ ಶುಲ್ಕ",
+        total: "ಒಟ್ಟು",
+        proceedToCheckout: "ಚೆಕ್‌ಔಟ್‌ಗೆ ಮುಂದುವರಿಯಿರಿ"
+      },
+      common: {
+        loading: "ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+        save: "ಉಳಿಸಿ",
+        cancel: "ರದ್ದುಮಾಡಿ",
+        view: "ನೋಡಿ",
+        close: "ಮುಚ್ಚಿ"
+      }
+    }
+  },
+
+  ta: {
+    translation: {
+      nav: {
+        freshFood: "அறக்கட்டளை ஆதரவுடன் புதிய உணவு டெலிவரி",
+        currentCity: "தற்போதைய நகரம்",
+        searchPlaceholder: "சுவையான உணவைத் தேடுங்கள்...",
+        groupOrder: "குழு ஆர்டர்",
+        startGroupOrder: "குழு ஆர்டரைத் தொடங்குங்கள்",
+        donateFood: "உணவு தானம் செய்யுங்கள்",
+        donateFoodLabel: "உணவு தானம்",
+        addFoodItem: "உணவுப் பொருளைச் சேர்க்கவும்",
+        myOrders: "எனது ஆர்டர்கள்",
+        groupOrders: "குழு ஆர்டர்கள்",
+        myDonations: "எனது தானங்கள்",
+        trusts: "அறக்கட்டளைகள்",
+        admin: "நிர்வாகி",
+        logOut: "வெளியேறு",
+        openProfileMenu: "சுயவிவர மெனுவைத் திற",
+        language: "மொழி",
+        selectLanguage: "மொழியைத் தேர்ந்தெடுக்கவும்"
+      },
+      dashboard: {
+        deliveringIn: "தற்போது டெலிவரி செய்யப்படுகிறது",
+        heroTitle: "நல்ல உணவு. ஒன்றாகச் சேர்ந்தால் இன்னும் சிறப்பு.",
+        heroSubtitle: "உள்ளூர் விருப்பமான உணவுகளைக் கண்டறியுங்கள், பகிர்ந்த ஆர்டரை உருவாக்குங்கள், ஒவ்வொருவரும் தங்கள் வழியில் பணம் செலுத்துங்கள்.",
+        startGroupOrder: "குழு ஆர்டரைத் தொடங்குங்கள்",
+        exploreFood: "உணவை ஆராயுங்கள்",
+        searchResults: "தேடல் முடிவுகள்",
+        curatedForYou: "உங்களுக்காகத் தேர்ந்தெடுக்கப்பட்டது",
+        cravingTitle: "நீங்கள் என்ன சாப்பிட விரும்புகிறீர்கள்?",
+        neighbourhoodFavourites: "அருகிலுள்ள விருப்பங்கள்",
+        bestRestaurantsIn: "இல் சிறந்த உணவகங்கள்",
+        suggestedFood: "பரிந்துரைக்கப்பட்ட உணவுகள்"
+      },
+      category: {
+        "All": "அனைத்தும்",
+        "Snacks": "சிற்றுண்டி",
+        "Main Course": "முக்கிய உணவு",
+        "Desserts": "இனிப்புகள்",
+        "Pizza": "பீட்சா",
+        "Burgers": "பர்கர்கள்",
+        "Sandwiches": "சாண்ட்விச்கள்",
+        "South Indian": "தென்னிந்திய உணவு",
+        "North Indian": "வட இந்திய உணவு",
+        "Chinese": "சீன உணவு",
+        "Fast Food": "துரித உணவு"
+      },
+      food: {
+        veg: "சைவம்",
+        nonVeg: "அசைவம்",
+        addToCart: "கார்ட்டில் சேர்",
+        added: "சேர்க்கப்பட்டது",
+        rating: "மதிப்பீடு"
+      },
+      cart: {
+        myCart: "எனது கார்ட்",
+        emptyCart: "உங்கள் கார்ட் காலியாக உள்ளது",
+        subtotal: "துணைத் தொகை",
+        deliveryFee: "டெலிவரி கட்டணம்",
+        total: "மொத்தம்",
+        proceedToCheckout: "செக்அவுட்டுக்குச் செல்லவும்"
+      },
+      common: {
+        loading: "ஏற்றுகிறது...",
+        save: "சேமி",
+        cancel: "ரத்து செய்",
+        view: "பார்",
+        close: "மூடு"
+      }
+    }
+  },
+
+  te: {
+    translation: {
+      nav: {
+        freshFood: "ట్రస్ట్ మద్దతుతో తాజా ఆహార డెలివరీ",
+        currentCity: "ప్రస్తుత నగరం",
+        searchPlaceholder: "రుచికరమైన ఆహారాన్ని శోధించండి...",
+        groupOrder: "గ్రూప్ ఆర్డర్",
+        startGroupOrder: "గ్రూప్ ఆర్డర్ ప్రారంభించండి",
+        donateFood: "ఆహారాన్ని దానం చేయండి",
+        donateFoodLabel: "ఆహార దానం",
+        addFoodItem: "ఆహార అంశాన్ని జోడించండి",
+        myOrders: "నా ఆర్డర్లు",
+        groupOrders: "గ్రూప్ ఆర్డర్లు",
+        myDonations: "నా విరాళాలు",
+        trusts: "ట్రస్ట్‌లు",
+        admin: "అడ్మిన్",
+        logOut: "లాగ్ అవుట్",
+        openProfileMenu: "ప్రొఫైల్ మెనూ తెరవండి",
+        language: "భాష",
+        selectLanguage: "భాషను ఎంచుకోండి"
+      },
+      dashboard: {
+        deliveringIn: "ఇప్పుడు డెలివరీ అందుబాటులో ఉంది",
+        heroTitle: "మంచి ఆహారం. అందరితో కలిస్తే మరింత ఆనందం.",
+        heroSubtitle: "స్థానిక ఇష్టమైన ఆహారాలను కనుగొనండి, భాగస్వామ్య ఆర్డర్‌ను రూపొందించండి మరియు ఎవరి బిల్లు వారు చెల్లించండి.",
+        startGroupOrder: "గ్రూప్ ఆర్డర్ ప్రారంభించండి",
+        exploreFood: "ఆహారాన్ని అన్వేషించండి",
+        searchResults: "శోధన ఫలితాలు",
+        curatedForYou: "మీ కోసం ఎంపిక చేసినవి",
+        cravingTitle: "మీరు ఏమి తినాలనుకుంటున్నారు?",
+        neighbourhoodFavourites: "పరిసరాల్లోని ప్రముఖమైనవి",
+        bestRestaurantsIn: "లో అత్యుత్తమ రెస్టారెంట్లు",
+        suggestedFood: "సూచించబడిన ఆహారాలు"
+      },
+      category: {
+        "All": "అన్నీ",
+        "Snacks": "స్నాక్స్",
+        "Main Course": "ప్రధాన భోజనం",
+        "Desserts": "డెజర్ట్‌లు",
+        "Pizza": "పిజ్జా",
+        "Burgers": "బర్గర్‌లు",
+        "Sandwiches": "శాండ్‌విచ్‌లు",
+        "South Indian": "దక్షిణ భారతీయ",
+        "North Indian": "ఉత్తర భారతీయ",
+        "Chinese": "చైనీస్",
+        "Fast Food": "ఫాస్ట్ ఫుడ్"
+      },
+      food: {
+        veg: "శాకాహారం",
+        nonVeg: "మాంసాహారం",
+        addToCart: "కార్ట్‌కి జోడించండి",
+        added: "జోడించబడింది",
+        rating: "రేటింగ్"
+      },
+      cart: {
+        myCart: "నా కార్ట్",
+        emptyCart: "మీ కార్ట్ ఖాళీగా ఉంది",
+        subtotal: "సబ్‌టోటల్",
+        deliveryFee: "డెలివరీ రుసుము",
+        total: "మొత్తం",
+        proceedToCheckout: "చెక్‌అవుట్‌కు వెళ్లండి"
+      },
+      common: {
+        loading: "లోడ్ అవుతోంది...",
+        save: "సేవ్ చేయండి",
+        cancel: "రద్దు చేయండి",
+        view: "చూడండి",
+        close: "మూసివేయండి"
+      }
+    }
+  },
+
+  ml: {
+    translation: {
+      nav: {
+        freshFood: "ട്രസ്റ്റ് പിന്തുണയോടെ പുതിയ ഭക്ഷണ വിതരണം",
+        currentCity: "നിലവിലെ നഗരം",
+        searchPlaceholder: "രുചികരമായ ഭക്ഷണം തിരയുക...",
+        groupOrder: "ഗ്രൂപ്പ് ഓർഡർ",
+        startGroupOrder: "ഗ്രൂപ്പ് ഓർഡർ ആരംഭിക്കുക",
+        donateFood: "ഭക്ഷണം ദാനം ചെയ്യുക",
+        donateFoodLabel: "ഭക്ഷണ ദാനം",
+        addFoodItem: "ഭക്ഷണ ഇനം ചേർക്കുക",
+        myOrders: "എന്റെ ഓർഡറുകൾ",
+        groupOrders: "ഗ്രൂപ്പ് ഓർഡറുകൾ",
+        myDonations: "എന്റെ സംഭാവനകൾ",
+        trusts: "ട്രസ്റ്റുകൾ",
+        admin: "അഡ്മിൻ",
+        logOut: "ലോഗ് ഔട്ട്",
+        openProfileMenu: "പ്രൊഫൈൽ മെനു തുറക്കുക",
+        language: "ഭാഷ",
+        selectLanguage: "ഭാഷ തിരഞ്ഞെടുക്കുക"
+      },
+      dashboard: {
+        deliveringIn: "ഇപ്പോൾ ഡെലിവറി ലഭ്യമാണ്",
+        heroTitle: "നല്ല ഭക്ഷണം. ഒരുമിച്ചാകുമ്പോൾ കൂടുതൽ മധുരം.",
+        heroSubtitle: "പ്രാദേശിക പ്രിയപ്പെട്ട ഭക്ഷണങ്ങൾ കണ്ടെത്തുക, ഒരുമിച്ച് ഓർഡർ ചെയ്യുക, ഓരോരുത്തരും സ്വയം പണം നൽകുക.",
+        startGroupOrder: "ഗ്രൂപ്പ് ഓർഡർ ആരംഭിക്കുക",
+        exploreFood: "ഭക്ഷണം പരിശോധിക്കുക",
+        searchResults: "തിരയൽ ഫലങ്ങൾ",
+        curatedForYou: "നിങ്ങൾക്കായി തിരഞ്ഞെടുത്തത്",
+        cravingTitle: "നിങ്ങൾ ഇന്ന് എന്താണ് കഴിക്കാൻ ആഗ്രഹിക്കുന്നത്?",
+        neighbourhoodFavourites: "നാട്ടിലെ പ്രിയപ്പെട്ടവ",
+        bestRestaurantsIn: "ലെ മികച്ച റെസ്റ്റോറന്റുകൾ",
+        suggestedFood: "ശുപാർശ ചെയ്യുന്ന ഭക്ഷണങ്ങൾ"
+      },
+      category: {
+        "All": "എല്ലാം",
+        "Snacks": "സ്നാക്സ്",
+        "Main Course": "പ്രധാന ഭക്ഷണം",
+        "Desserts": "മധുരപലഹാരങ്ങൾ",
+        "Pizza": "പിസ്സ",
+        "Burgers": "ബർഗറുകൾ",
+        "Sandwiches": "സാൻഡ്‌വിച്ചുകൾ",
+        "South Indian": "ദക്ഷിണേന്ത്യൻ",
+        "North Indian": "ഉത്തരേന്ത്യൻ",
+        "Chinese": "ചൈനീസ്",
+        "Fast Food": "ഫാസ്റ്റ് ഫുഡ്"
+      },
+      food: {
+        veg: "വെജിറ്റേറിയൻ",
+        nonVeg: "നോൺ-വെജിറ്റേറിയൻ",
+        addToCart: "കാർട്ടിൽ ചേർക്കുക",
+        added: "ചേർത്തു",
+        rating: "റേറ്റിംഗ്"
+      },
+      cart: {
+        myCart: "എന്റെ കാർട്ട്",
+        emptyCart: "നിങ്ങളുടെ കാർട്ട് ശൂന്യമാണ്",
+        subtotal: "ഉപതുക",
+        deliveryFee: "ഡെലിവറി ചാർജ്",
+        total: "ആകെ",
+        proceedToCheckout: "ചെക്ക്ഔട്ടിലേക്ക് പോകുക"
+      },
+      common: {
+        loading: "ലോഡ് ചെയ്യുന്നു...",
+        save: "സംരക്ഷിക്കുക",
+        cancel: "റദ്ദാക്കുക",
+        view: "കാണുക",
+        close: "അടയ്ക്കുക"
+      }
+    }
+  },
+
+  bn: {
+    translation: {
+      nav: {
+        freshFood: "বিশ্বাস ও আস্থার সাথে তাজা খাবার ডেলিভারি",
+        currentCity: "বর্তমান শহর",
+        searchPlaceholder: "সুস্বাদু খাবার খুঁজুন...",
+        groupOrder: "গ্রুপ অর্ডার",
+        startGroupOrder: "গ্রুপ অর্ডার শুরু করুন",
+        donateFood: "খাবার দান করুন",
+        donateFoodLabel: "খাবার দান করুন",
+        addFoodItem: "খাবার আইটেম যোগ করুন",
+        myOrders: "আমার অর্ডারসমূহ",
+        groupOrders: "গ্রুপ অর্ডারসমূহ",
+        myDonations: "আমার অনুদান",
+        trusts: "ট্রাস্টসমূহ",
+        admin: "অ্যাডমিন",
+        logOut: "লগ আউট",
+        openProfileMenu: "প্রোফাইল মেনু খুলুন",
+        language: "ভাষা",
+        selectLanguage: "ভাষা নির্বাচন করুন"
+      },
+      dashboard: {
+        deliveringIn: "বর্তমানে ডেলিভারি হচ্ছে",
+        heroTitle: "ভালো খাবার। সবার সাথে আরও মধুর।",
+        heroSubtitle: "স্থানীয় পছন্দের খাবার আবিষ্কার করুন, যৌথ অর্ডার করুন এবং সবাই নিজের বিল নিজেই পরিশোধ করুন।",
+        startGroupOrder: "একটি গ্রুপ অর্ডার শুরু করুন",
+        exploreFood: "খাবার অন্বেষণ করুন",
+        searchResults: "অনুসন্ধান ফলাফল",
+        curatedForYou: "আপনার জন্য নির্বাচিত",
+        cravingTitle: "আজ আপনার কী খেতে ইচ্ছা করছে?",
+        neighbourhoodFavourites: "এলাকার সেরা খাবার",
+        bestRestaurantsIn: "-এর সেরা রেস্তোরাঁ",
+        suggestedFood: "প্রস্তাবিত খাবারসমূহ"
+      },
+      category: {
+        "All": "সব",
+        "Snacks": "স্ন্যাক্স",
+        "Main Course": "মূল খাবার",
+        "Desserts": "মিষ্টান্ন",
+        "Pizza": "পিজ্জা",
+        "Burgers": "বার্গার",
+        "Sandwiches": "স্যান্ডউইচ",
+        "South Indian": "দক্ষিণ ভারতীয়",
+        "North Indian": "উত্তর ভারতীয়",
+        "Chinese": "চাইনিজ",
+        "Fast Food": "ফাস্ট ফুড"
+      },
+      food: {
+        veg: "নিরামিষ",
+        nonVeg: "আমিষ",
+        addToCart: "কার্টে যোগ করুন",
+        added: "যোগ করা হয়েছে",
+        rating: "রেটিং"
+      },
+      cart: {
+        myCart: "আমার কার্ট",
+        emptyCart: "আপনার কার্ট খালি",
+        subtotal: "মোট মূল্য",
+        deliveryFee: "ডেলিভারি চার্জ",
+        total: "সর্বমোট",
+        proceedToCheckout: "চেকআউটে এগিয়ে যান"
+      },
+      common: {
+        loading: "লোড হচ্ছে...",
+        save: "সংরক্ষণ",
+        cancel: "বাতিল",
+        view: "দেখুন",
+        close: "বন্ধ করুন"
+      }
+    }
+  },
+
+  mr: {
+    translation: {
+      nav: {
+        freshFood: "विश्वासार्ह सेवेसह ताजे जेवण वितरण",
+        currentCity: "सध्याचे शहर",
+        searchPlaceholder: "स्वादिष्ट खाद्यपदार्थ शोधा...",
+        groupOrder: "ग्रुप ऑर्डर",
+        startGroupOrder: "ग्रुप ऑर्डर सुरू करा",
+        donateFood: "अन्नदान करा",
+        donateFoodLabel: "अन्नदान करा",
+        addFoodItem: "खाद्यपदार्थ जोडा",
+        myOrders: "माझ्या ऑर्डर्स",
+        groupOrders: "ग्रुप ऑर्डर्स",
+        myDonations: "माझे दान",
+        trusts: "ट्रस्ट्स",
+        admin: "अ‍ॅडमिन",
+        logOut: "लॉग आउट",
+        openProfileMenu: "प्रोफाइल मेनू उघडा",
+        language: "भाषा",
+        selectLanguage: "भाषा निवडा"
+      },
+      dashboard: {
+        deliveringIn: "आता डिलिव्हरी उपलब्ध आहे",
+        heroTitle: "उत्कृष्ट जेवण. सर्वांसोबत अधिक सुंदर.",
+        heroSubtitle: "स्थानिक आवडीचे पदार्थ शोधा, एकत्र ऑर्डर तयार करा आणि प्रत्येकाने आपले पैसे स्वतः भरा.",
+        startGroupOrder: "ग्रुप ऑर्डर सुरू करा",
+        exploreFood: "मेनू पहा",
+        searchResults: "शोध निकाल",
+        curatedForYou: "खास तुमच्यासाठी",
+        cravingTitle: "आज काय खाण्याची इच्छा आहे?",
+        neighbourhoodFavourites: "परिसरातील लोकप्रिय",
+        bestRestaurantsIn: "मधील सर्वोत्कृष्ट रेस्टॉरंट्स",
+        suggestedFood: "सुचवलेले खाद्यपदार्थ"
+      },
+      category: {
+        "All": "सर्व",
+        "Snacks": "स्नॅक्स",
+        "Main Course": "मुख्य जेवण",
+        "Desserts": "मिठाई",
+        "Pizza": "पिझ्झा",
+        "Burgers": "बर्गर",
+        "Sandwiches": "सँडविच",
+        "South Indian": "दक्षिण भारतीय",
+        "North Indian": "उत्तर भारतीय",
+        "Chinese": "चिनी",
+        "Fast Food": "फास्ट फूड"
+      },
+      food: {
+        veg: "शाकाहारी",
+        nonVeg: "मांसाहारी",
+        addToCart: "कार्टमध्ये जोडा",
+        added: "जोडले",
+        rating: "रेटिंग"
+      },
+      cart: {
+        myCart: "माझी कार्ट",
+        emptyCart: "तुमची कार्ट रिकामी आहे",
+        subtotal: "उप-एकूण",
+        deliveryFee: "डिलिव्हरी शुल्क",
+        total: "एकूण",
+        proceedToCheckout: "चेकआउटकडे जा"
+      },
+      common: {
+        loading: "लोड होत आहे...",
+        save: "जतन करा",
+        cancel: "रद्द करा",
+        view: "पहा",
+        close: "बंद करा"
+      }
+    }
+  },
+
+  gu: {
+    translation: {
+      nav: {
+        freshFood: "ટ્રસ્ટ સહયોગ સાથે તાજું ભોજન ડિલિવરી",
+        currentCity: "વર્તમાન શહેર",
+        searchPlaceholder: "સ્વાદિષ્ટ ખોરાક શોધો...",
+        groupOrder: "ગ્રુપ ઓર્ડર",
+        startGroupOrder: "ગ્રુપ ઓર્ડર શરૂ કરો",
+        donateFood: "ખોરાક દાન કરો",
+        donateFoodLabel: "ખોરાક દાન કરો",
+        addFoodItem: "નવી વાનગી ઉમેરો",
+        myOrders: "મારા ઓર્ડર",
+        groupOrders: "ગ્રુપ ઓર્ડર્સ",
+        myDonations: "મારા દાન",
+        trusts: "ટ્રસ્ટ્સ",
+        admin: "એડમિન",
+        logOut: "લૉગ આઉટ",
+        openProfileMenu: "પ્રોફાઇલ મેનૂ ખોલો",
+        language: "ભાષા",
+        selectLanguage: "ભાષા પસંદ કરો"
+      },
+      dashboard: {
+        deliveringIn: "હવે ડિલિવરી ઉપલબ્ધ છે",
+        heroTitle: "સરસ ભોજન. સાથે મળીને વધુ આનંદ.",
+        heroSubtitle: "સ્થાનિક મનપસંદ ભોજન શોધો, સંયુક્ત ઓર્ડર બનાવો અને દરેક વ્યક્તિ પોતાનો હિસ્સો ચૂકવે.",
+        startGroupOrder: "ગ્રુપ ઓર્ડર શરૂ કરો",
+        exploreFood: "વાનગીઓ જુઓ",
+        searchResults: "શોધ પરિણામો",
+        curatedForYou: "તમારા માટે ખાસ",
+        cravingTitle: "આજે તમને શું ખાવાની ઇચ્છા છે?",
+        neighbourhoodFavourites: "વિસ્તારના લોકપ્રિય",
+        bestRestaurantsIn: "માં શ્રેષ્ઠ રેસ્ટોરાં",
+        suggestedFood: "સૂચવેલ વાનગીઓ"
+      },
+      category: {
+        "All": "બધા",
+        "Snacks": "નાસ્તો",
+        "Main Course": "મુખ્ય ભોજન",
+        "Desserts": "મીઠાઈઓ",
+        "Pizza": "પિઝા",
+        "Burgers": "બર્ગર",
+        "Sandwiches": "સેન્ડવીચ",
+        "South Indian": "દક્ષિણ ભારતીય",
+        "North Indian": "ઉત્તર ભારતીય",
+        "Chinese": "ચાઇનીઝ",
+        "Fast Food": "ફાસ્ટ ફૂડ"
+      },
+      food: {
+        veg: "શાકાહારી",
+        nonVeg: "માંસાહારી",
+        addToCart: "કાર્ટમાં ઉમેરો",
+        added: "ઉમેરાયું",
+        rating: "રેટિંગ"
+      },
+      cart: {
+        myCart: "મારી કાર્ટ",
+        emptyCart: "તમારી કાર્ટ ખાલી છે",
+        subtotal: "પેટાકુલ",
+        deliveryFee: "ડિલિવરી ફી",
+        total: "કુલ",
+        proceedToCheckout: "ચેકઆઉટ આગળ વધો"
+      },
+      common: {
+        loading: "લોડ થઈ રહ્યું છે...",
+        save: "સાચવો",
+        cancel: "રદ કરો",
+        view: "જુઓ",
+        close: "બંધ કરો"
+      }
+    }
+  },
+
+  pa: {
+    translation: {
+      nav: {
+        freshFood: "ਭਰੋਸੇਯੋਗ ਸਹਿਯੋਗ ਨਾਲ ਤਾਜ਼ਾ ਭੋਜਨ ਡਿਲੀਵਰੀ",
+        currentCity: "ਮੌਜੂਦਾ ਸ਼ਹਿਰ",
+        searchPlaceholder: "ਸੁਆਦੀ ਭੋਜਨ ਖੋਜੋ...",
+        groupOrder: "ਗਰੁੱਪ ਆਰਡਰ",
+        startGroupOrder: "ਗਰੁੱਪ ਆਰਡਰ ਸ਼ੁਰੂ ਕਰੋ",
+        donateFood: "ਭੋਜਨ ਦਾਨ ਕਰੋ",
+        donateFoodLabel: "ਭੋਜਨ ਦਾਨ",
+        addFoodItem: "ਭੋਜਨ ਆਈਟਮ ਸ਼ਾਮਲ ਕਰੋ",
+        myOrders: "ਮੇਰੇ ਆਰਡਰ",
+        groupOrders: "ਗਰੁੱਪ ਆਰਡਰ",
+        myDonations: "ਮੇਰੇ ਦਾਨ",
+        trusts: "ਟਰੱਸਟ",
+        admin: "ਐਡਮਿਨ",
+        logOut: "ਲਾਗ ਆਉਟ",
+        openProfileMenu: "ਪ੍ਰੋਫਾਈਲ ਮੀਨੂ ਖੋਲ੍ਹੋ",
+        language: "ਭਾਸ਼ਾ",
+        selectLanguage: "ਭਾਸ਼ਾ ਚੁਣੋ"
+      },
+      dashboard: {
+        deliveringIn: "ਹੁਣ ਡਿਲੀਵਰੀ ਉਪਲਬਧ ਹੈ",
+        heroTitle: "ਵਧੀਆ ਭੋਜਨ। ਸਭ ਦੇ ਨਾਲ ਹੋਰ ਵੀ ਸ਼ਾਨਦਾਰ।",
+        heroSubtitle: "ਸਥਾਨਕ ਪਸੰਦੀਦਾ ਭੋਜਨ ਲੱਭੋ, ਸਾਂਝਾ ਆਰਡਰ ਬਣਾਓ ਅਤੇ ਹਰ ਕੋਈ ਆਪਣੇ ਹਿੱਸੇ ਦਾ ਭੁਗਤਾਨ ਕਰੇ।",
+        startGroupOrder: "ਗਰੁੱਪ ਆਰਡਰ ਸ਼ੁਰੂ ਕਰੋ",
+        exploreFood: "ਭੋਜਨ ਐਕਸਪਲੋਰ ਕਰੋ",
+        searchResults: "ਖੋਜ ਨਤੀਜੇ",
+        curatedForYou: "ਤੁਹਾਡੇ ਲਈ ਖ਼ਾਸ",
+        cravingTitle: "ਅੱਜ ਤੁਹਾਡਾ ਕੀ ਖਾਣ ਦਾ ਮਨ ਹੈ?",
+        neighbourhoodFavourites: "ਆਸ-ਪਾਸ ਦੇ ਪਸੰਦੀਦਾ",
+        bestRestaurantsIn: "ਵਿੱਚ ਵਧੀਆ ਰੈਸਟੋਰੈਂਟ",
+        suggestedFood: "ਸੁਝਾਏ ਗਏ ਭੋਜਨ"
+      },
+      category: {
+        "All": "ਸਾਰੇ",
+        "Snacks": "ਸਨੈਕਸ",
+        "Main Course": "ਮੁੱਖ ਭੋਜਨ",
+        "Desserts": "ਮਿਠਾਈਆਂ",
+        "Pizza": "ਪੀਜ਼ਾ",
+        "Burgers": "ਬਰਗਰ",
+        "Sandwiches": "ਸੈਂਡਵਿਚ",
+        "South Indian": "ਦੱਖਣੀ ਭਾਰਤੀ",
+        "North Indian": "ਉੱਤਰੀ ਭਾਰਤੀ",
+        "Chinese": "ਚੀਨੀ",
+        "Fast Food": "ਫਾਸਟ ਫੂਡ"
+      },
+      food: {
+        veg: "ਸ਼ਾਕਾਹਾਰੀ",
+        nonVeg: "ਮਾਸਾਹਾਰੀ",
+        addToCart: "ਕਾਰਟ ਵਿੱਚ ਪਾਓ",
+        added: "ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ",
+        rating: "ਰੇਟਿੰਗ"
+      },
+      cart: {
+        myCart: "ਮੇਰੀ ਕਾਰਟ",
+        emptyCart: "ਤੁਹਾਡੀ ਕਾਰਟ ਖਾਲੀ ਹੈ",
+        subtotal: "ਉਪ-ਕੁੱਲ",
+        deliveryFee: "ਡਿਲੀਵਰੀ ਫੀਸ",
+        total: "ਕੁੱਲ",
+        proceedToCheckout: "ਚੈੱਕਆਉਟ ਲਈ ਅੱਗੇ ਵਧੋ"
+      },
+      common: {
+        loading: "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...",
+        save: "ਸੰਭਾਲੋ",
+        cancel: "ਰੱਦ ਕਰੋ",
+        view: "ਵੇਖੋ",
+        close: "ਬੰਦ ਕਰੋ"
+      }
+    }
+  },
+
+  or: {
+    translation: {
+      nav: {
+        freshFood: "ବିଶ୍ୱାସର ସହିତ ସତେଜ ଖାଦ୍ୟ ବିତରଣ",
+        currentCity: "ବର୍ତ୍ତମାନର ସହର",
+        searchPlaceholder: "ସ୍ୱାଦିଷ୍ଟ ଖାଦ୍ୟ ଖୋଜନ୍ତୁ...",
+        groupOrder: "ଗ୍ରୁପ୍ ଅର୍ଡର",
+        startGroupOrder: "ଗ୍ରୁପ୍ ଅର୍ଡର ଆରମ୍ଭ କରନ୍ତୁ",
+        donateFood: "ଖାଦ୍ୟ ଦାନ କରନ୍ତୁ",
+        donateFoodLabel: "ଖାଦ୍ୟ ଦାନ",
+        addFoodItem: "ଖାଦ୍ୟ ସାମଗ୍ରୀ ଯୋଡନ୍ତୁ",
+        myOrders: "ମୋର ଅର୍ଡର",
+        groupOrders: "ଗ୍ରୁପ୍ ଅର୍ଡର",
+        myDonations: "ମୋର ଦାନ",
+        trusts: "ଟ୍ରଷ୍ଟଗୁଡିକ",
+        admin: "ଆଡମିନ୍",
+        logOut: "ଲଗ୍ ଆଉଟ୍",
+        openProfileMenu: "ପ୍ରୋଫାଇଲ୍ ମେନୁ ଖୋଲନ୍ତୁ",
+        language: "ଭାଷା",
+        selectLanguage: "ଭାଷା ବାଛନ୍ତୁ"
+      },
+      dashboard: {
+        deliveringIn: "ବର୍ତ୍ତମାନ ଡେଲିଭରୀ ଉପଲବ୍ଧ",
+        heroTitle: "ଉତ୍ତମ ଖାଦ୍ୟ। ସମସ୍ତଙ୍କ ସହିତ ଆହୁରି ସୁନ୍ଦର।",
+        heroSubtitle: "ସ୍ଥାନୀୟ ପ୍ରିୟ ଖାଦ୍ୟ ଖୋଜନ୍ତୁ, ସହଭାଗୀ ଅର୍ଡର କରନ୍ତୁ ଏବଂ ସମସ୍ତେ ନିଜେ ଦେୟ ପ୍ରଦାନ କରନ୍ତୁ।",
+        startGroupOrder: "ଗ୍ରୁପ୍ ଅର୍ଡର ଆରମ୍ଭ କରନ୍ତୁ",
+        exploreFood: "ଖାଦ୍ୟ ଅନ୍ୱେଷଣ କରନ୍ତୁ",
+        searchResults: "ସନ୍ଧାନ ଫଳାଫଳ",
+        curatedForYou: "ଆପଣଙ୍କ ପାଇଁ ସ୍ୱତନ୍ତ୍ର",
+        cravingTitle: "ଆଜି ଆପଣ କ’ଣ ଖାଇବାକୁ ଚାହାଁନ୍ତି?",
+        neighbourhoodFavourites: "ଅଞ୍ଚଳର ଲୋକପ୍ରିୟ",
+        bestRestaurantsIn: "ରେ ସର୍ବୋତ୍ତମ ରେଷ୍ଟୁରାଣ୍ଟ",
+        suggestedFood: "ପରାମର୍ଶିତ ଖାଦ୍ୟ"
+      },
+      category: {
+        "All": "ସମସ୍ତ",
+        "Snacks": "ଜଳଖିଆ",
+        "Main Course": "ମୁଖ୍ୟ ଭୋଜନ",
+        "Desserts": "ମିଠା",
+        "Pizza": "ପିଜା",
+        "Burgers": "ବର୍ଗର",
+        "Sandwiches": "ସ୍ୟାଣ୍ଡୱିଚ୍",
+        "South Indian": "ଦକ୍ଷିଣ ଭାରତୀୟ",
+        "North Indian": "ଉତ୍ତର ଭାରତୀୟ",
+        "Chinese": "ଚାଇନିଜ୍",
+        "Fast Food": "ଫାଷ୍ଟ ଫୁଡ୍"
+      },
+      food: {
+        veg: "ନିରାମିଷ",
+        nonVeg: "ଆମିଷ",
+        addToCart: "କାର୍ଟରେ ଯୋଡନ୍ତୁ",
+        added: "ଯୋଡାଗଲା",
+        rating: "ରେଟିଂ"
+      },
+      cart: {
+        myCart: "ମୋର କାର୍ଟ",
+        emptyCart: "ଆପଣଙ୍କ କାର୍ଟ ଖାଲି ଅଛି",
+        subtotal: "ଉପ-ମୋଟ",
+        deliveryFee: "ଡେଲିଭରୀ ଶୁଳ୍କ",
+        total: "ମୋଟ",
+        proceedToCheckout: "ଚେକଆଉଟ୍ କରନ୍ତୁ"
+      },
+      common: {
+        loading: "ଲୋଡ୍ ହେଉଛି...",
+        save: "ସାଇତନ୍ତୁ",
+        cancel: "ବାତିଲ କରନ୍ତୁ",
+        view: "ଦେଖନ୍ତୁ",
+        close: "ବନ୍ଦ କରନ୍ତୁ"
+      }
+    }
+  },
+
+  es: {
+    translation: {
+      nav: {
+        freshFood: "Entrega de comida fresca con apoyo solidario",
+        currentCity: "Ciudad Actual",
+        searchPlaceholder: "Buscar comida deliciosa...",
+        groupOrder: "Pedido Grupal",
+        startGroupOrder: "Iniciar pedido grupal",
+        donateFood: "Donar Comida",
+        donateFoodLabel: "Donar comida",
+        addFoodItem: "Añadir Plato",
+        myOrders: "Mis Pedidos",
+        groupOrders: "Pedidos Grupales",
+        myDonations: "Mis Donaciones",
+        trusts: "Fundaciones",
+        admin: "Administrador",
+        logOut: "Cerrar Sesión",
+        openProfileMenu: "Abrir menú de perfil",
+        language: "Idioma",
+        selectLanguage: "Seleccionar Idioma"
+      },
+      dashboard: {
+        deliveringIn: "Entregando ahora en",
+        heroTitle: "Buena comida. Mejor juntos.",
+        heroSubtitle: "Descubre favoritos locales, crea un pedido compartido y deja que cada uno pague lo suyo.",
+        startGroupOrder: "Iniciar un pedido grupal",
+        exploreFood: "Explorar comida",
+        searchResults: "Resultados de búsqueda",
+        curatedForYou: "Especial para ti",
+        cravingTitle: "¿Qué te apetece hoy?",
+        neighbourhoodFavourites: "Favoritos del barrio",
+        bestRestaurantsIn: "Mejores restaurantes en",
+        suggestedFood: "Platos sugeridos"
+      },
+      category: {
+        "All": "Todos",
+        "Snacks": "Aperitivos",
+        "Main Course": "Plato Principal",
+        "Desserts": "Postres",
+        "Pizza": "Pizza",
+        "Burgers": "Hamburguesas",
+        "Sandwiches": "Sándwiches",
+        "South Indian": "Sur de la India",
+        "North Indian": "Norte de la India",
+        "Chinese": "Comida China",
+        "Fast Food": "Comida Rápida"
+      },
+      food: {
+        veg: "Vegetariano",
+        nonVeg: "No Vegetariano",
+        addToCart: "Añadir al carrito",
+        added: "Añadido",
+        rating: "Calificación"
+      },
+      cart: {
+        myCart: "Mi Carrito",
+        emptyCart: "Tu carrito está vacío",
+        subtotal: "Subtotal",
+        deliveryFee: "Tarifa de Entrega",
+        total: "Total",
+        proceedToCheckout: "Proceder al Pago"
+      },
+      common: {
+        loading: "Cargando...",
+        save: "Guardar",
+        cancel: "Cancelar",
+        view: "Ver",
+        close: "Cerrar"
+      }
+    }
+  },
+
+  fr: {
+    translation: {
+      nav: {
+        freshFood: "Livraison de repas frais avec soutien solidaire",
+        currentCity: "Ville Actuelle",
+        searchPlaceholder: "Rechercher des plats délicieux...",
+        groupOrder: "Commande Groupée",
+        startGroupOrder: "Lancer commande groupée",
+        donateFood: "Donner de la Nourriture",
+        donateFoodLabel: "Faire un don",
+        addFoodItem: "Ajouter un Plat",
+        myOrders: "Mes Commandes",
+        groupOrders: "Commandes Groupées",
+        myDonations: "Mes Dons",
+        trusts: "Associations",
+        admin: "Admin",
+        logOut: "Déconnexion",
+        openProfileMenu: "Ouvrir le menu profil",
+        language: "Langue",
+        selectLanguage: "Choisir la langue"
+      },
+      dashboard: {
+        deliveringIn: "Actuellement disponible à",
+        heroTitle: "Bonne nourriture. Meilleure ensemble.",
+        heroSubtitle: "Découvrez les spécialités locales, créez une commande partagée et laissez chacun régler sa part.",
+        startGroupOrder: "Créer une commande groupée",
+        exploreFood: "Explorer les plats",
+        searchResults: "Résultats de recherche",
+        curatedForYou: "Sélectionné pour vous",
+        cravingTitle: "De quoi avez-vous envie ?",
+        neighbourhoodFavourites: "Les favoris du quartier",
+        bestRestaurantsIn: "Meilleurs restaurants à",
+        suggestedFood: "Suggestions de plats"
+      },
+      category: {
+        "All": "Tout",
+        "Snacks": "En-cas",
+        "Main Course": "Plats Principaux",
+        "Desserts": "Desserts",
+        "Pizza": "Pizza",
+        "Burgers": "Burgers",
+        "Sandwiches": "Sandwichs",
+        "South Indian": "Sud-Indien",
+        "North Indian": "Nord-Indien",
+        "Chinese": "Chinois",
+        "Fast Food": "Fast-Food"
+      },
+      food: {
+        veg: "Végétarien",
+        nonVeg: "Non-Végétarien",
+        addToCart: "Ajouter au panier",
+        added: "Ajouté",
+        rating: "Avis"
+      },
+      cart: {
+        myCart: "Mon Panier",
+        emptyCart: "Votre panier est vide",
+        subtotal: "Sous-total",
+        deliveryFee: "Frais de livraison",
+        total: "Total",
+        proceedToCheckout: "Passer commande"
+      },
+      common: {
+        loading: "Chargement...",
+        save: "Enregistrer",
+        cancel: "Annuler",
+        view: "Voir",
+        close: "Fermer"
+      }
+    }
+  },
+
+  de: {
+    translation: {
+      nav: {
+        freshFood: "Frische Essenslieferung mit Vertrauensnetzwerk",
+        currentCity: "Aktuelle Stadt",
+        searchPlaceholder: "Leckeres Essen suchen...",
+        groupOrder: "Gruppenbestellung",
+        startGroupOrder: "Gruppenbestellung starten",
+        donateFood: "Essen Spenden",
+        donateFoodLabel: "Essen spenden",
+        addFoodItem: "Gericht hinzufügen",
+        myOrders: "Meine Bestellungen",
+        groupOrders: "Gruppenbestellungen",
+        myDonations: "Meine Spenden",
+        trusts: "Hilfsorganisationen",
+        admin: "Administrator",
+        logOut: "Abmelden",
+        openProfileMenu: "Profilmenü öffnen",
+        language: "Sprache",
+        selectLanguage: "Sprache wählen"
+      },
+      dashboard: {
+        deliveringIn: "Jetzt lieferbar in",
+        heroTitle: "Gutes Essen. Zusammen noch besser.",
+        heroSubtitle: "Entdecke lokale Favoriten, erstelle gemeinsame Bestellungen und jeder zahlt seinen Anteil.",
+        startGroupOrder: "Gruppenbestellung starten",
+        exploreFood: "Essen entdecken",
+        searchResults: "Suchergebnisse",
+        curatedForYou: "Für dich ausgewählt",
+        cravingTitle: "Worauf hast du heute Appetit?",
+        neighbourhoodFavourites: "Lieblinge der Nachbarschaft",
+        bestRestaurantsIn: "Beste Restaurants in",
+        suggestedFood: "Empfohlene Gerichte"
+      },
+      category: {
+        "All": "Alle",
+        "Snacks": "Snacks",
+        "Main Course": "Hauptgerichte",
+        "Desserts": "Desserts",
+        "Pizza": "Pizza",
+        "Burgers": "Burger",
+        "Sandwiches": "Sandwiches",
+        "South Indian": "Südindisch",
+        "North Indian": "Nordindisch",
+        "Chinese": "Chinesisch",
+        "Fast Food": "Fast Food"
+      },
+      food: {
+        veg: "Vegetarisch",
+        nonVeg: "Nicht-Vegetarisch",
+        addToCart: "In den Warenkorb",
+        added: "Hinzugefügt",
+        rating: "Bewertung"
+      },
+      cart: {
+        myCart: "Mein Warenkorb",
+        emptyCart: "Dein Warenkorb ist leer",
+        subtotal: "Zwischensumme",
+        deliveryFee: "Liefergebühr",
+        total: "Gesamt",
+        proceedToCheckout: "Zur Kasse gehen"
+      },
+      common: {
+        loading: "Wird geladen...",
+        save: "Speichern",
+        cancel: "Abbrechen",
+        view: "Ansehen",
+        close: "Schließen"
+      }
+    }
+  },
+
+  ar: {
+    translation: {
+      nav: {
+        freshFood: "توصيل طعام طازج مع دعم موثوق",
+        currentCity: "المدينة الحالية",
+        searchPlaceholder: "ابحث عن طعام لذيذ...",
+        groupOrder: "طلب جماعي",
+        startGroupOrder: "بدء طلب جماعي",
+        donateFood: "تبرع بالطعام",
+        donateFoodLabel: "تبرع بالطعام",
+        addFoodItem: "إضافة صنف طعام",
+        myOrders: "طلباتي",
+        groupOrders: "الطلبات الجماعية",
+        myDonations: "تبرعاتي",
+        trusts: "الجمعيات الخيرية",
+        admin: "المسؤول",
+        logOut: "تسجيل الخروج",
+        openProfileMenu: "فتح قائمة الملف الشخصي",
+        language: "اللغة",
+        selectLanguage: "اختر اللغة"
+      },
+      dashboard: {
+        deliveringIn: "التوصيل متاح الآن في",
+        heroTitle: "طعام رائع. أفضل عندما نتشاركه.",
+        heroSubtitle: "اكتشف الأطباق المفضلة محلياً، أنشئ طلباً مشتركاً، ودع كل شخص يدفع بطريقته الخاصة.",
+        startGroupOrder: "ابدأ طلباً جماعياً",
+        exploreFood: "استكشف الأطباق",
+        searchResults: "نتائج البحث",
+        curatedForYou: "مختارات خاصة لك",
+        cravingTitle: "ماذا تشتهي اليوم؟",
+        neighbourhoodFavourites: "المفضلة في الحي",
+        bestRestaurantsIn: "أفضل المطاعم في",
+        suggestedFood: "أطباق مقترحة"
+      },
+      category: {
+        "All": "الكل",
+        "Snacks": "وجبات خفيفة",
+        "Main Course": "الأطباق الرئيسية",
+        "Desserts": "الحلويات",
+        "Pizza": "بيتزا",
+        "Burgers": "برجر",
+        "Sandwiches": "ساندويتش",
+        "South Indian": "جنوب الهند",
+        "North Indian": "شمال الهند",
+        "Chinese": "صيني",
+        "Fast Food": "وجبات سريعة"
+      },
+      food: {
+        veg: "نباتي",
+        nonVeg: "غير نباتي",
+        addToCart: "أضف إلى السلة",
+        added: "تمت الإضافة",
+        rating: "التقييم"
+      },
+      cart: {
+        myCart: "سلتي",
+        emptyCart: "سلة التسوق فارغة",
+        subtotal: "المجموع الفرعي",
+        deliveryFee: "رسوم التوصيل",
+        total: "المجموع الكلي",
+        proceedToCheckout: "المتابعة لإتمام الطلب"
+      },
+      common: {
+        loading: "جارٍ التحميل...",
+        save: "حفظ",
+        cancel: "إلغاء",
+        view: "عرض",
+        close: "إغلاق"
+      }
+    }
+  }
+};

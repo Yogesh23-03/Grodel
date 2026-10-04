@@ -31,8 +31,39 @@ const sendDeliveryOtpMail=async (to,otp) => {
     })
 }
 
+const sendDonationTrustMail=async (to,donation,trust) => {
+    const items = donation.foodItems
+        .map(item => `${item.name} - ${item.quantity} ${item.unit}`)
+        .join("<br/>")
+
+    await transporter.sendMail({
+        from:process.env.EMAIL,
+        to,
+        subject:"New Food Donation Available",
+        html:`<p>Hello ${trust.name},</p>
+        <p>A new surplus food donation has been matched with your trust.</p>
+        <p><b>Items:</b><br/>${items}</p>
+        <p><b>Description:</b> ${donation.foodDescription || "N/A"}</p>
+        <p><b>Pickup Address:</b> ${donation.pickupAddress}</p>
+        <p><b>Pickup Time:</b> ${new Date(donation.pickupTime).toLocaleString()}</p>
+        <p><b>Expiry Time:</b> ${new Date(donation.expiryTime).toLocaleString()}</p>`
+    })
+}
+
+
+// Generic notification mail used by the direct-market (farmer/buyer) flows.
+const sendNotificationMail = async (to, subject, html) => {
+    await transporter.sendMail({
+        from: process.env.EMAIL,
+        to,
+        subject,
+        html
+    })
+}
 
 module.exports = {
     sendOtpMail,
-    sendDeliveryOtpMail
+    sendDeliveryOtpMail,
+    sendDonationTrustMail,
+    sendNotificationMail
 };
