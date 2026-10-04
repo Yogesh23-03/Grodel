@@ -7,6 +7,15 @@ const genToken = require("../utils/token")
 const { sendOtpMail } = require("../utils/mail")
 dotenv.config()
 
+// Cookie flags follow the environment: HTTPS-only "none" cookies in production,
+// localhost-friendly "strict" cookies locally. Local dev keeps working while a
+// deployment only needs NODE_ENV=production.
+const isProduction = process.env.NODE_ENV === "production"
+const cookieSecurity = {
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "strict"
+}
+
 const signUp = async (req, res) => {
     try {
         const { fullName, email, password, mobile, role, preferredLanguage } = req.body
@@ -50,8 +59,8 @@ const signUp = async (req, res) => {
         const token = await genToken(user._id)
 
         res.cookie("token", token, {
-            secure: false,
-            sameSite: "strict",
+            secure: cookieSecurity.secure,
+            sameSite: cookieSecurity.sameSite,
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true
         })
@@ -81,8 +90,8 @@ const signIn = async (req, res) => {
         const token = await genToken(user._id)
 
         res.cookie("token", token, {
-            secure: false,
-            sameSite: "strict",
+            secure: cookieSecurity.secure,
+            sameSite: cookieSecurity.sameSite,
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true
         })
@@ -183,8 +192,8 @@ const googleAuth=async (req,res) => {
 
         const token=await genToken(user._id)
         res.cookie("token",token,{
-            secure:false,
-            sameSite:"strict",
+            secure: cookieSecurity.secure,
+            sameSite: cookieSecurity.sameSite,
             maxAge:7*24*60*60*1000,
             httpOnly:true
         })

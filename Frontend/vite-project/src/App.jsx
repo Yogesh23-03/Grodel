@@ -54,7 +54,9 @@ import useUpdateLocation from './hooks/UseUpdateLocation.jsx'
 
 import { setSocket } from './redux/userSlice'
 
-export const serverUrl = "http://localhost:8000"
+// Local dev talks to the Express API on :8000 by default; a deployment just
+// sets VITE_API_URL (e.g. https://api.example.com) — no code change needed.
+export const serverUrl = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
 // Scrolls to top and replays the enter animation on every navigation
 const AnimatedRoutes = ({ userData }) => {

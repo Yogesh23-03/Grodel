@@ -20,9 +20,13 @@ const { setIo } = require("./utils/socket")
 
 const app = express()
 const port = process.env.PORT || 5000
+// Local dev origins always work; a deployment adds its frontend origin via
+// CLIENT_URL / FRONTEND_URL env vars so no URL is hard-coded in source.
+const extraOrigins = [process.env.CLIENT_URL, process.env.FRONTEND_URL].filter(Boolean)
 const allowedOrigins = [
     "http://localhost:5173",
-    "http://127.0.0.1:5173"
+    "http://127.0.0.1:5173",
+    ...extraOrigins
 ]
 
 app.use(cors({

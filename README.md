@@ -299,10 +299,16 @@ The route and controller files are the authoritative source for payload and resp
 Create `Backend/.env` and never commit it:
 
 ```dotenv
-# Use 8000 to match the currently hard-coded client URL.
+# Server port. 8000 matches the client default.
 PORT=8000
 MONGODB_URL=mongodb+srv://USER:PASSWORD@HOST/grodel
 JWT_SECRET=replace-with-a-long-random-secret
+
+# Frontend origin(s) allowed by CORS and Socket.IO. localhost is always allowed.
+# Set CLIENT_URL to your deployed frontend origin (e.g. https://app.example.com).
+CLIENT_URL=http://localhost:5173
+# "production" enables HTTPS-only secure SameSite=none auth cookies.
+NODE_ENV=development
 
 RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxx
 RAZORPAY_KEY_SECRET=xxxxxxxxxx
@@ -330,6 +336,9 @@ Create `Frontend/vite-project/.env.local`:
 VITE_FIREBASE_API_KEY=xxxxxxxxxx
 VITE_RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxx
 VITE_GEOAPIKEY=xxxxxxxxxx
+# API base URL. Defaults to http://localhost:8000 when unset; set to the
+# deployed API origin for a hosted build.
+VITE_API_URL=http://localhost:8000
 ```
 
 The translation endpoint can fall back to an unofficial Google endpoint when `GOOGLE_TRANSLATE_API_KEY` is absent, but production should use an official key.
@@ -354,9 +363,9 @@ npm run dev
 
 Open Vite's local URL (normally `http://localhost:5173`). Permit geolocation for nearby content/delivery tracking and microphone access for voice features.
 
-### Port and CORS note
+### Port, CORS and deployment note
 
-`Frontend/vite-project/src/App.jsx` currently uses `http://localhost:8000` as `serverUrl`; `Backend/index.js` otherwise defaults to port `5000`. Set `PORT=8000` as shown above, or change the client URL. For deployment, also add the production frontend origin to the backend CORS allow-list and configure cookies for HTTPS.
+Hosts are configuration, not code. The client resolves its API base from `VITE_API_URL` (default `http://localhost:8000`), and `Backend/index.js` allows localhost plus any origins listed in `CLIENT_URL` / `FRONTEND_URL`. Auth cookies switch to `secure` + `SameSite=none` only when `NODE_ENV=production`, so localhost keeps working while a hosted build just needs its env vars set. Point `VITE_API_URL` at the deployed API and set `CLIENT_URL` to the deployed frontend origin, then the same code runs locally and in production.
 
 ## Scripts
 
