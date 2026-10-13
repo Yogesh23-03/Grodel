@@ -1,63 +1,68 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..700&family=Sora:wght@300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 /* ================================================================
-   GRODEL · MARKET MODERN — design language
-   A living neighbourhood market: forest ink + paper cream +
-   electric lime + terracotta + rescue sage. Four product "modes"
-   tint the accent: eat (jade) · market (terracotta) ·
-   rescue (sage) · plan (violet). Dark is the default room,
-   light is "market day".
+   GRODEL · FLOATING FOOD UNIVERSE — base tokens
+
+   Brand #ff4d2d on a deep #07111c room; #fff9f6 is the light room.
+   Accents: amber (produce/vendors) · teal (eat) ·
+   violet (plan) · green (rescue/success).
+
+   These token *names* are the app-wide contract — 69 files consume
+   them. theme.css (loaded first) owns the utility vocabulary
+   (g-*, glass, aurora, motion); this file owns the values that
+   every page inherits.
    ================================================================ */
 
 :root {
   /* ----- Surfaces (dark room) ----- */
-  --bg: #0c110e;
-  --bg-lift: #10160f;
-  --surface-1: #151d16;
-  --surface-2: #1b251c;
-  --surface-3: #242f25;
-  --glass: rgba(21, 29, 22, 0.78);
-  --glass-strong: rgba(12, 17, 14, 0.9);
-  --overlay: rgba(5, 8, 6, 0.68);
+  --bg: #07111c;
+  --bg-lift: #0b1a2b;
+  --surface-1: #0d1b2a;
+  --surface-2: #112236;
+  --surface-3: #162d42;
+  --glass: rgba(13, 27, 42, 0.72);
+  --glass-strong: rgba(7, 17, 28, 0.86);
+  --overlay: rgba(4, 10, 18, 0.70);
 
   /* ----- Ink ----- */
-  --ink: #f0ebdd;
-  --ink-soft: #c9c4b2;
-  --ink-muted: #948f7d;
-  --ink-faint: #6b675a;
+  --ink: #eef4fb;
+  --ink-soft: #b9c7d6;
+  --ink-muted: #8194a8;
+  --ink-faint: #5b6c80;
 
-  /* ----- Brand: electric lime + supporting hues ----- */
-  --accent: #cdf060;            /* electric lime — primary action */
-  --accent-ink: #1b2405;        /* text on lime */
-  --accent-soft: rgba(205, 240, 96, 0.14);
-  --accent-2: #5eead4;          /* jade — "eat" mode */
-  --accent-2-soft: rgba(94, 234, 212, 0.13);
-  --vendor: #e8956d;            /* terracotta — produce & vendors */
-  --vendor-soft: rgba(232, 149, 109, 0.15);
-  --rescue: #8fd6a4;            /* sage — donations */
-  --rescue-soft: rgba(143, 214, 164, 0.14);
-  --plan: #b7a6f2;              /* violet — meal rituals */
-  --plan-soft: rgba(183, 166, 242, 0.14);
+  /* ----- Brand #ff4d2d + supporting hues ----- */
+  --accent: #ff4d2d;            /* brand — primary action */
+  --accent-ink: #ffffff;        /* text on brand */
+  --accent-soft: rgba(255, 77, 45, 0.14);
+  --accent-2: #0d9488;          /* teal — "eat" mode */
+  --accent-2-soft: rgba(13, 148, 136, 0.14);
+  --vendor: #ff8c42;            /* amber — produce & vendors */
+  --vendor-soft: rgba(255, 140, 66, 0.15);
+  --rescue: #10b981;            /* green — donations */
+  --rescue-soft: rgba(16, 185, 129, 0.14);
+  --plan: #7c3aed;              /* violet — meal rituals */
+  --plan-soft: rgba(124, 58, 237, 0.16);
 
   /* ----- Status ----- */
-  --danger: #f08c7d;
-  --danger-soft: rgba(240, 140, 125, 0.14);
-  --success: #8fd6a4;
-  --success-soft: rgba(143, 214, 164, 0.14);
-  --warning: #ecc56a;
-  --warning-soft: rgba(236, 197, 106, 0.14);
+  --danger: #ef4444;
+  --danger-soft: rgba(239, 68, 68, 0.14);
+  --success: #10b981;
+  --success-soft: rgba(16, 185, 129, 0.14);
+  --warning: #f59e0b;
+  --warning-soft: rgba(245, 158, 11, 0.14);
 
   /* ----- Lines & depth ----- */
-  --border: rgba(240, 235, 221, 0.11);
-  --border-strong: rgba(240, 235, 221, 0.22);
-  --shadow-ambient: 0 24px 60px rgba(3, 6, 4, 0.55), 0 4px 14px rgba(3, 6, 4, 0.4);
-  --shadow-rest: 0 2px 6px rgba(3, 6, 4, 0.4), 0 10px 28px rgba(3, 6, 4, 0.32);
-  --shadow-lime: 0 10px 30px rgba(205, 240, 96, 0.22);
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.20);
+  --shadow-ambient: 0 24px 60px rgba(2, 8, 16, 0.60), 0 4px 14px rgba(2, 8, 16, 0.45);
+  --shadow-rest: 0 2px 6px rgba(2, 8, 16, 0.45), 0 10px 28px rgba(2, 8, 16, 0.35);
+  /* legacy name kept: .btn-primary / .btn-3d / App.jsx inline styles read it */
+  --shadow-lime: 0 10px 30px rgba(255, 77, 45, 0.30);
 
   /* ----- Type ----- */
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-body: "Sora", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --step--1: 0.8rem;
   --step-0: 0.9375rem;
   --step-1: 1.125rem;
@@ -80,44 +85,45 @@
 
 /* ----- Market day (light) ----- */
 html[data-theme='light'] {
-  --bg: #f4f0e4;
-  --bg-lift: #efe9d9;
-  --surface-1: #fdfbf3;
-  --surface-2: #f7f3e6;
-  --surface-3: #efe9d7;
-  --glass: rgba(253, 251, 243, 0.84);
-  --glass-strong: rgba(253, 251, 243, 0.94);
-  --overlay: rgba(34, 39, 31, 0.45);
+  --bg: #fff9f6;
+  --bg-lift: #fff3ee;
+  --surface-1: #ffffff;
+  --surface-2: #fff4ef;
+  --surface-3: #ffe8df;
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-strong: rgba(255, 255, 255, 0.90);
+  --overlay: rgba(30, 20, 16, 0.42);
 
-  --ink: #232820;
-  --ink-soft: #4c5245;
-  --ink-muted: #7c7f6f;
-  --ink-faint: #a4a695;
+  --ink: #1a120e;
+  --ink-soft: #4a3b34;
+  --ink-muted: #7c6a60;
+  --ink-faint: #a99a90;
 
-  --accent: #34572c;            /* market moss green */
-  --accent-ink: #f4f7e8;
-  --accent-soft: rgba(52, 87, 44, 0.1);
+  /* Deeper brand on cream so text/buttons clear WCAG AA */
+  --accent: #e63e20;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(230, 62, 32, 0.10);
   --accent-2: #0f766e;
-  --accent-2-soft: rgba(15, 118, 110, 0.1);
+  --accent-2-soft: rgba(15, 118, 110, 0.10);
   --vendor: #b4552f;
   --vendor-soft: rgba(180, 85, 47, 0.11);
-  --rescue: #2f7d4f;
-  --rescue-soft: rgba(47, 125, 79, 0.11);
+  --rescue: #0f7a55;
+  --rescue-soft: rgba(15, 122, 85, 0.11);
   --plan: #6d5bd0;
-  --plan-soft: rgba(109, 91, 208, 0.1);
+  --plan-soft: rgba(109, 91, 208, 0.10);
 
   --danger: #b3402f;
-  --danger-soft: rgba(179, 64, 47, 0.1);
-  --success: #2f7d4f;
-  --success-soft: rgba(47, 125, 79, 0.11);
+  --danger-soft: rgba(179, 64, 47, 0.10);
+  --success: #0f7a55;
+  --success-soft: rgba(15, 122, 85, 0.11);
   --warning: #9a6b0d;
   --warning-soft: rgba(154, 107, 13, 0.11);
 
-  --border: rgba(35, 40, 32, 0.13);
-  --border-strong: rgba(35, 40, 32, 0.26);
-  --shadow-ambient: 0 24px 50px rgba(35, 40, 32, 0.14), 0 4px 12px rgba(35, 40, 32, 0.08);
-  --shadow-rest: 0 1px 3px rgba(35, 40, 32, 0.07), 0 8px 22px rgba(35, 40, 32, 0.08);
-  --shadow-lime: 0 10px 26px rgba(52, 87, 44, 0.22);
+  --border: rgba(26, 18, 14, 0.11);
+  --border-strong: rgba(26, 18, 14, 0.24);
+  --shadow-ambient: 0 24px 50px rgba(120, 60, 40, 0.14), 0 4px 12px rgba(120, 60, 40, 0.08);
+  --shadow-rest: 0 1px 3px rgba(120, 60, 40, 0.07), 0 8px 22px rgba(120, 60, 40, 0.08);
+  --shadow-lime: 0 10px 26px rgba(230, 62, 32, 0.22);
 
   color-scheme: light;
 }
@@ -194,10 +200,10 @@ h1, h2, h3, h4, h5, h6 { color: var(--ink); }
   z-index: 0;
   pointer-events: none;
   border-radius: inherit;
-  opacity: 0.05;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
 }
-html[data-theme='light'] .grain::after { opacity: 0.035; }
+html[data-theme='light'] .grain::after { opacity: 0.02; }
 
 /* ---------------- Surfaces ---------------- */
 .card {
@@ -520,17 +526,29 @@ html[data-theme='light'] .badge-brand { color: var(--accent); }
 @media (min-width: 1024px) { .dock { display: none; } }
 @media (max-width: 1023px) { .rail { display: none; } }
 
+/* AuroraBg renders a fixed, pointer-events:none layer at z-index 0.
+   The route wrapper has to sit above it — and because it must never
+   introduce a transform (see the note on .page-enter-route below), a
+   bare position/z-index is the safe way to lift it. position:relative
+   does NOT become a containing block for the fixed rail/dock. */
+.animate-page-fade {
+  position: relative;
+  z-index: 1;
+}
+
 /* Market-day wash: soft produce glows behind everything */
+/* Static base wash. The moving aurora lives in AuroraBg.jsx (theme.css),
+   layered above this and below page content. */
 html:not([data-theme='light']) body {
   background:
-    radial-gradient(1100px 700px at 88% -8%, rgba(205, 240, 96, 0.06), transparent 60%),
-    radial-gradient(900px 650px at -8% 100%, rgba(232, 149, 109, 0.07), transparent 55%),
+    radial-gradient(1100px 700px at 88% -8%, rgba(255, 77, 45, 0.07), transparent 60%),
+    radial-gradient(900px 650px at -8% 100%, rgba(13, 148, 136, 0.07), transparent 55%),
     var(--bg);
 }
 html[data-theme='light'] body {
   background:
-    radial-gradient(1100px 700px at 88% -8%, rgba(205, 240, 96, 0.14), transparent 60%),
-    radial-gradient(900px 650px at -8% 100%, rgba(232, 149, 109, 0.09), transparent 55%),
+    radial-gradient(1100px 700px at 88% -8%, rgba(255, 77, 45, 0.10), transparent 60%),
+    radial-gradient(900px 650px at -8% 100%, rgba(255, 140, 66, 0.10), transparent 55%),
     var(--bg);
 }
 
@@ -581,7 +599,7 @@ html:not([data-theme='light']) [class~="bg-gray-100"] { background-color: var(--
 html:not([data-theme='light']) [class~="bg-gray-200"] { background-color: var(--surface-3) !important; }
 
 html:not([data-theme='light']) [class*="bg-[#07111c]"] {
-  background-image: linear-gradient(180deg, #2a3327, #1a231b) !important;
+  background-image: linear-gradient(180deg, #13273d, #0d1b2a) !important;
   box-shadow: inset 0 1px 0 rgba(240, 235, 221, 0.07), var(--shadow-rest) !important;
 }
 html:not([data-theme='light']) [class*="bg-[#07111c]/"] {
@@ -624,7 +642,7 @@ html:not([data-theme='light']) [class~="text-gray-400"] { color: var(--ink-faint
 html:not([data-theme='light']) [class~="text-gray-300"] { color: var(--ink-soft) !important; }
 html:not([data-theme='light']) [class~="text-gray-200"] { color: var(--ink-soft) !important; }
 
-html:not([data-theme='light']) [class~="bg-blue-100"] { background-color: rgba(94, 234, 212, 0.15) !important; }
+html:not([data-theme='light']) [class~="bg-blue-100"] { background-color: var(--accent-2-soft) !important; }
 html:not([data-theme='light']) [class~="text-blue-700"] { color: var(--accent-2) !important; }
 html:not([data-theme='light']) [class~="bg-orange-100"],
 html:not([data-theme='light']) [class~="bg-orange-50"] { background-color: var(--vendor-soft) !important; }
@@ -640,19 +658,19 @@ html:not([data-theme='light']) [class~="text-purple-700"] { color: var(--plan) !
 html:not([data-theme='light']) [class~="hover:bg-gray-100"]:hover,
 html:not([data-theme='light']) [class~="hover:bg-gray-50"]:hover { background-color: var(--surface-3) !important; }
 
-/* Legacy brand orange (#ff4d2d) → electric lime actions, terracotta links.
-   Buttons that pair bg-[#ff4d2d] with text-white flip to dark ink for AA
-   contrast on lime; their hover variants shift lime → jade. */
+/* Legacy brand orange (#ff4d2d) is now the brand itself, so these remaps
+   only have to keep hover/text/border variants pointing at the real tokens.
+   #ff4d2d carries white text (--accent-ink), so pairings stay AA-legible. */
 html:not([data-theme='light']) [class*="bg-[#ff4d2d]"] { background-color: var(--accent) !important; }
 html:not([data-theme='light']) [class*="bg-[#ff4d2d]"][class~="text-white"] { color: var(--accent-ink) !important; }
 html:not([data-theme='light']) [class*="hover:bg-[#e63e20]"]:hover,
 html:not([data-theme='light']) [class*="hover:bg-[#e64526]"]:hover,
 html:not([data-theme='light']) [class*="hover:bg-[#e64528]"]:hover,
 html:not([data-theme='light']) [class*="hover:bg-[#e64323]"]:hover,
-html:not([data-theme='light']) [class~="hover:bg-orange-600"]:hover { background-color: var(--accent-2) !important; }
-html:not([data-theme='light']) [class*="text-[#ff4d2d]"] { color: var(--vendor) !important; }
-html:not([data-theme='light']) [class*="border-[#ff4d2d]"] { border-color: var(--vendor) !important; }
-html:not([data-theme='light']) [class*="bg-[#ff4d2d]/10"] { background-color: var(--vendor-soft) !important; }
+html:not([data-theme='light']) [class~="hover:bg-orange-600"]:hover { background-color: #e63b1c !important; }
+html:not([data-theme='light']) [class*="text-[#ff4d2d]"] { color: var(--accent) !important; }
+html:not([data-theme='light']) [class*="border-[#ff4d2d]"] { border-color: var(--accent) !important; }
+html:not([data-theme='light']) [class*="bg-[#ff4d2d]/10"] { background-color: var(--accent-soft) !important; }
 
 /* Legacy cyan accents → jade. */
 html:not([data-theme='light']) [class*="text-cyan-300"] { color: var(--accent-2) !important; }
@@ -666,7 +684,7 @@ html[data-theme='light'] [class*="hover:bg-[#e63e20]"]:hover,
 html[data-theme='light'] [class*="hover:bg-[#e64526]"]:hover,
 html[data-theme='light'] [class*="hover:bg-[#e64528]"]:hover,
 html[data-theme='light'] [class*="hover:bg-[#e64323]"]:hover,
-html[data-theme='light'] [class~="hover:bg-orange-600"]:hover { background-color: #26471f !important; }
+html[data-theme='light'] [class~="hover:bg-orange-600"]:hover { background-color: #c9331a !important; }
 html[data-theme='light'] [class*="text-[#ff4d2d]"] { color: var(--accent) !important; }
 html[data-theme='light'] [class*="border-[#ff4d2d]"] { border-color: var(--accent) !important; }
 html[data-theme='light'] [class*="bg-[#ff4d2d]/10"] { background-color: var(--accent-soft) !important; }
@@ -680,7 +698,7 @@ html:not([data-theme='light']) [class~="bg-orange-50"] { background-color: var(-
 html:not([data-theme='light']) [class~="bg-green-500"],
 html:not([data-theme='light']) [class~="bg-green-600"],
 html:not([data-theme='light']) [class~="hover:bg-green-700"]:hover,
-html:not([data-theme='light']) [class~="hover:bg-green-600"]:hover { background-color: var(--accent) !important; }
+html:not([data-theme='light']) [class~="hover:bg-green-600"]:hover { background-color: var(--success) !important; }
 html:not([data-theme='light']) [class~="bg-red-500"],
 html:not([data-theme='light']) [class~="bg-red-600"] { background-color: var(--danger) !important; }
 html:not([data-theme='light']) [class~="bg-red-50"],
@@ -713,56 +731,63 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
    ================================================================== */
 
 .glass {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  background: var(--glass-bg, rgba(255,255,255,0.08));
+  backdrop-filter: var(--blur-md, blur(16px)) saturate(180%);
+  -webkit-backdrop-filter: var(--blur-md, blur(16px)) saturate(180%);
+  border: 1px solid var(--glass-border, rgba(255,255,255,0.15));
+  border-top-color: var(--glass-border-2, rgba(255,255,255,0.25));
+  box-shadow: var(--shadow-depth-2, 0 10px 32px rgba(2,8,16,0.38)),
+              inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .glass-dark {
-  background: rgba(7,17,28,0.75);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  background: var(--glass-strong, rgba(7,17,28,0.75));
+  backdrop-filter: var(--blur-lg, blur(24px)) saturate(180%);
+  -webkit-backdrop-filter: var(--blur-lg, blur(24px)) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-depth-3);
 }
 
 .glass-card {
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.6);
+  background: var(--glass-bg-3, rgba(255,255,255,0.92));
+  backdrop-filter: var(--blur-md) saturate(180%);
+  -webkit-backdrop-filter: var(--blur-md) saturate(180%);
+  border: 1px solid var(--glass-border-2);
   box-shadow:
-    0 4px 24px rgba(0,0,0,0.06),
-    0 1px 4px rgba(0,0,0,0.04),
-    inset 0 1px 0 rgba(255,255,255,0.8);
-  border-radius: 1.25rem;
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
+    var(--shadow-depth-2),
+    inset 0 1px 0 rgba(255,255,255,0.14);
+  border-radius: var(--r-xl, 1.25rem);
+  transition: transform var(--dur-base, 240ms) var(--ease-spring, ease),
+              box-shadow var(--dur-base, 240ms) ease;
 }
 
 .glass-card:hover {
   box-shadow:
-    0 12px 40px rgba(255,77,45,0.12),
-    0 4px 16px rgba(0,0,0,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.9);
-  transform: translateY(-4px);
+    var(--shadow-depth-3),
+    0 0 0 1px rgba(255,77,45,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+  transform: translateY(-5px);
 }
 
 .glass-input {
-  background: rgba(255,255,255,0.85);
-  border: 1.5px solid rgba(255,77,45,0.15);
-  border-radius: 0.75rem;
-  padding: 0.65rem 1rem;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--r-md, 0.75rem);
+  padding: 0.7rem 1rem;
   width: 100%;
+  color: var(--ink);
+  font-family: var(--font-body);
   font-size: 0.9rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   outline: none;
+  box-sizing: border-box;
 }
 
+.glass-input::placeholder { color: var(--ink-faint); }
+
 .glass-input:focus {
-  border-color: #ff4d2d;
-  box-shadow: 0 0 0 3px rgba(255,77,45,0.12);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .btn-glow {
@@ -791,9 +816,9 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 }
 
 .btn-outline-glass {
-  background: transparent;
-  border: 1.5px solid rgba(255,255,255,0.3);
-  color: white;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--border-strong);
+  color: var(--ink);
   font-weight: 600;
   border-radius: 999px;
   padding: 0.65rem 1.5rem;
@@ -805,8 +830,8 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 }
 
 .btn-outline-glass:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.6);
+  background: var(--glass-hover);
+  border-color: var(--accent);
 }
 
 .grad-text {
@@ -875,9 +900,9 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 .shimmer {
   background: linear-gradient(
     90deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.6) 50%,
-    rgba(255,255,255,0) 100%
+    transparent 0%,
+    var(--glass-bg-3) 50%,
+    transparent 100%
   );
   background-size: 400px 100%;
   animation: shimmer 1.4s ease infinite;

@@ -49,6 +49,7 @@ import MyBulkOrdersPage from './pages/MyBulkOrdersPage.jsx'
 import BusinessAnalysisPage from './pages/BusinessAnalysisPage.jsx'
 
 import Chatbot from './components/Chatbot.jsx'
+import AuroraBg from './components/AuroraBg.jsx'
 
 import GetCurrentUser from './hooks/GetCurrentUser.jsx'
 import useGetCity from './hooks/GetCity.jsx'
@@ -207,6 +208,7 @@ const App = () => {
 
   return (
     <>
+      <AuroraBg />
       <AnimatedRoutes userData={userData} />
       {userData?.role === 'user' && <Chatbot />}
     </>

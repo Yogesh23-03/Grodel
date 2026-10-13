@@ -1,0 +1,708 @@
+/* ================================================================
+   GRODEL · FLOATING FOOD UNIVERSE — design system foundation
+   Imported in main.jsx BEFORE index.css.
+
+   Ownership:
+     theme.css  → the *vocabulary*: tokens, glass, 3D, aurora, motion,
+                  and the g-* component classes.
+     index.css  → the app's base tokens + navigation shell + legacy
+                  Tailwind dark-mode remaps. It loads second, so it wins
+                  any name collision — never redefine an index.css class
+                  here and expect it to stick.
+
+   Palette
+     brand      #ff4d2d   (hero: every primary action)
+     dark base  #07111c
+     light base #fff9f6
+     accents    amber #ff8c42 · teal #0d9488 · violet #7c3aed
+   Type
+     display  Space Grotesk
+     body     Inter
+   ================================================================ */
+
+/* ================================================================
+   1 · TOKENS
+   Dark is the default room; light is applied by ThemeContext via
+   html[data-theme="light"] (ThemeContext.jsx).
+   ================================================================ */
+:root {
+  /* ----- Base surfaces (dark) ----- */
+  --bg-base:        #07111c;
+  --bg-surface:     #0d1b2a;
+  --bg-surface-2:   #112236;
+  --bg-elevated:    #162d42;
+
+  /* ----- Brand ----- */
+  --brand:          #ff4d2d;
+  --brand-2:        #ff8c42;
+  --brand-3:        #ffd700;
+  --brand-soft:     rgba(255, 77, 45, 0.14);
+  --brand-glow:     rgba(255, 77, 45, 0.35);
+  --brand-gradient: linear-gradient(135deg, #ff4d2d, #ff6b47);
+  --gradient-text:  linear-gradient(135deg, #ff4d2d 0%, #ff8c42 55%, #ffd700 100%);
+
+  /* ----- Glass ----- */
+  --glass-bg:       rgba(255, 255, 255, 0.045);
+  --glass-bg-2:     rgba(255, 255, 255, 0.075);
+  --glass-bg-3:     rgba(255, 255, 255, 0.11);
+  --glass-border:   rgba(255, 255, 255, 0.10);
+  --glass-border-2: rgba(255, 255, 255, 0.18);
+  --glass-hover:    rgba(255, 255, 255, 0.075);
+  /* Solid scrim for browsers without backdrop-filter, and for text on glass */
+  --glass-fallback: rgba(13, 27, 42, 0.94);
+
+  /* ----- Text ----- */
+  --text-primary:   rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-muted:     rgba(255, 255, 255, 0.40);
+
+  /* ----- Accents ----- */
+  --teal:           #0d9488;
+  --teal-soft:      rgba(13, 148, 136, 0.14);
+  --violet:         #7c3aed;
+  --violet-soft:    rgba(124, 58, 237, 0.16);
+  --amber:          #ff8c42;
+  --amber-soft:     rgba(255, 140, 66, 0.15);
+
+  /* ----- Status ----- */
+  --success:        #10b981;
+  --success-soft:   rgba(16, 185, 129, 0.14);
+  --warning:        #f59e0b;
+  --warning-soft:   rgba(245, 158, 11, 0.14);
+  --danger:         #ef4444;
+  --danger-soft:    rgba(239, 68, 68, 0.14);
+  --info:           #3b82f6;
+  --info-soft:      rgba(59, 130, 246, 0.14);
+
+  /* ----- Depth ----- */
+  --shadow-depth-1: 0 2px 8px rgba(2, 8, 16, 0.28);
+  --shadow-depth-2: 0 10px 32px rgba(2, 8, 16, 0.38);
+  --shadow-depth-3: 0 24px 64px rgba(2, 8, 16, 0.5);
+  --shadow-brand:   0 8px 32px rgba(255, 77, 45, 0.30);
+  --shadow-brand-lg:0 16px 60px rgba(255, 77, 45, 0.40);
+
+  /* ----- Blur ----- */
+  --blur-sm:        blur(8px);
+  --blur-md:        blur(16px);
+  --blur-lg:        blur(24px);
+  --blur-xl:        blur(40px);
+
+  /* ----- Radius ----- */
+  --r-sm:   8px;
+  --r-md:   12px;
+  --r-lg:   20px;
+  --r-xl:   28px;
+  --r-2xl:  36px;
+  --r-full: 999px;
+
+  /* ----- Type ----- */
+  --font-display: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* ----- Motion ----- */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ----- Aurora ----- */
+  --aurora-1: rgba(255, 77, 45, 0.16);
+  --aurora-2: rgba(13, 148, 136, 0.12);
+  --aurora-3: rgba(124, 58, 237, 0.10);
+  --aurora-4: rgba(255, 140, 66, 0.11);
+  --aurora-blur: 120px;
+
+  /* ----- Pointer parallax (written by AuroraBg) ----- */
+  --mouse-x: 0px;
+  --mouse-y: 0px;
+}
+
+/* ----- Light: "market day" ----- */
+html[data-theme='light'] {
+  --bg-base:        #fff9f6;
+  --bg-surface:     #ffffff;
+  --bg-surface-2:   #fff4ef;
+  --bg-elevated:    #ffe8df;
+
+  /* Deeper brand for AA text contrast on cream */
+  --brand:          #e63e20;
+  --brand-soft:     rgba(230, 62, 32, 0.10);
+  --brand-glow:     rgba(230, 62, 32, 0.28);
+  --gradient-text:  linear-gradient(135deg, #e63e20 0%, #d98324 55%, #b8860b 100%);
+
+  --glass-bg:       rgba(255, 255, 255, 0.58);
+  --glass-bg-2:     rgba(255, 255, 255, 0.74);
+  --glass-bg-3:     rgba(255, 255, 255, 0.88);
+  --glass-border:   rgba(26, 18, 14, 0.10);
+  --glass-border-2: rgba(26, 18, 14, 0.18);
+  --glass-hover:    rgba(255, 255, 255, 0.82);
+  --glass-fallback: rgba(255, 249, 246, 0.96);
+
+  --text-primary:   rgba(24, 16, 12, 0.94);
+  --text-secondary: rgba(24, 16, 12, 0.62);
+  --text-muted:     rgba(24, 16, 12, 0.40);
+
+  --teal:           #0f766e;
+  --teal-soft:      rgba(15, 118, 110, 0.10);
+  --violet:         #6d5bd0;
+  --violet-soft:    rgba(109, 91, 208, 0.10);
+  --amber:          #b4552f;
+  --amber-soft:     rgba(180, 85, 47, 0.11);
+
+  --success:        #0f7a55;
+  --success-soft:   rgba(15, 122, 85, 0.11);
+  --warning:        #9a6b0d;
+  --warning-soft:   rgba(154, 107, 13, 0.11);
+  --danger:         #b3402f;
+  --danger-soft:    rgba(179, 64, 47, 0.10);
+  --info:           #1d4ed8;
+  --info-soft:      rgba(29, 78, 216, 0.10);
+
+  --shadow-depth-1: 0 2px 8px rgba(120, 60, 40, 0.08);
+  --shadow-depth-2: 0 10px 32px rgba(120, 60, 40, 0.12);
+  --shadow-depth-3: 0 24px 64px rgba(120, 60, 40, 0.16);
+  --shadow-brand:   0 8px 32px rgba(230, 62, 32, 0.22);
+  --shadow-brand-lg:0 16px 60px rgba(230, 62, 32, 0.30);
+
+  --aurora-1: rgba(255, 77, 45, 0.10);
+  --aurora-2: rgba(13, 148, 136, 0.08);
+  --aurora-3: rgba(124, 58, 237, 0.07);
+  --aurora-4: rgba(255, 140, 66, 0.09);
+  --aurora-blur: 100px;
+}
+
+/* ================================================================
+   2 · GLASS
+   `.glass`, `.glass-card`, `.glass-dark`, `.glass-input` already exist
+   in index.css (which loads later) — those stay the app-wide heroes.
+   These are the stronger/new variants that nothing else defines.
+   ================================================================ */
+.glass-strong {
+  background: var(--glass-bg-3);
+  border: 1px solid var(--glass-border-2);
+  border-top-color: rgba(255, 255, 255, 0.32);
+  border-left-color: rgba(255, 255, 255, 0.22);
+  backdrop-filter: var(--blur-xl) saturate(200%);
+  -webkit-backdrop-filter: var(--blur-xl) saturate(200%);
+  box-shadow: var(--shadow-depth-3), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.glass-soft {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-top-color: var(--glass-border-2);
+  backdrop-filter: var(--blur-md) saturate(180%);
+  -webkit-backdrop-filter: var(--blur-md) saturate(180%);
+  box-shadow: var(--shadow-depth-2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* No backdrop-filter (older/some Android browsers): opaque scrim, still dark */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-strong,
+  .glass-soft,
+  .g-card,
+  .g-panel { background: var(--glass-fallback); }
+}
+
+/* ================================================================
+   3 · 3D & DEPTH
+   ================================================================ */
+.tilt-3d {
+  transform-style: preserve-3d;
+  transition: transform var(--dur-base, 240ms) var(--ease-spring), box-shadow var(--dur-base, 240ms) ease;
+  will-change: transform;
+}
+.tilt-3d:hover {
+  transform: perspective(800px) rotateX(4deg) rotateY(-3deg) translateY(-6px);
+  box-shadow: var(--shadow-brand);
+}
+.tilt-3d:active { transform: translateY(-2px) scale(0.995); }
+@media (hover: none) { .tilt-3d:hover { transform: none; box-shadow: none; } }
+
+/* Layer helper for staggered grid depth */
+.depth-1 { transform: translateZ(12px); }
+.depth-2 { transform: translateZ(24px); }
+.depth-3 { transform: translateZ(36px); }
+
+/* ================================================================
+   4 · AURORA BACKGROUND
+   Rendered once by AuroraBg.jsx as a fixed, pointer-events:none layer.
+   Content sits above it via `.animate-page-fade { z-index: 1 }`
+   (declared in index.css).
+   ================================================================ */
+.aurora-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+.aurora-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(var(--aurora-blur));
+  will-change: transform;
+}
+.aurora-orb-1 { background: radial-gradient(circle, var(--aurora-1) 0%, transparent 70%); }
+.aurora-orb-2 { background: radial-gradient(circle, var(--aurora-2) 0%, transparent 70%); }
+.aurora-orb-3 { background: radial-gradient(circle, var(--aurora-3) 0%, transparent 70%); }
+.aurora-orb-4 { background: radial-gradient(circle, var(--aurora-4) 0%, transparent 70%); }
+
+@keyframes orb-drift-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(70px, -50px, 0) scale(1.1); }
+  66%      { transform: translate3d(-45px, 35px, 0) scale(0.92); }
+}
+@keyframes orb-drift-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(-80px, 60px, 0) scale(1.14); }
+  66%      { transform: translate3d(55px, -45px, 0) scale(0.88); }
+}
+@keyframes orb-drift-3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(35px, 70px, 0) scale(1.18); }
+}
+@keyframes orb-drift-4 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  40%      { transform: translate3d(-60px, -35px, 0) scale(1.06); }
+  80%      { transform: translate3d(45px, 55px, 0) scale(0.94); }
+}
+.orb-drift-1 { animation: orb-drift-1 28s ease-in-out infinite; }
+.orb-drift-2 { animation: orb-drift-2 35s ease-in-out infinite; }
+.orb-drift-3 { animation: orb-drift-3 22s ease-in-out infinite; }
+.orb-drift-4 { animation: orb-drift-4 30s ease-in-out infinite; }
+
+/* Decorative floaters (landing only) — parallax rides on --mouse-x/y */
+.food-float {
+  position: fixed;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+  transform: translate3d(var(--mouse-x), var(--mouse-y), 0);
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes drift-a {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-22px) rotate(6deg); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-16px) rotate(-5deg); }
+}
+@keyframes drift-c {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-28px) rotate(9deg); }
+}
+.float-slow { animation: drift-a 6s ease-in-out infinite; }
+.float-mid  { animation: drift-b 5s ease-in-out infinite; }
+.float-fast { animation: drift-c 4s ease-in-out infinite; }
+
+/* ================================================================
+   5 · NOISE GRAIN — 2.5% film grain over glass panels
+   ================================================================ */
+.noise { position: relative; isolation: isolate; }
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+html[data-theme='light'] .noise::after { opacity: 0.018; }
+.noise > * { position: relative; z-index: 1; }
+
+/* ================================================================
+   6 · GLOW, SHINE & MOTION
+   ================================================================ */
+@keyframes brand-glow {
+  0%, 100% { box-shadow: 0 0 14px rgba(255, 77, 45, 0.20); }
+  50%      { box-shadow: 0 0 32px rgba(255, 77, 45, 0.48); }
+}
+.glow-brand { animation: brand-glow 3s ease-in-out infinite; }
+
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+.shine-border {
+  position: relative;
+  overflow: hidden;
+}
+.shine-border::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  z-index: 0;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(255, 77, 45, 0.4) 60deg, transparent 120deg);
+  animation: spin-slow 4s linear infinite;
+}
+.shine-border > * { position: relative; z-index: 1; }
+
+/* Magnetic press feedback for pill buttons */
+.magnetic { transition: transform 200ms var(--ease-spring), box-shadow 200ms ease; }
+.magnetic:hover { transform: scale(1.03) translateY(-2px); }
+.magnetic:active { transform: scale(0.97); }
+
+/* ================================================================
+   7 · g-* COMPONENT VOCABULARY
+   ================================================================ */
+.g-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-top-color: var(--glass-border-2);
+  border-radius: var(--r-xl);
+  backdrop-filter: var(--blur-md) saturate(180%);
+  -webkit-backdrop-filter: var(--blur-md) saturate(180%);
+  box-shadow: var(--shadow-depth-2), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  transition: transform var(--dur-base, 240ms) var(--ease-spring),
+              box-shadow var(--dur-base, 240ms) ease,
+              border-color 200ms ease;
+}
+.g-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-depth-3), 0 0 0 1px rgba(255, 77, 45, 0.18);
+  border-color: rgba(255, 77, 45, 0.28);
+}
+.g-card-solid {
+  background: var(--bg-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-depth-1);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+.g-card-solid:hover {
+  border-color: rgba(255, 77, 45, 0.30);
+  box-shadow: var(--shadow-brand);
+  transform: translateY(-3px);
+}
+.g-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+}
+
+/* ----- Buttons ----- */
+.g-btn {
+  background: var(--brand-gradient);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: var(--r-full);
+  padding: 0.65rem 1.5rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: var(--shadow-brand);
+  transition: transform 200ms var(--ease-spring), box-shadow 200ms ease;
+  white-space: nowrap;
+}
+.g-btn:hover { box-shadow: var(--shadow-brand-lg); transform: scale(1.03) translateY(-2px); }
+.g-btn:active { transform: scale(0.97); }
+
+.g-btn-ghost {
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border-2);
+  border-radius: var(--r-full);
+  padding: 0.65rem 1.5rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 600;
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  transition: background-color 200ms ease, border-color 200ms ease, transform 200ms var(--ease-spring);
+  white-space: nowrap;
+}
+.g-btn-ghost:hover { background: var(--glass-bg-2); border-color: var(--brand); }
+
+.g-btn-icon {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  /* WCAG tap target */
+  width: 44px; height: 44px; min-width: 44px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease, transform 200ms var(--ease-spring);
+}
+.g-btn-icon:hover {
+  background: var(--glass-bg-2);
+  border-color: var(--brand);
+  color: var(--brand);
+  transform: scale(1.08);
+}
+
+/* ----- Inputs ----- */
+.g-input,
+.g-select,
+.g-textarea {
+  width: 100%;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--r-md);
+  padding: 0.7rem 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  box-sizing: border-box;
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+.g-select { cursor: pointer; }
+.g-textarea { resize: vertical; }
+.g-input::placeholder,
+.g-textarea::placeholder { color: var(--text-muted); }
+.g-input:focus,
+.g-select:focus,
+.g-textarea:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-soft);
+}
+
+/* ----- Badges ----- */
+.g-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--r-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.g-badge-brand   { background: var(--brand-soft);   color: var(--brand-2);   border: 1px solid rgba(255,77,45,0.30); }
+.g-badge-success { background: var(--success-soft); color: var(--success);   border: 1px solid rgba(16,185,129,0.30); }
+.g-badge-warning { background: var(--warning-soft); color: var(--warning);   border: 1px solid rgba(245,158,11,0.30); }
+.g-badge-danger  { background: var(--danger-soft);  color: var(--danger);    border: 1px solid rgba(239,68,68,0.30); }
+.g-badge-info    { background: var(--info-soft);    color: var(--info);      border: 1px solid rgba(59,130,246,0.30); }
+.g-badge-muted   { background: var(--glass-bg);     color: var(--text-secondary); border: 1px solid var(--glass-border); }
+html[data-theme='light'] .g-badge-brand { color: var(--brand); }
+
+/* ----- Typography ----- */
+.g-display {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+.g-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+.g-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.g-eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.g-body  { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.65; }
+.g-muted { color: var(--text-muted); font-size: 0.82rem; }
+
+/* Gradient headline fill. (index.css also ships `.grad-text` with the
+   brand gradient — kept for the files that already use it.) */
+.grad-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ----- Layout ----- */
+.g-page {
+  min-height: 100vh;
+  position: relative;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+.g-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+.g-section { padding: clamp(2.5rem, 6vw, 5rem) 1rem; }
+.g-divider { height: 1px; background: var(--glass-border); margin: 1.5rem 0; }
+
+/* ----- Tables ----- */
+.g-table { width: 100%; border-collapse: collapse; }
+.g-table th {
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--glass-border);
+  white-space: nowrap;
+}
+.g-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+html[data-theme='light'] .g-table td { border-bottom-color: rgba(26, 18, 14, 0.06); }
+.g-table tr:hover td { background: var(--glass-bg); }
+
+/* ----- Stat tiles ----- */
+.g-stat {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+.g-stat:hover {
+  border-color: rgba(255, 77, 45, 0.30);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-brand);
+}
+.g-stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-primary);
+}
+.g-stat-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+/* ----- Progress ----- */
+.g-progress-track {
+  width: 100%; height: 6px;
+  background: var(--glass-bg-2);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+.g-progress-fill {
+  height: 100%;
+  border-radius: var(--r-full);
+  background: var(--brand-gradient);
+  transition: width 600ms ease;
+}
+
+/* ----- Skeleton ----- */
+@keyframes g-shimmer {
+  from { background-position: -400px 0; }
+  to   { background-position: 400px 0; }
+}
+.g-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--glass-bg) 0%,
+    var(--glass-bg-2) 50%,
+    var(--glass-bg) 100%
+  );
+  background-size: 400px 100%;
+  animation: g-shimmer 1.4s ease infinite;
+  border-radius: var(--r-sm);
+}
+
+/* ----- Forms ----- */
+.g-form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.g-label {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+/* ----- Entrance stagger (index.css owns `.stagger-item`; this is the
+         explicit-delay variant used on new decorative wrappers) ----- */
+@keyframes g-fade-up {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.g-rise {
+  opacity: 0;
+  animation: g-fade-up 500ms var(--ease-spring) forwards;
+}
+
+/* ----- Market rail item (kept in sync with index.css shell) ----- */
+.market-nav-item {
+  width: 44px; height: 44px;
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  position: relative;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.market-nav-item:hover,
+.market-nav-item.active {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+/* ----- Legacy decorative orbs (still referenced) ----- */
+.glow-orb { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(80px); }
+.glow-orb-brand { background: radial-gradient(circle, var(--aurora-1) 0%, transparent 70%); }
+.glow-orb-blue  { background: radial-gradient(circle, var(--aurora-2) 0%, transparent 70%); }
+
+/* ================================================================
+   8 · MOBILE PERFORMANCE
+   Fewer blur layers, cheaper orbs, no float/tilt on small screens.
+   ================================================================ */
+@media (max-width: 640px) {
+  :root { --aurora-blur: 60px; }
+  .aurora-orb { opacity: 0.6; }
+  .float-slow, .float-mid, .float-fast { animation: none; }
+  .tilt-3d:hover { transform: translateY(-3px); }
+  .g-card { backdrop-filter: var(--blur-sm); -webkit-backdrop-filter: var(--blur-sm); }
+}
+
+/* ================================================================
+   9 · REDUCED MOTION — kill float, tilt and parallax outright
+   ================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .float-slow, .float-mid, .float-fast,
+  .orb-drift-1, .orb-drift-2, .orb-drift-3, .orb-drift-4,
+  .glow-brand, .shine-border::before { animation: none !important; }
+  .tilt-3d:hover { transform: none; }
+  .food-float { transform: none !important; transition: none !important; }
+}
