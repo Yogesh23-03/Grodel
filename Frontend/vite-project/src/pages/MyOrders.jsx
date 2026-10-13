@@ -9,12 +9,14 @@ import OwnerOrderCard from '../components/OwnerOrderCard'
 import MarketNav from '../components/MarketNav.jsx'
 import { addMyOrder, setMyOrders, updateRealtimeOrderStatus } from '../redux/userSlice'
 import { serverUrl } from '../App'
+import useScrollReveal from '../hooks/useScrollReveal.js'
 
 function MyOrders() {
   const { userData, myOrders, socket } = useSelector(state => state.user)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { t } = useTranslation()
+  const headingRef = useScrollReveal()
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -48,14 +50,21 @@ function MyOrders() {
     }
   }, [socket, dispatch, userData?._id])
 
-  const visibleOrders = myOrders?.filter(order => order?.shopOrders) || []
+  /* `shopOrders` can arrive as a single object instead of an array, so test for
+     content rather than truthiness before handing the order to a card. */
+  const visibleOrders = (myOrders || []).filter(order => {
+    if (!order?.shopOrders) return false
+    return Array.isArray(order.shopOrders)
+      ? order.shopOrders.length > 0
+      : Boolean(order.shopOrders)
+  })
 
   return (
     <div className='min-h-screen lg:pl-[76px]'>
       <MarketNav />
 
-      <main className='mx-auto w-full max-w-[800px] px-4 pb-16 pt-6 sm:px-6'>
-        <header className='flex items-center gap-3'>
+      <main className='mx-auto w-full max-w-[800px] px-4 pb-20 pt-6 sm:px-6'>
+        <header ref={headingRef} className='flex items-center gap-3'>
           <button onClick={() => navigate("/")} className='btn-ghost !h-10 !w-10 !p-0' aria-label={t('common.back', 'Back')}>
             <HiOutlineArrowLeft size={18} />
           </button>
@@ -74,7 +83,7 @@ function MyOrders() {
                 : null
           ))}
           {visibleOrders.length === 0 && (
-            <div className='grain card p-12 text-center'>
+            <div className='grain card card-3d p-12 text-center'>
               <span className='mode-eat mx-auto flex h-20 w-20 items-center justify-center rounded-full'>
                 <HiOutlineDocumentText className='text-3xl' />
               </span>

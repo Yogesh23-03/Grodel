@@ -3,21 +3,20 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { serverUrl } from '../App'
-import { FaCamera, FaMicrophone, FaWhatsapp, FaQrcode, FaStore, FaArrowLeft } from 'react-icons/fa6'
+import { FaCamera, FaMicrophone, FaStore, FaArrowLeft, FaVolumeHigh, FaClipboardCheck } from 'react-icons/fa6'
 import { useLanguage } from '../context/LanguageContext.jsx'
+import useScrollReveal from '../hooks/useScrollReveal.js'
 
 function VendorPortalPage() {
   const { t } = useTranslation()
   const { language, setLanguage, supportedLanguages } = useLanguage()
   const navigate = useNavigate()
-  const [whatsappNumber, setWhatsappNumber] = useState(null)
+  const howItWorksRef = useScrollReveal()
+  const directionsRef = useScrollReveal({ delay: '80ms' })
+  const statsRef = useScrollReveal()
   const [stats, setStats] = useState({ vendors: 0, produce: 0, orders: 0 })
 
   useEffect(() => {
-    axios.get(`${serverUrl}/api/vendor/whatsapp-info`, { withCredentials: true })
-      .then((res) => setWhatsappNumber(res.data?.number))
-      .catch(() => setWhatsappNumber(null))
-
     axios.get(`${serverUrl}/api/vendor/stats`, { withCredentials: true })
       .then((res) => {
         if (res.data?.stats) setStats(res.data.stats)
@@ -25,10 +24,17 @@ function VendorPortalPage() {
       .catch(() => setStats({ vendors: 0, produce: 0, orders: 0 }))
   }, [])
 
-  const waDigits = (whatsappNumber || '').replace(/\D/g, '')
+  /* Spoken once by the vendor, so the steps stay short and in order. */
+  const runShopSteps = [
+    t('vendor.directionOpen'),
+    t('vendor.directionAdd'),
+    t('vendor.directionPrice'),
+    t('vendor.directionOrders'),
+    t('vendor.directionEarnings')
+  ]
 
   return (
-    <div className='w-full min-h-screen bg-[#07111c]'>
+    <div className='glass-dark w-full min-h-screen'>
       <header className='w-full flex items-center justify-between px-4 py-3 bg-[#07111c]/80 backdrop-blur border-b border-white/10 sticky top-0 z-50'>
         <div className='flex items-center gap-3'>
           <button className='flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-full text-sm' onClick={() => navigate('/')}>
@@ -37,14 +43,14 @@ function VendorPortalPage() {
           </button>
           <span className='font-black text-white text-xl tracking-[-0.06em]'>GroDel <span className='text-[#ff4d2d]'>Fresh</span></span>
         </div>
-        <button className='bg-[#ff4d2d] text-white px-5 py-2.5 rounded-full font-semibold text-sm' onClick={() => navigate('/vendors/nearby')}>
+        <button className='btn-glow px-5 py-2.5 text-sm' onClick={() => navigate('/vendors/nearby')}>
           {t('vendor.browseButton')}
         </button>
         <select
           value={language}
           onChange={(event) => setLanguage(event.target.value)}
           aria-label={t('nav.selectLanguage')}
-          className='rounded-full border border-white/20 bg-white/10 px-3 py-2 text-sm text-white outline-none'
+          className='glass-input bg-white/10 text-sm text-white'
         >
           {supportedLanguages.map((lang) => (
             <option key={lang.code} value={lang.code} className='text-gray-900'>
@@ -74,62 +80,64 @@ function VendorPortalPage() {
 
       {/* How it works */}
       <section className='w-full max-w-6xl mx-auto px-4 py-12'>
-        <h2 className='text-white text-2xl font-bold text-center mb-8'>{t('vendor.howItWorks')}</h2>
+        <h2 ref={howItWorksRef} className='text-white text-2xl font-bold text-center mb-8'>{t('vendor.howItWorks')}</h2>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
-          <div className='bg-white/5 border border-white/10 rounded-2xl p-6 text-center'>
+          <div className='card-3d bg-white/5 border border-white/10 rounded-2xl p-6 text-center'>
             <FaCamera className='text-[#ff4d2d] text-4xl mx-auto mb-3' />
             <h3 className='text-white font-bold text-lg'>{t('vendor.photoListing')}</h3>
             <p className='text-gray-400 text-sm mt-2'>{t('vendor.howPhoto')}</p>
           </div>
-          <div className='bg-white/5 border border-white/10 rounded-2xl p-6 text-center'>
+          <div className='card-3d bg-white/5 border border-white/10 rounded-2xl p-6 text-center'>
             <FaMicrophone className='text-[#ff4d2d] text-4xl mx-auto mb-3' />
             <h3 className='text-white font-bold text-lg'>{t('vendor.voiceRegister')}</h3>
             <p className='text-gray-400 text-sm mt-2'>{t('vendor.howVoice')}</p>
           </div>
-          <div className='bg-white/5 border border-white/10 rounded-2xl p-6 text-center'>
-            <FaWhatsapp className='text-[#ff4d2d] text-4xl mx-auto mb-3' />
-            <h3 className='text-white font-bold text-lg'>{t('vendor.whatsappMode')}</h3>
-            <p className='text-gray-400 text-sm mt-2'>{t('vendor.howWhatsapp')}</p>
+          <div className='card-3d bg-white/5 border border-white/10 rounded-2xl p-6 text-center'>
+            <FaVolumeHigh className='text-[#ff4d2d] text-4xl mx-auto mb-3' />
+            <h3 className='text-white font-bold text-lg'>{t('vendor.manageByVoice')}</h3>
+            <p className='text-gray-400 text-sm mt-2'>{t('vendor.howVoiceRun')}</p>
           </div>
         </div>
       </section>
 
-      {/* WhatsApp card */}
+      {/* Directions to run the shop once joined */}
       <section className='w-full max-w-4xl mx-auto px-4 py-12'>
-        <div className='bg-white/5 border border-white/10 rounded-2xl p-8 text-center'>
-          <FaQrcode className='text-[#ff4d2d] text-4xl mx-auto mb-3' />
-          <h2 className='text-white text-xl font-bold'>{t('vendor.whatsappStart')}</h2>
-          <p className='text-blue-300 text-sm mt-2'>
-            {t('vendor.whatsappNumberLabel')}: <span className='font-semibold'>{whatsappNumber || '—'}</span>
-          </p>
-          <p className='text-gray-400 text-sm mt-1'>{t('vendor.whatsappInstructions')}</p>
-          {waDigits ? (
-            <a
-              href={`https://wa.me/${waDigits}`}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='inline-block bg-[#25d366]/90 text-[#07111c] px-6 py-3 rounded-full font-semibold mt-4'
-            >
-              <FaWhatsapp className='inline-block mr-1' /> {t('vendor.openOnWhatsapp')}
-            </a>
-          ) : null}
+        <div className='bg-white/5 border border-white/10 rounded-2xl p-8'>
+          <div className='text-center'>
+            <FaClipboardCheck className='text-[#ff4d2d] text-4xl mx-auto mb-3' />
+            <h2 ref={directionsRef} className='text-white text-xl font-bold'>{t('vendor.directionsTitle')}</h2>
+            <p className='text-gray-400 text-sm mt-2'>{t('vendor.joinIntro')}</p>
+          </div>
+          <ol className='mt-6 grid gap-3 sm:grid-cols-2'>
+            {runShopSteps.map((line, index) => (
+              <li key={lang.code} className='flex items-start gap-3 bg-white/5 rounded-xl p-3 stagger-item' style={{ animationDelay: `${index * 80}ms` }}>
+                <span className='shrink-0 h-7 w-7 rounded-full bg-[#ff4d2d] text-white font-bold flex items-center justify-center text-sm'>{index + 1}</span>
+                <span className='text-gray-300 text-sm'>{line}</span>
+              </li>
+            ))}
+          </ol>
+          <div className='text-center mt-6'>
+            <button onClick={() => navigate('/vendor/register')} className='bg-[#ff4d2d] text-white px-7 py-3 rounded-full font-semibold hover:bg-orange-600'>
+              {t('vendor.voiceRegister')}
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Stats bar */}
-      <section className='w-full max-w-5xl mx-auto px-4 py-10'>
-        <h2 className='text-white text-xl font-bold text-center mb-6'>{t('vendor.statsTitle')}</h2>
-        <div className='grid grid-cols-3 gap-4'>
-          <div className='bg-white/5 border border-white/10 rounded-2xl p-6 text-center'>
-            <p className='text-[#ff4d2d] text-4xl font-black'>{stats.vendors}</p>
+      <section className='w-full max-w-5xl mx-auto px-4 py-6 sm:py-8 lg:py-10'>
+        <h2 ref={statsRef} className='text-white text-xl font-bold text-center mb-6'>{t('vendor.statsTitle')}</h2>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-3'>
+          <div className='card-3d bg-white/5 border border-white/10 rounded-2xl p-4 text-center sm:p-6'>
+            <p className='text-[#ff4d2d] text-2xl font-black sm:text-4xl'>{stats.vendors}</p>
             <p className='text-gray-400 text-sm mt-1'>{t('vendor.totalVendors')}</p>
           </div>
-          <div className='bg-white/5 border border-white/10 rounded-2xl p-6 text-center'>
-            <p className='text-[#ff4d2d] text-4xl font-black'>{stats.produce}</p>
+          <div className='card-3d bg-white/5 border border-white/10 rounded-2xl p-4 text-center sm:p-6'>
+            <p className='text-[#ff4d2d] text-2xl font-black sm:text-4xl'>{stats.produce}</p>
             <p className='text-gray-400 text-sm mt-1'>{t('vendor.totalProduce')}</p>
           </div>
-          <div className='bg-white/5 border border-white/10 rounded-2xl p-6 text-center'>
-            <p className='text-[#ff4d2d] text-4xl font-black'>{stats.orders}</p>
+          <div className='card-3d bg-white/5 border border-white/10 rounded-2xl p-4 text-center sm:p-6'>
+            <p className='text-[#ff4d2d] text-2xl font-black sm:text-4xl'>{stats.orders}</p>
             <p className='text-gray-400 text-sm mt-1'>{t('vendor.totalOrdersFulfilled')}</p>
           </div>
         </div>

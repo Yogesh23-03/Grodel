@@ -126,6 +126,9 @@ function FarmerDashboardPage() {
             <button className='btn-ghost !px-3.5 !py-2 text-xs' onClick={() => navigate('/farmer/assistant')}>
               <HiOutlineWrenchScrewdriver /> Ask the assistant
             </button>
+            <button className='btn-ghost !px-3.5 !py-2 text-xs' onClick={() => navigate('/my-analysis')}>
+              <HiOutlineSparkles /> {t('analysis.navLink', 'My analysis')}
+            </button>
           </div>
         </header>
 
@@ -163,7 +166,7 @@ function FarmerDashboardPage() {
 
         {/* ---------- farm profile form (collapsible) ---------- */}
         {(editing || !profile?.farmer?.village) && (
-          <form className='grain card mt-6 p-5' onSubmit={saveFarmerProfile}>
+          <form className='grain card mt-6 p-5 card-3d' onSubmit={saveFarmerProfile}>
             <p className='t-title'>Your farm, in your words</p>
             <p className='mt-1 text-sm' style={{ color: 'var(--ink-muted)' }}>
               Buyers trust farms they can picture. This appears on your storefront.
@@ -200,7 +203,7 @@ function FarmerDashboardPage() {
           </div>
           <div className='mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2'>
             {Object.entries(buyerInterest).filter(([, list]) => list.length > 0).map(([type, list]) => (
-              <div key={type} className='grain card p-4'>
+              <div key={type} className='grain card p-4 card-3d'>
                 <p className='t-eyebrow' style={{ color: 'var(--accent-2)' }}>{type}</p>
                 <div className='mt-2 space-y-2'>
                   {list.map(th => (
@@ -220,7 +223,7 @@ function FarmerDashboardPage() {
               </div>
             ))}
             {threads.length === 0 && (
-              <div className='grain card p-8 text-center'>
+              <div className='grain card p-8 text-center card-3d'>
                 <span className='text-4xl' aria-hidden='true'>🌱</span>
                 <p className='mt-3 text-sm' style={{ color: 'var(--ink-muted)' }}>
                   No buyer enquiries yet. Verified profiles and clear photos get contacted first.
@@ -235,7 +238,7 @@ function FarmerDashboardPage() {
           <h2 className='t-title'>Your produce with price guidance</h2>
           <div className='stagger mt-4 space-y-3'>
             {listings.slice(0, 6).map(listing => (
-              <div key={listing._id} className='grain card p-4'>
+              <div key={listing._id} className='grain card p-4 card-3d'>
                 <div className='flex flex-wrap items-center justify-between gap-2'>
                   <div className='min-w-0'>
                     <p className='font-bold'>{listing.name}</p>
@@ -251,7 +254,7 @@ function FarmerDashboardPage() {
               </div>
             ))}
             {listings.length === 0 && (
-              <div className='grain card p-8 text-center text-sm' style={{ color: 'var(--ink-muted)' }}>
+              <div className='grain card p-8 text-center text-sm card-3d' style={{ color: 'var(--ink-muted)' }}>
                 Nothing listed yet — tap “List produce” to start.
               </div>
             )}

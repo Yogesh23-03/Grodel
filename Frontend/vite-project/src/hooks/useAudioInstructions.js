@@ -16,15 +16,15 @@ export function useAudioInstructions() {
       utterance.rate = 0.85;
       utterance.pitch = 1;
       window.speechSynthesis.speak(utterance);
-    } catch (err) {
-      // silence
+    } catch {
+      // silence — speech is a bonus, never a blocker
     }
   };
 
   const stopSpeaking = () => {
     try {
       window.speechSynthesis?.cancel();
-    } catch (err) {
+    } catch {
       // silence
     }
   };

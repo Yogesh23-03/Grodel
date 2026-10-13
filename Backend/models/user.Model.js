@@ -61,8 +61,48 @@ buyerProfile: {
     preferredCategories: [String],
     deliveryPincodes: [String],
     onboardingComplete: { type: Boolean, default: false }
+},
+
+/* ----- Order-wait engagement: loyalty, streaks and badges ----- */
+coins: {
+    type: Number,
+    default: 0
+},
+streak: {
+    current: { type: Number, default: 0 },
+    longest: { type: Number, default: 0 },
+    lastPlayedAt: { type: Date, default: null }
+},
+badges: [{
+    id: String,
+    name: String,
+    description: String,
+    earnedAt: { type: Date, default: Date.now }
+}],
+gamesPlayed: {
+    type: Number,
+    default: 0
+},
+triviaScore: {
+    type: Number,
+    default: 0
+},
+spinsUsed: {
+    type: Number,
+    default: 0
+},
+isFirstAdmin:{
+    /* The founding admin keeps the platform-level powers: role changes,
+       bans and seat management. Only ever true for the first admin created. */
+    type:Boolean,
+    default:false
+},
+isBanned:{
+    /* Set by an admin; isAuth refuses every request from a banned account. */
+    type:Boolean,
+    default:false
 }
-  
+
 }, { timestamps: true })
 
 userSchema.index({location:'2dsphere'})

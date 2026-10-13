@@ -17,7 +17,9 @@ const shopSchema=new mongoose.Schema({
     },
     city:{
          type:String,
-        required:true
+        required:true,
+        /* Shops are always looked up by city on the home and search screens. */
+        index:true
     },
     state:{
          type:String,

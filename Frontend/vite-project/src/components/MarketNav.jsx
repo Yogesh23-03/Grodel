@@ -5,7 +5,7 @@ import {
   HiOutlineLanguage, HiOutlinePlusCircle, HiOutlineSquares2X2, HiOutlineTruck,
   HiOutlineDocumentText, HiOutlineUserGroup, HiOutlineGift, HiOutlineBuildingLibrary,
   HiOutlineShieldCheck, HiOutlineArrowRightOnRectangle, HiOutlineXMark,
-  HiOutlineBell, HiOutlineInbox
+  HiOutlineBell, HiOutlineInbox, HiOutlineMicrophone, HiMicrophone
 } from 'react-icons/hi2'
 import { dm } from '../api/dm'
 import axios from 'axios'
@@ -16,6 +16,7 @@ import { serverUrl } from '../App'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import { useTheme } from '../context/ThemeContext.jsx'
 import { setSearchItems, setUserData } from '../redux/userSlice'
+import { useSpeechRecognition } from '../hooks/useSpeechRecognition.js'
 
 const languageNames = {
   en: 'English', hi: 'हिंदी', kn: 'ಕನ್ನಡ', ta: 'தமிழ்', te: 'తెలుగు', ml: 'മലയാളം',
@@ -46,6 +47,9 @@ function MarketNav() {
   const [notifications, setNotifications] = useState([])
   const [unreadCount, setUnreadCount] = useState(0)
   const searchInputRef = useRef(null)
+
+  /* --- voice search: reuses the project's existing speech hook --- */
+  const { transcript, isListening, startListening, stopListening, resetTranscript } = useSpeechRecognition(language)
 
   const isCustomer = userData?.role === 'user'
   const canRescue = ['user', 'owner', 'supplier', 'deliveryBoy', 'trustMember', 'admin'].includes(userData?.role)
@@ -94,6 +98,18 @@ function MarketNav() {
       return () => window.clearTimeout(id)
     }
   }, [sheet])
+
+  /* Spoken query lands in `query`, which the search effect above already runs. */
+  useEffect(() => {
+    if (!transcript) return
+    setQuery(transcript)
+    resetTranscript()
+  }, [transcript, resetTranscript])
+
+  const toggleVoiceSearch = () => {
+    if (isListening) stopListening()
+    else startListening()
+  }
 
   useEffect(() => {
     const onKey = event => { if (event.key === 'Escape') setSheet('') }
@@ -286,11 +302,23 @@ function MarketNav() {
                 ref={searchInputRef}
                 value={query}
                 onChange={event => setQuery(event.target.value)}
-                placeholder={t('nav.searchPlaceholder')}
+                placeholder={isListening ? t('nav.listening') : t('nav.searchPlaceholder')}
                 aria-label={t('nav.searchPlaceholder')}
                 className='w-full bg-transparent text-base outline-none'
                 style={{ color: 'var(--ink)' }}
               />
+              <button
+                type='button'
+                onClick={toggleVoiceSearch}
+                aria-label={t('nav.voiceSearch')}
+                title={t('nav.voiceSearch')}
+                className={`shrink-0 rounded-full p-1.5 transition-all ${isListening ? 'animate-pulse' : ''}`}
+                style={isListening
+                  ? { background: 'var(--accent)', color: 'var(--accent-ink)' }
+                  : { color: 'var(--ink-muted)' }}
+              >
+                {isListening ? <HiMicrophone size={20} /> : <HiOutlineMicrophone size={20} />}
+              </button>
               {query && (
                 <button type='button' onClick={() => setQuery('')} aria-label={t('common.close')} style={{ color: 'var(--ink-muted)' }}>
                   <HiOutlineXMark size={20} />
@@ -379,6 +407,11 @@ function MarketNav() {
                 ))}
               </div>
             )}
+
+            {/* Selling is not offered from the profile card any more — there is
+                exactly one way in, kept on the farmers page next to the stalls
+                it is about. Vendors still reach their own shop from the work
+                row above. */}
 
             <div className='flex items-center justify-between px-5 py-3' style={{ borderTop: '1px solid var(--border)' }}>
               <span className='text-sm font-semibold' style={{ color: 'var(--ink-soft)' }}>{isDark ? 'Dark room' : 'Market day'}</span>

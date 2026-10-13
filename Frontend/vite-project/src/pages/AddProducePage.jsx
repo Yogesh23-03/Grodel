@@ -109,7 +109,7 @@ function AddProducePage() {
         <div className='mt-1 flex gap-2'>
           <input
             aria-label={t('vendor.productName')}
-            className='flex-1 px-3 py-3 text-sm'
+            className='w-full min-w-0 flex-1 px-3 py-3 text-sm'
             value={form.name}
             onChange={e => updateForm('name', e.target.value)}
           />
@@ -216,7 +216,7 @@ function AddProducePage() {
         </div>
       )}
 
-      <main className='mx-auto max-w-4xl px-4 py-8'>
+      <main className='mx-auto max-w-4xl px-4 py-8 pb-20 lg:pb-8'>
         <button onClick={() => navigate('/vendor/dashboard')} className='link-brand inline-flex items-center gap-2 text-sm'>
           <FaArrowLeftLong /> {t('vendor.back')}
         </button>
@@ -230,7 +230,7 @@ function AddProducePage() {
 
         <div className='mt-5 grid gap-4 sm:grid-cols-2'>
           <button
-            className={`card card-hover p-5 text-left transition-all ${mode === 'ai' ? 'border-[#ff4d2d] ring-2 ring-[#ff4d2d]/20' : ''}`}
+            className={`card card-hover card-3d p-5 text-left transition-all ${mode === 'ai' ? 'border-[#ff4d2d] ring-2 ring-[#ff4d2d]/20' : ''}`}
             onClick={() => setMode('ai')}
           >
             <FaCamera className='text-2xl text-[#ff4d2d]' />
@@ -238,7 +238,7 @@ function AddProducePage() {
             <p className='text-sm text-[#8a7d75]'>{t('vendor.aiPhotoChoiceHelp')}</p>
           </button>
           <button
-            className={`card card-hover p-5 text-left transition-all ${mode === 'manual' ? 'border-[#ff4d2d] ring-2 ring-[#ff4d2d]/20' : ''}`}
+            className={`card card-hover card-3d p-5 text-left transition-all ${mode === 'manual' ? 'border-[#ff4d2d] ring-2 ring-[#ff4d2d]/20' : ''}`}
             onClick={toManual}
           >
             <span className='text-2xl text-[#ff4d2d]'>✎</span>
@@ -247,7 +247,7 @@ function AddProducePage() {
           </button>
         </div>
 
-        <section className='card mt-5 p-6'>
+        <section className='card mt-5 p-6 card-3d'>
           {mode === 'ai' ? (
             <>
               <h2 className='font-bold'>{t('vendor.photoListing')}</h2>
@@ -270,7 +270,7 @@ function AddProducePage() {
                 </div>
               )}
               <button
-                className='mt-4 rounded-full bg-[#ff4d2d] px-6 py-3 font-bold text-white shadow-[0_8px_24px_rgba(255,77,45,0.35)] hover:bg-[#e63e20] disabled:opacity-50'
+                className='btn-glow mt-4 px-6 py-3 shadow-[0_8px_24px_rgba(255,77,45,0.35)] disabled:opacity-50'
                 disabled={!photo || loading}
                 onClick={analyse}
               >
@@ -286,7 +286,7 @@ function AddProducePage() {
           )}
 
           <button
-            className='mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-[#ff4d2d] py-3 font-bold text-white shadow-[0_8px_24px_rgba(255,77,45,0.35)] hover:bg-[#e63e20] disabled:opacity-50'
+            className='btn-glow mt-6 flex w-full items-center justify-center gap-2 py-3 shadow-[0_8px_24px_rgba(255,77,45,0.35)] disabled:opacity-50'
             disabled={loading || (mode === 'ai' && !analysis)}
             onClick={save}
           >

@@ -8,6 +8,7 @@ import { setMyShopData } from '../redux/ownerSlice'
 import { ClipLoader } from 'react-spinners'
 import { HiOutlineArrowLeft } from 'react-icons/hi2'
 import MarketNav from '../components/MarketNav.jsx'
+import AIDescriptionWriter from '../components/AIDescriptionWriter.jsx'
 
 function EditItem() {
   const navigate = useNavigate()
@@ -19,6 +20,7 @@ function EditItem() {
   const [frontendImage, setFrontendImage] = useState("")
   const [backendImage, setBackendImage] = useState(null)
   const [category, setCategory] = useState("")
+  const [description, setDescription] = useState("")
   const [foodType, setFoodType] = useState("")
   const [loading, setLoading] = useState(false)
   const categories = ["Snacks", "Main Course", "Desserts", "Pizza", "Burgers", "Sandwiches", "South Indian", "North Indian", "Chinese", "Fast Food", "Others"]
@@ -38,6 +40,7 @@ function EditItem() {
       formData.append("category", category)
       formData.append("foodType", foodType)
       formData.append("price", price)
+      formData.append("description", description)
       if (backendImage) {
         formData.append("image", backendImage)
       }
@@ -67,6 +70,7 @@ function EditItem() {
     setName(currentItem?.name || "")
     setPrice(currentItem?.price || 0)
     setCategory(currentItem?.category || "")
+    setDescription(currentItem?.description || "")
     setFoodType(currentItem?.foodType || "")
     setFrontendImage(currentItem?.image || "")
   }, [currentItem])
@@ -85,7 +89,7 @@ function EditItem() {
           </div>
         </header>
 
-        <form className='grain card mt-6 space-y-5 p-5 sm:p-6' onSubmit={handleSubmit}>
+        <form className='grain card mt-6 space-y-5 p-5 sm:p-6 card-3d' onSubmit={handleSubmit}>
           <div className='flex items-center gap-4'>
             <span className='mode-eat flex h-14 w-14 items-center justify-center rounded-2xl'>
               <FaUtensils className='text-2xl' />
@@ -151,6 +155,20 @@ function EditItem() {
               </button>
             </div>
           </div>
+
+          <label className='block'>
+            <span className='t-eyebrow mb-1.5 block'>Description</span>
+            <textarea rows={4} className='w-full px-3 py-2'
+              placeholder='Tell customers what makes this dish good (or let the AI write it below)'
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+            />
+          </label>
+
+          <AIDescriptionWriter
+            dishName={name}
+            onDescriptionGenerated={(generated) => setDescription(generated?.description || '')}
+          />
 
           <button className='btn-primary w-full' disabled={loading}>
             {loading ? <ClipLoader size={20} color='currentColor' /> : 'Save changes'}

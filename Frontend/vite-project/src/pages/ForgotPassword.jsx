@@ -57,8 +57,8 @@ const [loading,setLoading]=useState(false)
   }
   return (
     <div className='flex w-full items-center justify-center min-h-screen p-4 bg-[#fff9f6]'>
-      <div className='bg-white rounded-xl shadow-lg w-full max-w-md p-8'>
-        <div className='flex items-center  gap-4 mb-4'>
+      <div className='glass-card rounded-xl w-full max-w-md p-8 card-3d'>
+        <div className='flex items-center gap-4 mb-4'>
           <IoIosArrowRoundBack size={30} className='text-[#ff4d2d] cursor-pointer' onClick={()=>navigate("/signin")}/>
           <h1 className='text-2xl font-bold text-center text-[#ff4d2d]'>Forgot Password</h1>
         </div>
@@ -67,7 +67,7 @@ const [loading,setLoading]=useState(false)
           <div>
  <div className='mb-6'>
                     <label htmlFor="email" className='block text-gray-700 font-medium mb-1'>Email</label>
-                    <input type="email" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none  ' placeholder='Enter your Email' onChange={(e)=>setEmail(e.target.value)} value={email} required/>
+                    <input type="email" className='glass-input w-full' placeholder='Enter your Email' onChange={(e)=>setEmail(e.target.value)} value={email} required/>
                 </div>
                 <button className={`w-full font-semibold py-2 rounded-lg transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleSendOtp} disabled={loading}>
                 {loading?<ClipLoader size={20} color='white'/>:"Send Otp"}
@@ -80,7 +80,7 @@ const [loading,setLoading]=useState(false)
           <div>
  <div className='mb-6'>
                     <label htmlFor="email" className='block text-gray-700 font-medium mb-1'>OTP</label>
-                    <input type="email" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none  ' placeholder='Enter OTP' onChange={(e)=>setOtp(e.target.value)} value={otp} required/>
+                    <input type="email" className='glass-input w-full' placeholder='Enter OTP' onChange={(e)=>setOtp(e.target.value)} value={otp} required/>
                 </div>
                 <button className={`w-full font-semibold py-2 rounded-lg transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleVerifyOtp} disabled={loading}>
                 {loading?<ClipLoader size={20} color='white'/>:"Verify"}
@@ -92,11 +92,11 @@ const [loading,setLoading]=useState(false)
           <div>
  <div className='mb-6'>
                     <label htmlFor="newPassword" className='block text-gray-700 font-medium mb-1'>New Password</label>
-                    <input type="email" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none  ' placeholder='Enter New Password' onChange={(e)=>setNewPassword(e.target.value)} value={newPassword}/>
+                    <input type="email" className='glass-input w-full' placeholder='Enter New Password' onChange={(e)=>setNewPassword(e.target.value)} value={newPassword}/>
                 </div>
                 <div className='mb-6'>
                     <label htmlFor="ConfirmPassword" className='block text-gray-700 font-medium mb-1'>Confirm Password</label>
-                    <input type="email" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none  ' placeholder='Confirm Password' onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword} required/>
+                    <input type="email" className='glass-input w-full' placeholder='Confirm Password' onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword} required/>
                 </div>
                 <button className={`w-full font-semibold py-2 rounded-lg transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleResetPassword} disabled={loading}>
                 {loading?<ClipLoader size={20} color='white'/>:"Reset Password"}

@@ -48,7 +48,7 @@ function StartGroupOrderPage() {
   return (
     <div className='min-h-screen lg:pl-[76px]'>
       <MarketNav />
-      <main className='mx-auto max-w-2xl px-4 py-10 sm:px-6'>
+      <main className='mx-auto max-w-2xl px-4 py-6 pb-20 sm:py-8 sm:px-6 lg:py-10 lg:pb-8'>
         <div className='grain rounded-[2rem] border p-6 shadow-2xl sm:p-10'
           style={{ background: 'var(--surface-1)', borderColor: 'var(--border)' }}>
           <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent)' }}>

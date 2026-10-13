@@ -18,7 +18,7 @@ const vendorListingSchema = new mongoose.Schema({
   availableQuantity: Number,
   isAvailableToday: { type: Boolean, default: true },
   isFreshToday: { type: Boolean, default: false },
-  addedVia: { type: String, enum: ["photo", "voice", "whatsapp", "manual"], default: "photo" },
+  addedVia: { type: String, enum: ["photo", "voice", "manual"], default: "photo" },
   listingSource: { type: String, enum: ["ai", "manual"], default: "manual" },
   aiGeneratedName: { type: Boolean, default: false },
   freshnessNote: String,

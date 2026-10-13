@@ -57,7 +57,7 @@ function MyDonationsPage() {
     <div className='min-h-screen lg:pl-[76px]'>
       <MarketNav />
 
-      <main className='mx-auto max-w-[900px] px-4 pb-16 pt-8 sm:px-6'>
+      <main className='mx-auto max-w-[900px] px-4 pb-20 pt-8 sm:px-6'>
         <button onClick={() => navigate('/')} className='link-brand mb-6 inline-flex items-center gap-2 text-sm'>
           <IoIosArrowRoundBack size={22} /> Back
         </button>
@@ -98,11 +98,11 @@ function MyDonationsPage() {
 
         {loading && <div className='skeleton mt-8 h-32 w-full' style={{ borderRadius: 'var(--radius-lg)' }} />}
         {error && (
-          <div className='card mt-8 p-6 text-center' style={{ color: 'var(--danger)' }}>{error}</div>
+          <div className='card mt-8 p-6 text-center card-3d' style={{ color: 'var(--danger)' }}>{error}</div>
         )}
 
         {!loading && donations.length === 0 && (
-          <div className='grain card mt-8 p-12 text-center'>
+          <div className='grain card card-3d mt-8 p-12 text-center'>
             <span className='text-4xl' aria-hidden='true'>🌾</span>
             <p className='mt-3' style={{ color: 'var(--ink-muted)' }}>{t('rescue.empty', { defaultValue: 'No rescues yet — the first one starts with you.' })}</p>
             <button onClick={() => navigate('/donate-food')} className='btn-primary mt-5' style={{ background: 'var(--rescue)', color: '#08130c', boxShadow: 'none' }}>
@@ -115,7 +115,7 @@ function MyDonationsPage() {
           {donations.map((donation) => {
             const tone = TONE_FOR_STATUS[donation.status] || TONE_FOR_STATUS.pending
             return (
-              <article key={donation._id} className='grain card p-5'>
+              <article key={donation._id} className='grain card card-3d p-5'>
                 <div className='flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between'>
                   <div className='min-w-0'>
                     <div className='flex flex-wrap gap-2'>

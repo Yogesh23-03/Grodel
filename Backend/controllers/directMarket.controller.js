@@ -12,7 +12,7 @@ const { sendNotificationMail } = require("../utils/mail.js")
 // A minimal nodemailer failure must never break an API response.
 const tryMail = (to, subject, html) => {
   if (!to) return
-  sendNotificationMail(to, subject, html).catch(error => console.log("notification mail error:", error.message))
+  sendNotificationMail(to, subject, html).catch(error => console.error("NOTIFICATION MAIL ERROR:", error.message))
 }
 
 const notify = async (userId, type, title, body, link) => {
@@ -29,7 +29,7 @@ const notify = async (userId, type, title, body, link) => {
     }
     return notification
   } catch (error) {
-    console.log("notify error:", error.message)
+    console.error("NOTIFY ERROR:", error.message)
     return null
   }
 }
@@ -597,7 +597,7 @@ const checkPriceAlertsForListing = async (listing) => {
       }
     }
   } catch (error) {
-    console.log("price alert check error:", error.message)
+    console.error("PRICE ALERT CHECK ERROR:", error.message)
   }
 }
 

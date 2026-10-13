@@ -83,7 +83,7 @@ function BuyerMatchesPage() {
         </header>
 
         {needsOnboarding && (
-          <div className='grain card mt-6 p-10 text-center'>
+          <div className='grain card mt-6 p-10 text-center card-3d'>
             <HiOutlineMagnifyingGlass size={32} style={{ color: 'var(--ink-faint)' }} />
             <p className='mt-3 font-bold'>Complete buyer onboarding first</p>
             <button className='btn-primary mt-4' onClick={() => navigate('/buyer/onboard')}>Become a buyer</button>
@@ -92,13 +92,13 @@ function BuyerMatchesPage() {
 
         <div className='stagger mt-6 space-y-3'>
           {!needsOnboarding && matches.length === 0 && (
-            <div className='grain card p-10 text-center'>
+            <div className='grain card p-10 text-center card-3d'>
               <span className='text-4xl' aria-hidden='true'>🧑‍🌾</span>
               <p className='mt-3 text-sm' style={{ color: 'var(--ink-muted)' }}>No live matches right now. Set an alert below and we will ping you when a listing lands.</p>
             </div>
           )}
           {matches.map(({ listing, farmer }) => (
-            <article key={listing._id} className='grain card card-hover p-4'>
+            <article key={listing._id} className='grain card card-hover card-3d p-4'>
               <div className='flex flex-wrap items-start justify-between gap-3'>
                 <div className='min-w-0'>
                   <p className='font-bold'>{listing.name}
@@ -128,7 +128,7 @@ function BuyerMatchesPage() {
         </div>
 
         {/* price alert subscription */}
-        <section className='grain card mt-8 p-5'>
+        <section className='grain card mt-8 p-5 card-3d'>
           <h2 className='t-title flex items-center gap-2'><HiOutlineBellAlert style={{ color: 'var(--rescue)' }} /> Watch a price</h2>
           <p className='mt-1 text-sm' style={{ color: 'var(--ink-muted)' }}>
             We will notify you the moment a farmer lists your crop below your price in your district.

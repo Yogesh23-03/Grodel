@@ -4,7 +4,7 @@ import React from 'react'
 function CategoryCard({ name, image, onClick }) {
   return (
     <button
-      className='group relative h-[140px] w-[130px] shrink-0 overflow-hidden border shadow-lg transition-transform duration-300 hover:-translate-y-1 active:scale-95 md:h-[190px] md:w-[180px]'
+      className='card-3d group relative h-[140px] w-full min-w-0 max-w-[130px] shrink-0 overflow-hidden border shadow-lg transition-transform duration-300 hover:-translate-y-1 active:scale-95 md:h-[190px] md:max-w-[180px]'
       style={{ borderRadius: '50% 50% 18px 18px / 34% 34% 18px 18px', borderColor: 'var(--border-strong)', background: 'var(--surface-2)' }}
       onClick={onClick}
     >

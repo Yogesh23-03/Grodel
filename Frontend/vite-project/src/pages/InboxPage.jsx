@@ -138,7 +138,7 @@ function InboxPage() {
 
         <div className='mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[300px_1fr]'>
           {/* ---------- thread list ---------- */}
-          <aside className='grain card max-h-[70vh] overflow-y-auto p-3'>
+          <aside className='grain card max-h-[70vh] overflow-y-auto p-3 card-3d'>
             {threads.length === 0 && (
               <p className='p-6 text-center text-sm' style={{ color: 'var(--ink-muted)' }}>
                 No conversations yet. {isFarmer ? 'Buyers will appear here when they message you.' : 'Message a farmer from their storefront.'}
@@ -159,7 +159,7 @@ function InboxPage() {
           </aside>
 
           {/* ---------- conversation ---------- */}
-          <section className='grain card flex max-h-[70vh] flex-col'>
+          <section className='grain card flex max-h-[70vh] flex-col card-3d'>
             {!thread ? (
               <div className='flex flex-1 flex-col items-center justify-center p-10 text-center'>
                 <HiOutlineChatBubbleLeftRight size={36} style={{ color: 'var(--ink-faint)' }} />

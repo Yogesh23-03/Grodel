@@ -26,9 +26,9 @@ const processMealSchedules = async () => {
   for (const schedule of schedules) for (const slot of schedule.slots) {
     if (!slot.enabled || slot.lastProcessedDate === today || slot.orderByTime > time) continue
     const picks = slot.pendingSelection?.length ? slot.pendingSelection : slot.defaultItems
-    if (!slot.defaultShopId || !picks?.length || !slot.deliveryAddress?.text) { console.log(`Skipping ${slot.mealType} for ${schedule.userId}: incomplete defaults`); slot.lastProcessedDate = today; continue }
+    if (!slot.defaultShopId || !picks?.length || !slot.deliveryAddress?.text) { console.error(`Skipping ${slot.mealType} for ${schedule.userId}: incomplete defaults`); slot.lastProcessedDate = today; continue }
     const shop = await Shop.findById(slot.defaultShopId); const items = await Item.find({ _id: { $in: picks.map(p => p.itemId) }, shop: slot.defaultShopId })
-    if (!shop || !items.length) { console.log(`Skipping ${slot.mealType} for ${schedule.userId}: no valid items`); slot.lastProcessedDate = today; continue }
+    if (!shop || !items.length) { console.error(`Skipping ${slot.mealType} for ${schedule.userId}: no valid items`); slot.lastProcessedDate = today; continue }
     const orderItems = picks.map(p => { const item = items.find(i => String(i._id) === String(p.itemId)); return item && { item: item._id, name: item.name, price: item.price, quantity: p.qty } }).filter(Boolean)
     if (!orderItems.length) continue
     const subtotal = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
@@ -51,7 +51,7 @@ const processMealSchedules = async () => {
         })
       }
     } catch (notifyError) {
-      console.log('meal schedule notify error:', notifyError.message)
+      console.error('MEAL SCHEDULE NOTIFY ERROR:', notifyError.message)
     }
 
     slot.pendingSelection = []; slot.lastProcessedDate = today

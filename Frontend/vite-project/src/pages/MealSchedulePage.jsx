@@ -237,7 +237,7 @@ export default function MealSchedulePage() {
         </header>
 
         {/* Delivery address — one line, calm */}
-        <section className='grain card mt-7 p-5'>
+        <section className='grain card mt-7 p-5 card-3d'>
           <label htmlFor='ritual-address' className='flex items-center gap-2 text-sm font-bold'>
             <HiOutlineMapPin style={{ color: 'var(--plan)' }} />
             {t('schedule.deliveryAddress')}
@@ -435,7 +435,7 @@ export default function MealSchedulePage() {
         </div>
 
         {/* how the ritual works */}
-        <section className='grain card mt-8 p-6' style={{ background: 'linear-gradient(135deg, var(--plan-soft), var(--surface-1))' }}>
+        <section className='grain card mt-8 p-6 card-3d' style={{ background: 'linear-gradient(135deg, var(--plan-soft), var(--surface-1))' }}>
           <h3 className='t-eyebrow' style={{ color: 'var(--plan)' }}>{t('schedule.howTitle')}</h3>
           <ol className='mt-3 space-y-2 text-sm' style={{ color: 'var(--ink-soft)' }}>
             <li className='flex gap-2'><span className='font-black' style={{ color: 'var(--plan)' }}>1.</span> {t('schedule.how1')}</li>

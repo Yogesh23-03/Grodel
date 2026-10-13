@@ -38,7 +38,7 @@ const MyGroupOrdersPage = () => {
   return (
     <div className='min-h-screen lg:pl-[76px]'>
       <MarketNav />
-      <main className='mx-auto max-w-5xl px-4 py-10 sm:px-6'>
+      <main className='mx-auto max-w-5xl px-4 py-6 pb-20 sm:py-8 sm:px-6 lg:py-10 lg:pb-8'>
         <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent)' }}>
           <HiOutlineUserGroup /> {t('group.eyebrow', { defaultValue: 'Together' })}
         </p>
@@ -51,7 +51,7 @@ const MyGroupOrdersPage = () => {
             const tone = TONE_FOR_STATUS[group.status] || TONE_FOR_STATUS.expired
             return (
               <button key={group._id} onClick={() => navigate(`/group/${group.shareableLink}`)}
-                className='grain card card-hover p-5 text-left'>
+                className='grain card card-3d card-hover card-3d p-5 text-left'>
                 <div className='flex items-start justify-between gap-3'>
                   <h2 className='t-title !text-[1.15rem]'>{group.restaurantName}</h2>
                   <span className='badge shrink-0 px-3 py-1.5' style={{ background: tone.bg, color: tone.color }}>
@@ -71,7 +71,7 @@ const MyGroupOrdersPage = () => {
                     {/* avatar stack: who was at the table */}
                     <span className='flex -space-x-1.5' aria-hidden='true'>
                       {group.participants.slice(0, 4).map((p, i) => (
-                        <span key={i} className='flex h-6 w-6 items-center justify-center rounded-full border text-[9px] font-black'
+                        <span key={i} className='flex h-6 w-6 items-center justify-center rounded-full border text-[9px] font-black stagger-item'
                           style={{ borderColor: 'var(--surface-1)', background: 'var(--surface-3)', color: 'var(--ink-soft)' }}>
                           {(p.guestName || '?').charAt(0).toUpperCase()}
                         </span>
@@ -94,7 +94,7 @@ const MyGroupOrdersPage = () => {
             )
           })}
           {!groups.length && (
-            <div className='card grain col-span-full p-12 text-center'>
+            <div className='card grain col-span-full p-12 text-center card-3d'>
               <span className='text-4xl' aria-hidden='true'>🍽️</span>
               <p className='mt-3' style={{ color: 'var(--ink-muted)' }}>{t('group.noTables', { defaultValue: 'No tables yet — open one tonight.' })}</p>
               <button onClick={() => navigate('/start-group-order')} className='btn-primary mt-5'>{t('dashboard.startGroupOrder')}</button>

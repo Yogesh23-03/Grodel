@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { FaUtensils } from "react-icons/fa"
 import axios from 'axios'
@@ -8,16 +8,17 @@ import { setMyShopData } from '../redux/ownerSlice'
 import { ClipLoader } from 'react-spinners'
 import { HiOutlineArrowLeft } from 'react-icons/hi2'
 import MarketNav from '../components/MarketNav.jsx'
+import AIDescriptionWriter from '../components/AIDescriptionWriter.jsx'
 
 function AddItem() {
   const navigate = useNavigate()
-  const { myShopData } = useSelector(state => state.owner)
   const [loading, setLoading] = useState(false)
   const [name, setName] = useState("")
   const [price, setPrice] = useState(0)
   const [frontendImage, setFrontendImage] = useState(null)
   const [backendImage, setBackendImage] = useState(null)
   const [category, setCategory] = useState("")
+  const [description, setDescription] = useState("")
   const [foodType, setFoodType] = useState("veg")
   const categories = ["Snacks", "Main Course", "Desserts", "Pizza", "Burgers", "Sandwiches", "South Indian", "North Indian", "Chinese", "Fast Food", "Others"]
   const dispatch = useDispatch()
@@ -37,6 +38,7 @@ function AddItem() {
       formData.append("category", category)
       formData.append("foodType", foodType)
       formData.append("price", price)
+      formData.append("description", description)
       if (backendImage) {
         formData.append("image", backendImage)
       }
@@ -53,7 +55,7 @@ function AddItem() {
   return (
     <div className='min-h-screen lg:pl-[76px]'>
       <MarketNav />
-      <main className='mx-auto w-full max-w-lg px-4 pb-16 pt-6 sm:px-6'>
+      <main className='mx-auto w-full max-w-lg px-4 pb-20 pt-6 sm:px-6'>
         <header className='flex items-center gap-3'>
           <button onClick={() => navigate("/")} className='btn-ghost !h-10 !w-10 !p-0' aria-label='Back'>
             <HiOutlineArrowLeft size={18} />
@@ -64,7 +66,7 @@ function AddItem() {
           </div>
         </header>
 
-        <form className='grain card mt-6 space-y-5 p-5 sm:p-6' onSubmit={handleSubmit}>
+        <form className='grain card card-3d mt-6 space-y-5 p-5 sm:p-6' onSubmit={handleSubmit}>
           <div className='flex items-center gap-4'>
             <span className='mode-eat flex h-14 w-14 items-center justify-center rounded-2xl'>
               <FaUtensils className='text-2xl' />
@@ -130,6 +132,20 @@ function AddItem() {
               </button>
             </div>
           </div>
+
+          <label className='block'>
+            <span className='t-eyebrow mb-1.5 block'>Description</span>
+            <textarea rows={4} className='w-full px-3 py-2'
+              placeholder='Tell customers what makes this dish good (or let the AI write it below)'
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+            />
+          </label>
+
+          <AIDescriptionWriter
+            dishName={name}
+            onDescriptionGenerated={(generated) => setDescription(generated?.description || '')}
+          />
 
           <button className='btn-primary w-full' disabled={loading}>
             {loading ? <ClipLoader size={20} color='currentColor' /> : 'Save to menu'}

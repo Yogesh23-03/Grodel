@@ -16,8 +16,7 @@ const {
     getNearbyVendors,
     getVendorById,
     rateVendor,
-    handleWhatsappWebhook,
-    getWhatsappInfo,
+    runVoiceCommand,
     getVendorStats,
     placeVendorOrder,
     getMyVendorOrders,
@@ -40,7 +39,6 @@ router.post("/register/helper", isAuth, registerViaHelper);
 router.post("/register-helper", registerHelper);
 
 // --- Portal info (static routes MUST come before /:vendorId) ---
-router.get("/whatsapp-info", getWhatsappInfo);
 router.get("/stats", getVendorStats);
 
 // --- Customer produce orders (static before dynamic) ---
@@ -51,12 +49,15 @@ router.patch("/orders/:orderId/status", isAuth, updateVendorOrderStatus);
 router.post("/orders/:orderId/cancel", isAuth, cancelVendorOrderByCustomer);
 
 // --- AI photo analysis & listing ---
-router.post("/analyse-photo", isAuth, memoryUpload.single("image"), analyseProducePhoto);
+// analyse-photo is intentionally open: a vendor joins (and photographs their
+// produce) before an account exists. The controller holds a per-IP budget.
+router.post("/analyse-photo", memoryUpload.single("image"), analyseProducePhoto);
 router.post("/upload-photo", isAuth, memoryUpload.single("image"), uploadListingPhoto);
 router.post("/confirm-listing", isAuth, confirmListing);
 
-// --- Voice price parsing ---
+// --- Voice price parsing & spoken shop commands ---
 router.post("/parse-voice-price", parseVoicePrice);
+router.post("/voice-command", isAuth, runVoiceCommand);
 
 // --- Vendor dashboard ---
 router.patch("/toggle", isAuth, toggleAvailability);
@@ -68,8 +69,5 @@ router.delete("/listing/:listingId", isAuth, deleteListing);
 router.get("/nearby", getNearbyVendors);
 router.get("/:vendorId", getVendorById);
 router.post("/:vendorId/rate", isAuth, rateVendor);
-
-// --- WhatsApp webhook (Twilio) ---
-router.post("/whatsapp-webhook", handleWhatsappWebhook);
 
 module.exports = router;

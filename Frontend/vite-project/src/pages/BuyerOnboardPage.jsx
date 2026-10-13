@@ -95,7 +95,7 @@ function BuyerOnboardPage() {
           </p>
         </header>
 
-        <form className='grain card mt-6 space-y-5 p-5 sm:p-6' onSubmit={save}>
+        <form className='grain card mt-6 space-y-5 p-5 sm:p-6 card-3d' onSubmit={save}>
           <div>
             <span className='t-eyebrow mb-2 block'>You are buying as</span>
             <div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>

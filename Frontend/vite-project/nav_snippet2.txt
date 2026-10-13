@@ -1,9 +1,0 @@
-BEFORE:
-      {userData?.role=="user" && <div className='text-[#ff4d2d] font-semibold cursor-pointer' onClick={() => navigate("/
----TARGET---
-my-group-orders
----AFTER:
-")}>{t('nav.groupOrders')}</div>}
-                        {canDonate && <div className='text-[#ff4d2d] font-semibold cursor-pointer' onClick={()=>navigate("/donate-food")}>{t('nav.donateFood')}</div>}
-                        {userData?.role !== "owner" && <div className='text-[#ff4d2d] font-semibold cursor-pointer' onClick={()=>navigate("/my-donations")}>{t('nav.myDonations')}</div>}
-             

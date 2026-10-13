@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const vendorProfileSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", unique: true, required: true },
   displayName: String,
-  phoneNumber: { type: String, required: true },
+  phoneNumber: { type: String, required: true, index: true },
   preferredLanguage: { type: String, enum: ["en", "kn", "ta", "te", "hi"], default: "kn" },
   location: {
     address: String,
@@ -14,7 +14,7 @@ const vendorProfileSchema = new mongoose.Schema({
     lng: Number
   },
   profilePhoto: String,
-  registeredVia: { type: String, enum: ["voice", "photo", "whatsapp", "helper", "web"], default: "web" },
+  registeredVia: { type: String, enum: ["voice", "photo", "helper", "web"], default: "web" },
   helperUserId: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
   isVerified: { type: Boolean, default: false },
   isActive: { type: Boolean, default: false },

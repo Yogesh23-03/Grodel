@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { serverUrl } from '../App'
 import MarketNav from '../components/MarketNav.jsx'
 import { FaLocationCrosshairs, FaStar, FaLocationDot, FaArrowRightLong, FaLeaf, FaStore } from 'react-icons/fa6'
+import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const CATEGORIES = ['all', 'vegetables', 'fruits', 'grains', 'dairy', 'herbs', 'spices', 'flowers']
 
@@ -20,6 +21,7 @@ function NearbyVendorsPage() {
   const [locating, setLocating] = useState(false)
   const [message, setMessage] = useState('')
   const [coords, setCoords] = useState(null)
+  const headingRef = useScrollReveal()
 
   const fetchVendors = async (lat, lng, cat) => {
     setLoading(true)
@@ -79,8 +81,8 @@ function NearbyVendorsPage() {
   return (
     <div className='min-h-screen bg-[#fff9f6] lg:pl-[76px]'>
       <MarketNav />
-      <main className='mx-auto max-w-6xl px-4 py-8'>
-        <div className='flex flex-wrap items-end justify-between gap-3'>
+      <main className='mx-auto max-w-6xl px-4 py-8 pb-20 lg:pb-8'>
+        <div ref={headingRef} className='flex flex-wrap items-end justify-between gap-3'>
           <div>
             <h1 className='section-heading flex items-center gap-3'>
               <span className='flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ff4d2d] text-white shadow-[0_8px_24px_rgba(255,77,45,0.35)]'>
@@ -95,11 +97,18 @@ function NearbyVendorsPage() {
                 : t('vendor.locateVendors')}
             </p>
           </div>
-          {locating && (
-            <span className='badge badge-brand animate-soft-pulse px-3 py-1.5 text-xs'>
-              <FaLocationCrosshairs /> {t('vendor.locating')}
-            </span>
-          )}
+          <div className='flex flex-wrap items-center gap-2'>
+            {locating && (
+              <span className='badge badge-brand animate-soft-pulse px-3 py-1.5 text-xs'>
+                <FaLocationCrosshairs /> {t('vendor.locating')}
+              </span>
+            )}
+            {/* The single way in to selling: this page is where the stalls are,
+                so the invitation to open one belongs right here. */}
+            <button onClick={() => navigate('/vendor-portal')} className='btn-glow text-sm'>
+              <FaStore /> {t('nav.joinAsVendor', 'Join as a vendor')}
+            </button>
+          </div>
         </div>
 
         {/* Category filter bar */}
@@ -137,7 +146,7 @@ function NearbyVendorsPage() {
         {(loading || locating) && (
           <div className='mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
             {[0, 1, 2, 3, 4, 5].map(i => (
-              <div key={i} className='card overflow-hidden p-0'>
+              <div key={i} className='card overflow-hidden p-0 card-3d'>
                 <div className='skeleton h-40 w-full rounded-none' />
                 <div className='space-y-2 p-4'>
                   <div className='skeleton h-5 w-2/3' />
@@ -150,7 +159,7 @@ function NearbyVendorsPage() {
         )}
 
         {!loading && !locating && vendors.length === 0 && (
-          <div className='card mt-6 flex flex-col items-center gap-3 p-12 text-center'>
+          <div className='card mt-6 flex flex-col items-center gap-3 p-12 text-center card-3d'>
             <FaStore className='text-4xl text-[#f0cabc]' />
             <p className='text-[#8a7d75]'>{message || t('vendor.noVendorsNearby')}</p>
             <button onClick={() => locateAndFetch(category)} className='link-brand text-sm'>
@@ -160,7 +169,7 @@ function NearbyVendorsPage() {
         )}
 
         {!loading && !locating && vendors.length > 0 && visibleVendors.length === 0 && (
-          <div className='card mt-6 p-12 text-center'>
+          <div className='card mt-6 p-12 text-center card-3d'>
             <p className='text-[#8a7d75]'>No farms match these filters. Try relaxing them.</p>
           </div>
         )}
@@ -168,7 +177,7 @@ function NearbyVendorsPage() {
         {!loading && !locating && visibleVendors.length > 0 && (
           <div className='stagger mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
             {visibleVendors.map((vendor) => (
-              <div key={vendor._id} className='card card-hover overflow-hidden'>
+              <div key={vendor._id} className='card card-hover card-3d overflow-hidden'>
                 {vendor.profilePhoto ? (
                   <div className='relative h-40 w-full overflow-hidden'>
                     <img src={vendor.profilePhoto} alt={vendor.displayName} className='h-full w-full object-cover transition-transform duration-700 hover:scale-110' />
@@ -223,7 +232,7 @@ function NearbyVendorsPage() {
                   </div>
 
                   <button
-                    className='mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-[#ff4d2d] px-4 py-2.5 text-sm font-bold text-white shadow-[0_6px_18px_rgba(255,77,45,0.3)] transition-all hover:bg-[#e63e20] active:scale-[0.98]'
+                    className='btn-glow mt-3 flex w-full items-center justify-center gap-2 px-4 py-2.5 text-sm transition-all active:scale-[0.98]'
                     onClick={() => navigate(`/vendor/${vendor._id}`)}
                   >
                     {t('vendor.viewShop')} <FaArrowRightLong />

@@ -1,13 +1,15 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   HiOutlineBuildingStorefront, HiOutlinePencilSquare, HiOutlinePlusCircle,
-  HiOutlineClock, HiOutlineChartBar, HiOutlineBellAlert, HiOutlineTruck, HiOutlineFire
+  HiOutlineChartBar, HiOutlineBellAlert, HiOutlineTruck, HiOutlineFire,
+  HiOutlineSparkles, HiOutlineInboxStack, HiOutlinePercentBadge
 } from 'react-icons/hi2'
 import axios from 'axios'
 import { serverUrl } from '../App'
+import { setMyShopData } from '../redux/ownerSlice'
 import MarketNav from './MarketNav.jsx'
 import OwnerItemCard from './OwnerItemCard.jsx'
 import OwnerOrderCard from './OwnerOrderCard.jsx'
@@ -22,6 +24,7 @@ function OwnerDashboard() {
   const { myShopData } = useSelector(state => state.owner)
   const { userData, socket } = useSelector(state => state.user)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { t } = useTranslation()
 
   const [myOrders, setMyOrders] = useState([])
@@ -29,11 +32,51 @@ function OwnerDashboard() {
   const [pulseId, setPulseId] = useState(null)
   const pulseTimer = useRef(null)
 
+  /* Shop-wide discount controls */
+  const [bulkDiscount, setBulkDiscount] = useState('')
+  const [applyingBulk, setApplyingBulk] = useState(false)
+  const [discountMessage, setDiscountMessage] = useState('')
+
   const loadOrders = () => axios.get(`${serverUrl}/api/order/my-orders`, { withCredentials: true })
     .then(res => setMyOrders(res.data || []))
     .catch(() => {})
 
   useEffect(() => { loadOrders() }, [])
+
+  /* The discount endpoints return counts, not the shop, so pull the shop again
+     after a change — otherwise the menu would still show the old prices. */
+  const reloadShop = async () => {
+    try {
+      const result = await axios.get(`${serverUrl}/api/shop/getmy`, { withCredentials: true })
+      dispatch(setMyShopData(result.data))
+    } catch (error) {
+      console.error('reload shop failed:', error.message)
+    }
+  }
+
+  const applyBulkDiscount = async () => {
+    const percent = Number(bulkDiscount)
+    if (!Number.isFinite(percent) || percent < 0 || percent > 100) {
+      setDiscountMessage(t('owner.discountInvalid', 'Enter a discount between 0 and 100'))
+      return
+    }
+    setApplyingBulk(true)
+    setDiscountMessage('')
+    try {
+      const result = await axios.patch(`${serverUrl}/api/item/discount-all`,
+        { discountPercent: percent, shopId: myShopData?._id }, { withCredentials: true })
+      await reloadShop()
+      setDiscountMessage(t('owner.discountApplied', {
+        defaultValue: 'Discount applied to {{count}} item(s)',
+        count: result.data?.updated ?? 0
+      }))
+      setBulkDiscount('')
+    } catch (error) {
+      setDiscountMessage(error?.response?.data?.message || t('owner.discountFailed', 'Could not apply the discount'))
+    } finally {
+      setApplyingBulk(false)
+    }
+  }
 
   /* Live: new orders arrive without refresh, with a one-shot pulse */
   useEffect(() => {
@@ -51,9 +94,17 @@ function OwnerDashboard() {
 
   useEffect(() => () => window.clearTimeout(pulseTimer.current), [])
 
+  /* The order book can hand `shopOrders` back as a single object (the API picks
+     the one shop order that belongs to this owner) or as an array, so it is
+     normalised before anything calls .map/.length — an object here used to throw
+     "order.shopOrders.map is not a function" and take the whole dashboard down. */
+  const asShopOrderArray = (shopOrders) => Array.isArray(shopOrders)
+    ? shopOrders
+    : shopOrders ? [shopOrders] : []
+
   const orders = useMemo(() => myOrders
     .filter(order => order?.shopOrders)
-    .flatMap(order => order.shopOrders.map(shopOrder => ({ order, shopOrder }))), [myOrders])
+    .flatMap(order => asShopOrderArray(order.shopOrders).map(shopOrder => ({ order, shopOrder }))), [myOrders])
 
   const activeOrders = orders.filter(({ shopOrder }) => ['pending', 'preparing', 'out of delivery'].includes(shopOrder?.status))
   const pendingPrep = orders.filter(({ shopOrder }) => shopOrder?.status === 'pending').length
@@ -62,7 +113,10 @@ function OwnerDashboard() {
     const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0)
     return orders
       .filter(({ shopOrder }) => ['delivered', 'out of delivery', 'preparing'].includes(shopOrder?.status))
-      .reduce((sum, { order }) => sum + (order.totalAmount || 0) / Math.max(1, order.shopOrders.length), 0)
+      .reduce((sum, { order }) => {
+        const shopsInOrder = asShopOrderArray(order.shopOrders).length
+        return sum + (order.totalAmount || 0) / Math.max(1, shopsInOrder)
+      }, 0)
   }, [orders])
   const topItems = useMemo(() => {
     const counts = {}
@@ -78,10 +132,10 @@ function OwnerDashboard() {
     <div className='min-h-screen lg:pl-[76px]'>
       <MarketNav />
 
-      <main className='mx-auto w-full max-w-[1100px] px-4 pb-16 pt-6 sm:px-6'>
+      <main className='mx-auto w-full max-w-[1100px] px-4 pb-20 pt-6 sm:px-6'>
         {!myShopData ? (
           /* ---------- no shop yet: a doorway, not a form ---------- */
-          <section className='grain card mx-auto mt-10 max-w-md p-10 text-center'>
+          <section className='grain card card-3d mx-auto mt-10 max-w-md p-5 sm:p-8 lg:p-10 text-center'>
             <span className='mx-auto flex h-16 w-16 items-center justify-center rounded-2xl' style={{ background: 'var(--accent-2-soft)', color: 'var(--accent-2)' }}>
               <HiOutlineBuildingStorefront size={30} />
             </span>
@@ -108,7 +162,13 @@ function OwnerDashboard() {
                   {myShopData.city}, {myShopData.state} · {t('owner.manageLine', 'orders arrive here live')}
                 </p>
               </div>
-              <div className='flex gap-2'>
+              <div className='flex flex-wrap gap-2'>
+                <button className='btn-ghost' onClick={() => navigate('/my-analysis')}>
+                  <HiOutlineSparkles /> {t('owner.myAnalysis', 'My analysis')}
+                </button>
+                <button className='btn-ghost' onClick={() => navigate('/my-bulk-orders')}>
+                  <HiOutlineInboxStack /> {t('owner.viewBulkOrders', 'Bulk orders')}
+                </button>
                 <button className='btn-ghost' onClick={() => navigate('/create-edit-shop')}>
                   <HiOutlinePencilSquare /> {t('owner.editShop', 'Edit shop')}
                 </button>
@@ -169,12 +229,12 @@ function OwnerDashboard() {
 
               <div className='mt-4 space-y-4'>
                 {orders.length === 0 && (
-                  <div className='card p-10 text-center' style={{ color: 'var(--ink-muted)' }}>
+                  <div className='card p-5 sm:p-8 lg:p-10 text-center card-3d' style={{ color: 'var(--ink-muted)' }}>
                     {t('owner.noOrders', 'No orders yet today. The pans are warming up.')}
                   </div>
                 )}
                 {activeOrders.length === 0 && orders.length > 0 && (
-                  <div className='card p-8 text-center' style={{ color: 'var(--ink-muted)' }}>
+                  <div className='card p-8 text-center card-3d' style={{ color: 'var(--ink-muted)' }}>
                     {t('owner.allCaughtUp', 'All caught up — every order is delivered.')}
                   </div>
                 )}
@@ -217,6 +277,29 @@ function OwnerDashboard() {
                 </button>
               </div>
 
+              {/* ---------- shop-wide discount ---------- */}
+              <div className='mt-4 flex flex-wrap items-center gap-3 rounded-2xl p-4'
+                style={{ background: 'var(--warning-soft)' }}>
+                <HiOutlinePercentBadge size={22} style={{ color: 'var(--warning)' }} />
+                <input
+                  type='number'
+                  min='0'
+                  max='100'
+                  value={bulkDiscount}
+                  onChange={event => setBulkDiscount(event.target.value)}
+                  placeholder={t('owner.bulkDiscountPlaceholder', 'Apply % discount to ALL items')}
+                  aria-label={t('owner.bulkDiscountPlaceholder', 'Apply % discount to ALL items')}
+                  className='w-full px-3 py-2 text-sm sm:w-52'
+                />
+                <button type='button' onClick={applyBulkDiscount} disabled={applyingBulk || bulkDiscount === ''}
+                  className='btn-primary'>
+                  {t('owner.applyToAll', 'Apply to all')}
+                </button>
+                {discountMessage && (
+                  <p className='text-xs font-bold' style={{ color: 'var(--ink-soft)' }}>{discountMessage}</p>
+                )}
+              </div>
+
               <div className='glass-panel mt-4 overflow-hidden'>
                 <img src={myShopData.image} alt={myShopData.name} className='h-44 w-full object-cover sm:h-56' />
                 <div className='p-5'>
@@ -226,7 +309,7 @@ function OwnerDashboard() {
               </div>
 
               {myShopData.items.length === 0 ? (
-                <div className='grain card mt-4 p-10 text-center'>
+                <div className='grain card card-3d mt-4 p-5 sm:p-8 lg:p-10 text-center'>
                   <span className='text-4xl' aria-hidden='true'>🥘</span>
                   <p className='mt-3' style={{ color: 'var(--ink-muted)' }}>
                     {t('owner.noItems', 'The menu is empty — add your first dish.')}

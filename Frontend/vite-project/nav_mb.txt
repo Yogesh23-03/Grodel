@@ -1,6 +1,0 @@
-IDX:15809
-BEFORE_JSON:"sor-pointer' onClick={() => navigate('/vendor/dashboard')}>{t('vendor."
-AFTER_JSON:"myDashboard')}</div>}\n                        {userData?.role === 'vendor' && <div classNa"
-BEFORE_LIT:sor-pointer' onClick={() => navigate('/vendor/dashboard')}>{t('vendor.
-AFTER_LIT:myDashboard')}</div>}
-                        {userData?.role === 'vendor' && <div classNa

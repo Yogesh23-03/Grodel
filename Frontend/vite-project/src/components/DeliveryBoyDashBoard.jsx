@@ -12,6 +12,7 @@ import {
   HiOutlineBellAlert, HiOutlineTruck, HiOutlineHeart, HiOutlineDocumentText
 } from 'react-icons/hi2'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
+import { HiOutlineSparkles } from 'react-icons/hi2'
 
 const RATE_PER_DELIVERY = 50
 
@@ -305,6 +306,9 @@ function DeliveryBoyDashboard() {
             <button onClick={() => navigate('/my-orders')} className='btn-ghost !px-3.5 !py-2 text-xs'>
               <HiOutlineDocumentText /> {t('db.history', 'History')}
             </button>
+            <button onClick={() => navigate('/my-analysis')} className='btn-ghost !px-3.5 !py-2 text-xs'>
+              <HiOutlineSparkles /> {t('analysis.navLink', 'My analysis')}
+            </button>
           </div>
         </header>
 
@@ -354,7 +358,7 @@ function DeliveryBoyDashboard() {
 
         {/* ================= ACTIVE ORDER RUN ================= */}
         {currentOrder && (
-          <section className='grain card mt-8 animate-rise-in overflow-hidden' style={{ borderColor: 'var(--accent-2)' }}>
+          <section className='grain card mt-8 animate-rise-in overflow-hidden card-3d' style={{ borderColor: 'var(--accent-2)' }}>
             <div className='p-5'>
               <div className='flex flex-wrap items-start justify-between gap-3'>
                 <div>
@@ -412,7 +416,7 @@ function DeliveryBoyDashboard() {
 
         {/* ================= CURRENT DONATION RUN ================= */}
         {currentDonationDelivery && (
-          <section className='grain card mt-6 animate-rise-in overflow-hidden' style={{ borderColor: 'var(--rescue)' }}>
+          <section className='grain card mt-6 animate-rise-in overflow-hidden card-3d' style={{ borderColor: 'var(--rescue)' }}>
             <div className='p-5'>
               <p className='t-eyebrow' style={{ color: 'var(--rescue)' }}>{t('db.rescueRun', 'Rescue run in progress')}</p>
               <h2 className='t-title mt-1'>{currentDonationDelivery.assignedTrustId?.name}</h2>
@@ -422,7 +426,7 @@ function DeliveryBoyDashboard() {
               </div>
               <div className='mt-3 flex flex-wrap gap-2'>
                 {(currentDonationDelivery.foodItems || []).map((item, index) => (
-                  <span key={index} className='rounded-full px-3 py-1 text-xs font-bold' style={{ background: 'var(--rescue-soft)', color: 'var(--rescue)' }}>
+                  <span key={index} className='rounded-full px-3 py-1 text-xs font-bold stagger-item' style={{ background: 'var(--rescue-soft)', color: 'var(--rescue)' }}>
                     {item.name} — {item.quantity} {item.unit}
                   </span>
                 ))}
@@ -463,7 +467,7 @@ function DeliveryBoyDashboard() {
             </div>
             <div className='stagger mt-4 space-y-3'>
               {availableAssignments.length === 0 && (
-                <div className='grain card p-8 text-center'>
+                <div className='grain card p-8 text-center card-3d'>
                   <span className='text-4xl' aria-hidden='true'>🛵</span>
                   <p className='mt-3' style={{ color: 'var(--ink-muted)' }}>{t('db.noOrders', 'No order runs on the rail right now.')}</p>
                   <p className='mt-1 text-xs' style={{ color: 'var(--ink-faint)' }}>
@@ -474,7 +478,7 @@ function DeliveryBoyDashboard() {
                 </div>
               )}
               {availableAssignments.map((a, index) => (
-                <article key={a.assignmentId || index} className='grain card card-hover p-4'>
+                <article key={a.assignmentId || index} className='grain card card-hover card-3d p-4 stagger-item' style={{ animationDelay: `${index * 80}ms` }}>
                   <div className='flex flex-wrap items-start justify-between gap-3'>
                     <div className='min-w-0'>
                       <p className='font-bold'>{a?.shopName}</p>
@@ -504,13 +508,13 @@ function DeliveryBoyDashboard() {
             </div>
             <div className='stagger mt-4 space-y-3'>
               {donationCount === 0 && (
-                <div className='grain card p-8 text-center'>
+                <div className='grain card p-8 text-center card-3d'>
                   <span className='text-4xl' aria-hidden='true'>🌾</span>
                   <p className='mt-3' style={{ color: 'var(--ink-muted)' }}>{t('db.noDonations', 'No rescue runs waiting.')}</p>
                 </div>
               )}
               {availableDonationDeliveries.map((donation) => (
-                <article key={donation._id} className='grain card card-hover p-4'>
+                <article key={donation._id} className='grain card card-hover card-3d p-4 stagger-item' style={{ animationDelay: `${index * 80}ms` }}>
                   <div className='flex flex-wrap items-start justify-between gap-3'>
                     <div className='min-w-0'>
                       <p className='font-bold'>{donation.assignedTrustId?.name}</p>
@@ -522,7 +526,7 @@ function DeliveryBoyDashboard() {
                       </p>
                       <div className='mt-1.5 flex flex-wrap gap-1.5'>
                         {(donation.foodItems || []).map((item, index) => (
-                          <span key={index} className='rounded-full px-2.5 py-0.5 text-[11px] font-bold' style={{ background: 'var(--rescue-soft)', color: 'var(--rescue)' }}>
+                          <span key={index} className='rounded-full px-2.5 py-0.5 text-[11px] font-bold stagger-item' style={{ background: 'var(--rescue-soft)', color: 'var(--rescue)' }}>
                             {item.name} {item.quantity} {item.unit}
                           </span>
                         ))}
@@ -548,7 +552,7 @@ function DeliveryBoyDashboard() {
             <h2 className='t-title'>{t('db.cancelled', 'Returned today')}</h2>
             <div className='stagger mt-4 space-y-3'>
               {cancelledOrders.map((a, index) => (
-                <div className='grain card p-4' key={a.assignmentId || index}>
+                <div className='grain card p-4 card-3d' key={a.assignmentId || index}>
                   <div className='flex justify-between gap-3'>
                     <div>
                       <p className='text-sm font-bold'>{a?.shopName}</p>

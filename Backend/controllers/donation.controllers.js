@@ -137,9 +137,8 @@ const createDonation = async (req, res) => {
         try {
             await sendDonationTrustMail(selectedTrust.email, donation, selectedTrust);
         } catch (mailError) {
-            console.log("Donation trust email failed:", mailError.message);
+            console.error("DONATION TRUST EMAIL FAILED:", mailError.message);
         }
-        console.log(`Donation ${donation._id} sent to trust ${selectedTrust.name} (${selectedTrust.email})`);
 
         return res.status(201).json({
             message: `Donation created and sent to ${selectedTrust.name}`,

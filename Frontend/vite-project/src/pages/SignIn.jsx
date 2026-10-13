@@ -70,14 +70,14 @@ function SignIn() {
 
                 <div className='mb-4'>
                     <label htmlFor="email" className='block text-gray-700 font-medium mb-1'>Email</label>
-                    <input type="email" className='w-full border rounded-lg px-3 py-2 focus:outline-none ' placeholder='Enter your Email' style={{ border: `1px solid ${borderColor}` }} onChange={(e)=>setEmail(e.target.value)} value={email} required/>
+                    <input type="email" className='glass-input w-full' placeholder='Enter your Email' style={{ border: `1px solid ${borderColor}` }} onChange={(e)=>setEmail(e.target.value)} value={email} required/>
                 </div>
                 {/* password*/}
 
                 <div className='mb-4'>
                     <label htmlFor="password" className='block text-gray-700 font-medium mb-1'>Password</label>
                     <div className='relative'>
-                        <input type={`${showPassword ? "text" : "password"}`} className='w-full border rounded-lg px-3 py-2 focus:outline-none pr-10' placeholder='Enter your password' style={{ border: `1px solid ${borderColor}` }} onChange={(e)=>setPassword(e.target.value)} value={password} required/>
+                        <input type={`${showPassword ? "text" : "password"}`} className='glass-input w-full pr-10' placeholder='Enter your password' style={{ border: `1px solid ${borderColor}` }} onChange={(e)=>setPassword(e.target.value)} value={password} required/>
 
                         <button className='absolute right-3 cursor-pointer top-[14px] text-gray-500' onClick={() => setShowPassword(prev => !prev)}>{!showPassword ? <FaRegEye /> : <FaRegEyeSlash />}</button>
                     </div>
@@ -87,7 +87,7 @@ function SignIn() {
                 </div>
               
 
-            <button className='w-full rounded-full bg-[#ff4d2d] py-3 font-bold text-white cursor-pointer' onClick={handleSignIn} disabled={loading}>
+            <button className='btn-glow w-full py-3 cursor-pointer' onClick={handleSignIn} disabled={loading}>
                 {loading?<ClipLoader size={20} color='white'/>:"Sign In"}
             </button>
       {err && <p className='text-red-500 text-center my-[10px]'>*{err}</p>}

@@ -50,6 +50,14 @@ function Shop() {
               <FaLocationDot size={20} className='text-[#ff4d2d]' />
               <p className='text-base font-medium text-gray-200 md:text-lg'>{shop.address}</p>
             </div>
+            <button
+              onClick={() => navigate(`/bulk-order/${shopId}`)}
+              className='mt-4 flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold shadow-lg transition-transform hover:scale-105 active:scale-95'
+              style={{ background: 'var(--accent)', color: 'var(--accent-ink)', boxShadow: 'var(--shadow-lime)' }}
+            >
+              <FaStore />
+              {t('bulk.orderButton', 'Bulk order')}
+            </button>
           </div>
         </div>
       )}
@@ -79,7 +87,7 @@ function Shop() {
             ))}
           </div>
         ) : (
-          <p className='card p-12 text-center text-[#8a7d75]'>{t('shop.noItems')}</p>
+          <p className='card p-12 text-center text-[#8a7d75] card-3d'>{t('shop.noItems')}</p>
         )}
       </div>
     </div>

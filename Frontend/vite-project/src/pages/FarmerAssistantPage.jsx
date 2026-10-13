@@ -73,7 +73,7 @@ function FarmerAssistantPage() {
           <h1 className='t-display mt-2'>Ask before you act</h1>
         </header>
 
-        <div className='grain card mt-6 flex max-h-[62vh] min-h-[380px] flex-col'>
+        <div className='grain card mt-6 flex max-h-[62vh] min-h-[380px] flex-col card-3d'>
           <div className='flex-1 space-y-3 overflow-y-auto p-5'>
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -90,7 +90,7 @@ function FarmerAssistantPage() {
           <div className='px-5 pb-4'>
             <div className='mb-2 flex flex-wrap gap-1.5'>
               {SUGGESTIONS.map(s => (
-                <button key={s} onClick={() => send(s)} className='rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-95'
+                <button key={s} onClick={() => send(s)} className='rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-95 stagger-item'
                   style={{ background: 'var(--surface-2)', color: 'var(--ink-soft)', border: '1px solid var(--border)' }}>
                   {s}
                 </button>

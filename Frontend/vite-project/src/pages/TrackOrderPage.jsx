@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { serverUrl } from '../App'
 import {
@@ -9,6 +9,7 @@ import {
 import DeliveryBoyTracking from '../components/DeliveryBoyTracking'
 import { useSelector } from 'react-redux'
 import MarketNav from '../components/MarketNav.jsx'
+import WaitEngagementPage from './WaitEngagementPage.jsx'
 import { useTranslation } from 'react-i18next'
 
 /*
@@ -20,6 +21,10 @@ import { useTranslation } from 'react-i18next'
  */
 
 const STATUS_ORDER = ['pending', 'preparing', 'out of delivery', 'delivered']
+
+/* Stages where the customer is still waiting — the engagement hub only earns
+   its place on screen while there is a wait to fill. */
+const WAITING_STATUSES = ['pending', 'preparing', 'out of delivery']
 
 const narrative = (status, t) => {
   switch (status) {
@@ -35,7 +40,7 @@ function TrackOrderPage() {
   const { orderId } = useParams()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { socket } = useSelector(state => state.user)
+  const { socket, userData, currentCity } = useSelector(state => state.user)
   const [currentOrder, setCurrentOrder] = useState()
   const [liveLocations, setLiveLocations] = useState({})
 
@@ -64,16 +69,24 @@ function TrackOrderPage() {
     handleGetOrder()
   }, [orderId])
 
-  const stageIndex = useMemo(() => {
-    const status = currentOrder?.shopOrders?.[0]?.status
-    return Math.max(0, STATUS_ORDER.indexOf(status))
-  }, [currentOrder])
+  /* Any shop order still in flight keeps the games on screen; once every part
+     of the order is delivered or cancelled it disappears. */
+  const isWaiting = Boolean(currentOrder?.shopOrders?.some(shopOrder => WAITING_STATUSES.includes(shopOrder.status)))
+
+  const firstShopOrder = currentOrder?.shopOrders?.[0]
 
   return (
-    <div className='min-h-screen lg:pl-[76px]'>
+    <div className='relative min-h-screen lg:pl-[76px]'>
+      {/* The market keeps drifting past while the order is on its way. */}
+      <div className='pointer-events-none fixed inset-0 z-0 overflow-hidden' aria-hidden='true'>
+        <span className='food-float-1 notranslate absolute left-[5%] top-[12%] text-3xl opacity-15 sm:text-4xl'>🍕</span>
+        <span className='food-float-2 notranslate absolute right-[7%] top-[22%] text-3xl opacity-15' style={{ animationDelay: '1.2s' }}>🥞</span>
+        <span className='food-drift notranslate absolute bottom-[18%] left-[12%] text-2xl opacity-15 sm:text-3xl' style={{ animationDelay: '2s' }}>🍱</span>
+        <span className='food-float-3 notranslate absolute bottom-[26%] right-[10%] text-2xl opacity-10' style={{ animationDelay: '0.6s' }}>🥗</span>
+      </div>
       <MarketNav />
 
-      <main className='mx-auto max-w-4xl px-4 pb-20 pt-8 sm:px-6'>
+      <main className='relative z-10 mx-auto max-w-4xl px-4 pb-20 pt-8 sm:px-6'>
         <button onClick={() => navigate('/my-orders')} className='link-brand mb-5 inline-flex items-center gap-2 text-sm'>
           <HiOutlineArrowLeft size={16} /> {t('track.backToOrders', 'My orders')}
         </button>
@@ -95,7 +108,7 @@ function TrackOrderPage() {
           const riding = shopOrder.status === 'out of delivery'
           const done = shopOrder.status === 'delivered'
           return (
-            <section key={index} className='grain card mb-6 overflow-hidden'>
+            <section key={index} className='grain card mb-6 overflow-hidden card-3d stagger-item' style={{ animationDelay: `${index * 80}ms` }}>
               {/* --- kitchen + narrative --- */}
               <div className='p-5 sm:p-6'>
                 <div className='flex flex-wrap items-start justify-between gap-3'>
@@ -113,12 +126,61 @@ function TrackOrderPage() {
                   )}
                 </div>
 
+                {/* Kitchen's cooking: a scooter carrying the box rides across
+                    while the order is still pending or being prepared. */}
+                {['pending', 'preparing'].includes(shopOrder.status) && (
+                  <div style={{
+                    overflow: 'hidden', position: 'relative',
+                    height: 72, margin: '1rem 0',
+                    pointerEvents: 'none'
+                  }} aria-hidden='true'>
+                    <div className='scooter-ride'
+                      style={{ position: 'absolute', bottom: 0,
+                               display: 'flex', alignItems: 'flex-end', gap: 4 }}>
+                      <span style={{ fontSize: '1.4rem', marginBottom: 24,
+                                     animation: 'floatY2 1s ease-in-out infinite' }}>
+                        ♨️
+                      </span>
+                      <span style={{ fontSize: '2.5rem' }}>🛵</span>
+                      <span style={{ fontSize: '1.6rem', marginBottom: 8 }}>🍱</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* --- the kitchen, with the food still on its way --- */}
+                {(shopOrder.status === 'pending' || shopOrder.status === 'preparing') && (
+                  <div style={{
+                    overflow: 'hidden', position: 'relative',
+                    height: 72, margin: '1rem 0',
+                    pointerEvents: 'none'
+                  }} aria-hidden='true'>
+                    <div className='anim-scooter'
+                      style={{ position: 'absolute', bottom: 0, display: 'flex', alignItems: 'flex-end', gap: 4 }}>
+                      <span style={{ fontSize: '1.3rem', marginBottom: 26, animation: 'floatB 1.1s ease-in-out infinite' }}>♨️</span>
+                      <span style={{ fontSize: '2.4rem' }}>🛵</span>
+                      <span style={{ fontSize: '1.5rem', marginBottom: 8 }}>🍱</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* --- the rider, mid-run --- */}
+                <div className='mt-5 rounded-2xl px-3 py-2' style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+                  <p className='text-[10px] font-bold uppercase tracking-wide' style={{ color: 'var(--ink-muted)' }}>
+                    {done ? t('track.scooterDone', 'Delivered to your door') : t('track.scooterLabel', 'Your rider, on the road')}
+                  </p>
+                  <span className='relative mt-1 block h-7 w-full' aria-hidden='true'>
+                    <span className='absolute left-0 right-0 top-1/2 border-t border-dashed' style={{ borderColor: 'var(--border-strong)' }} />
+                    <span className={`notranslate absolute top-0 text-xl ${riding ? 'scooter-ride' : ''}`}
+                      style={riding ? undefined : { left: 'calc(50% - 0.875rem)' }}>🛵</span>
+                  </span>
+                </div>
+
                 {/* --- the story spine --- */}
-                <ol className='mt-5 grid grid-cols-4 gap-1' aria-label='order progress'>
+                <ol className='mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-1' aria-label='order progress'>
                   {STATUS_ORDER.map((stage, i) => {
                     const reached = i <= idx
                     return (
-                      <li key={stage} className='flex flex-col items-center gap-1.5 text-center'>
+                      <li key={stage} className='flex flex-col items-center gap-1.5 text-center stagger-item' style={{ animationDelay: `${i * 80}ms` }}>
                         <span className='flex w-full items-center'>
                           <span className='h-[3px] flex-1 rounded-full' style={{ background: i === 0 ? 'transparent' : reached ? 'var(--accent-2)' : 'var(--surface-3)' }} />
                           <span className='flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-black'
@@ -207,6 +269,15 @@ function TrackOrderPage() {
             </section>
           )
         })}
+
+        {isWaiting && (
+          <WaitEngagementPage
+            orderId={currentOrder?._id || orderId}
+            dishName={firstShopOrder?.shopOrderItems?.[0]?.name}
+            restaurantName={firstShopOrder?.shop?.name}
+            city={userData?.city || currentCity}
+          />
+        )}
       </main>
     </div>
   )

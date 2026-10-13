@@ -47,14 +47,14 @@ function BuyerPurchasesPage() {
 
         <div className='stagger mt-6 space-y-3'>
           {orders.length === 0 && (
-            <div className='grain card p-10 text-center'>
+            <div className='grain card p-10 text-center card-3d'>
               <span className='text-4xl' aria-hidden='true'>🧺</span>
               <p className='mt-3 text-sm' style={{ color: 'var(--ink-muted)' }}>Nothing yet. Find farmers who match your kitchen.</p>
               <button className='btn-primary mt-4' onClick={() => navigate('/buyer/matches')}>Browse matches</button>
             </div>
           )}
           {orders.map(order => (
-            <article key={order._id} className='grain card p-4'>
+            <article key={order._id} className='grain card p-4 card-3d'>
               <div className='flex flex-wrap items-start justify-between gap-3'>
                 <div className='min-w-0'>
                   <p className='text-sm font-bold'>

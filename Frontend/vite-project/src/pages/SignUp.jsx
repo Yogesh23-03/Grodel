@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
 import { FaHandHoldingHeart, FaMotorcycle } from 'react-icons/fa6'
@@ -25,16 +25,33 @@ function SignUp() {
   const [role, setRole] = useState('user')
   const [err, setErr] = useState('')
   const [loading, setLoading] = useState(false)
+  const [adminSlots, setAdminSlots] = useState(null)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { language } = useLanguage()
   const { t } = useTranslation()
+
+  /*
+   * Admin is a capped role. The public endpoint says how many seats are left;
+   * while the answer is unknown, or once the seats are full, Admin is not
+   * offered at all. The signup route refuses the overflow server-side too, so
+   * this is about not showing a doomed option rather than about security.
+   */
+  useEffect(() => {
+    let active = true
+    axios.get(`${serverUrl}/api/admin/slots-public`)
+      .then((res) => { if (active) setAdminSlots(res.data) })
+      .catch(() => { if (active) setAdminSlots(null) })
+    return () => { active = false }
+  }, [])
+
   const roles = [
     { key: 'user', Icon: FiUser },
     { key: 'owner', Icon: MdStorefront },
     { key: 'vendor', Icon: GiFarmer },
     { key: 'deliveryBoy', Icon: FaMotorcycle },
-    { key: 'trustMember', Icon: FaHandHoldingHeart }
+    { key: 'trustMember', Icon: FaHandHoldingHeart },
+    ...(adminSlots && !adminSlots.full ? [{ key: 'admin', emoji: '🛠️' }] : [])
   ]
 
   const completeSignUp = (user) => {
@@ -66,19 +83,19 @@ function SignUp() {
     }
   }
 
-  return <div className='relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#070b14] p-4 py-10'>
+  return <div className='g-page relative flex min-h-screen w-full items-center justify-center overflow-hidden p-4 py-10'>
     <div className='absolute left-[6%] top-[18%] h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl [animation:soft-pulse_7s_ease-in-out_infinite]' />
     <div className='absolute bottom-[5%] right-[6%] h-72 w-72 rounded-full bg-orange-400/10 blur-3xl [animation:soft-pulse_9s_ease-in-out_infinite]' />
     <div className='glass-panel relative w-full max-w-lg rounded-[2rem] p-8 md:p-10'>
       <div className='mb-8'><span className='rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-300'>Join GroDel</span></div>
       <h1 className='gradient-text mb-2 text-4xl font-black tracking-[-0.06em]'>Food feels better together.</h1>
       <p className='mb-8 text-gray-600'>Create your account and start discovering.</p>
-      <div className='mb-4'><label htmlFor='fullName' className='mb-1 block font-medium text-gray-700'>Full Name</label><input id='fullName' type='text' className='w-full rounded-lg border border-cyan-200/20 px-3 py-2 focus:outline-none' placeholder='Enter your Full Name' onChange={(event) => setFullName(event.target.value)} value={fullName} required /></div>
-      <div className='mb-4'><label htmlFor='email' className='mb-1 block font-medium text-gray-700'>Email</label><input id='email' type='email' className='w-full rounded-lg border border-cyan-200/20 px-3 py-2 focus:outline-none' placeholder='Enter your Email' onChange={(event) => setEmail(event.target.value)} value={email} required /></div>
-      <div className='mb-4'><label htmlFor='mobile' className='mb-1 block font-medium text-gray-700'>Mobile</label><input id='mobile' type='tel' className='w-full rounded-lg border border-cyan-200/20 px-3 py-2 focus:outline-none' placeholder='Enter your Mobile Number' onChange={(event) => setMobile(event.target.value)} value={mobile} required /></div>
-      <div className='mb-4'><label htmlFor='password' className='mb-1 block font-medium text-gray-700'>Password</label><div className='relative'><input id='password' type={showPassword ? 'text' : 'password'} className='w-full rounded-lg border border-cyan-200/20 px-3 py-2 pr-10 focus:outline-none' placeholder='Enter your password' onChange={(event) => setPassword(event.target.value)} value={password} required /><button type='button' className='absolute right-3 top-[14px] cursor-pointer text-gray-500' onClick={() => setShowPassword((value) => !value)}>{showPassword ? <FaRegEyeSlash /> : <FaRegEye />}</button></div></div>
-      <div className='mb-5'><label className='mb-2 block font-medium text-gray-700'>{t('auth.role')}</label><div className='flex w-full flex-col gap-3'>{roles.map(({ key, Icon }) => { const selected = role === key; return <button key={key} type='button' onClick={() => setRole(key)} className={`flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition-all ${selected ? 'border-[#ff4d2d] bg-[#ff4d2d]/10 text-white' : 'border-white/10 bg-white/5 text-gray-400 hover:border-white/20'}`}><div className={`rounded-lg p-2 ${selected ? 'bg-[#ff4d2d]/20' : 'bg-white/5'}`}>{React.createElement(Icon, { size: 20, className: selected ? 'text-[#ff4d2d]' : 'text-gray-400' })}</div><div><p className='text-sm font-semibold leading-tight'>{t(`auth.roles.${key}.label`)}</p><p className='mt-0.5 text-xs text-gray-500'>{t(`auth.roles.${key}.desc`)}</p></div>{selected && <FiCheck size={16} className='ml-auto text-[#ff4d2d]' />}</button> })}</div></div>
-      <button className='w-full cursor-pointer rounded-full bg-[#ff4d2d] py-3 font-bold text-white' onClick={handleSignUp} disabled={loading}>{loading ? <ClipLoader size={20} color='white' /> : 'Sign Up'}</button>
+      <div className='mb-4'><label htmlFor='fullName' className='mb-1 block font-medium text-gray-700'>Full Name</label><input id='fullName' type='text' className='glass-input w-full' placeholder='Enter your Full Name' onChange={(event) => setFullName(event.target.value)} value={fullName} required /></div>
+      <div className='mb-4'><label htmlFor='email' className='mb-1 block font-medium text-gray-700'>Email</label><input id='email' type='email' className='glass-input w-full' placeholder='Enter your Email' onChange={(event) => setEmail(event.target.value)} value={email} required /></div>
+      <div className='mb-4'><label htmlFor='mobile' className='mb-1 block font-medium text-gray-700'>Mobile</label><input id='mobile' type='tel' className='glass-input w-full' placeholder='Enter your Mobile Number' onChange={(event) => setMobile(event.target.value)} value={mobile} required /></div>
+      <div className='mb-4'><label htmlFor='password' className='mb-1 block font-medium text-gray-700'>Password</label><div className='relative'><input id='password' type={showPassword ? 'text' : 'password'} className='glass-input w-full pr-10' placeholder='Enter your password' onChange={(event) => setPassword(event.target.value)} value={password} required /><button type='button' className='absolute right-3 top-[14px] cursor-pointer text-gray-500' onClick={() => setShowPassword((value) => !value)}>{showPassword ? <FaRegEyeSlash /> : <FaRegEye />}</button></div></div>
+      <div className='mb-5'><label className='mb-2 block font-medium' style={{ color: 'var(--text-secondary)' }}>{t('auth.role')}</label><div className='flex w-full flex-col gap-3'>{roles.map(({ key, Icon, emoji }) => { const selected = role === key; return <button key={key} type='button' onClick={() => setRole(key)} className='g-card-solid flex w-full items-center gap-4 px-4 py-3 text-left' style={selected ? { background: 'var(--brand-soft)', border: '1px solid var(--brand)' } : undefined}><div className='rounded-lg p-2' style={{ background: selected ? 'rgba(255,77,45,0.2)' : 'var(--glass-bg)' }}>{Icon ? React.createElement(Icon, { size: 20, color: selected ? '#ff4d2d' : 'var(--text-muted)' }) : <span style={{ fontSize: 20, lineHeight: 1 }}>{emoji}</span>}</div><div><p className='text-sm font-semibold leading-tight' style={{ color: 'var(--text-primary)' }}>{t(`auth.roles.${key}.label`, { defaultValue: key === 'admin' ? 'Admin' : key })}</p><p className='mt-0.5 text-xs' style={{ color: 'var(--text-muted)' }}>{t(`auth.roles.${key}.desc`, { defaultValue: key === 'admin' ? 'Run the platform and manage every user' : '' })}</p></div>{selected && <FiCheck className='ml-auto' size={16} style={{ color: '#ff4d2d' }} />}</button> })}</div>{adminSlots && <p className='mt-2 text-xs' style={{ color: 'var(--text-muted)' }}>{t('auth.adminSeats', { defaultValue: 'Admin seats' })}: {adminSlots.current}/{adminSlots.max}{adminSlots.full ? ' — full' : ''}</p>}</div>
+      <button className='btn-glow w-full cursor-pointer py-3' onClick={handleSignUp} disabled={loading}>{loading ? <ClipLoader size={20} color='white' /> : 'Sign Up'}</button>
       {err && <p className='my-[10px] text-center text-red-500'>*{err}</p>}
       <button className='mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-gray-400 px-4 py-3 hover:bg-gray-100' onClick={handleGoogleAuth}><FcGoogle size={20} /><span>Sign up with Google</span></button>
       <p className='mt-6 cursor-pointer text-center' onClick={() => navigate('/signin')}>Already have an account? <span className='text-[#ff4d2d]'>Sign In</span></p>

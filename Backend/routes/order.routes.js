@@ -8,7 +8,6 @@ const { acceptOrder, getCurrentOrder, getDeliveryBoyAssignment, getMyOrders, get
 const orderRouter=express.Router()
 
 orderRouter.post("/place-order",isAuth,placeOrder)
-// orderRouter.post("/verify-payment",isAuth,verifyPayment)
 orderRouter.post("/verify-payment",isAuth,verifyPayment)
 orderRouter.get("/my-orders",isAuth,getMyOrders)
 orderRouter.get("/get-assignments",isAuth,getDeliveryBoyAssignment)
@@ -22,5 +21,4 @@ orderRouter.get('/get-order-by-id/:orderId',isAuth,getOrderById)
 orderRouter.get('/get-today-deliveries',isAuth,getTodayDeliveries)
 orderRouter.get('/cancel-assignment/:assignmentId',isAuth,cancelAssignment)
 orderRouter.post('/cancel-order/:orderId/:shopOrderId',isAuth,cancelOrder)
-// orderRouter.post("/cancel-delivery/:assignmentId", isAuth, cancelDeliveryByBoy)
 module.exports=orderRouter

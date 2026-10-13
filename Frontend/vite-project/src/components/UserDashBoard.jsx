@@ -14,6 +14,7 @@ import FoodCard from '../components/FoodCard'
 import CategoryCard from '../components/CategoryCard'
 import { categories } from '../category'
 import useMySchedules from '../hooks/useMySchedules.js'
+import useScrollReveal from '../hooks/useScrollReveal.js'
 import useRescueImpact from '../hooks/useRescueImpact.js'
 import { serverUrl } from '../App'
 
@@ -33,6 +34,11 @@ function UserDashboard() {
 
   const schedules = useMySchedules()
   const impact = useRescueImpact()
+
+  /* Section-level reveals: each block eases in as it scrolls into view. */
+  const bentoRef = useScrollReveal({ delay: '0ms' })
+  const cravingsRef = useScrollReveal()
+  const findsRef = useScrollReveal({ delay: '100ms' })
 
   const [vendors, setVendors] = useState([])
   const cateScrollRef = useRef(null)
@@ -107,7 +113,7 @@ function UserDashboard() {
 
         {/* ============ Search results ============ */}
         {searchItems && searchItems.length > 0 && (
-          <section className='card grain animate-rise-in mt-8 p-6'>
+          <section className='card grain animate-rise-in mt-8 p-6 card-3d'>
             <h2 className='t-title'>{t('dashboard.searchResults')}</h2>
             <div className='mt-4 flex flex-wrap gap-5'>
               {searchItems.map(item => <FoodCard data={item} key={item._id} />)}
@@ -116,7 +122,7 @@ function UserDashboard() {
         )}
 
         {/* ============ The bento market board ============ */}
-        <div className='mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-[auto_auto] stagger'>
+        <div ref={bentoRef} className='mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-[auto_auto] stagger'>
 
           {/* --- Tonight's kitchens (eat, wide) --- */}
           <section className='tile tile-eat grain lg:col-span-3 p-6'>
@@ -246,7 +252,7 @@ function UserDashboard() {
             </p>
             <div className='mt-4 flex -space-x-2' aria-hidden='true'>
               {['A', 'R', 'M', '+'].map((letter, index) => (
-                <span key={index} className='flex h-8 w-8 items-center justify-center rounded-full border-2 text-[11px] font-black'
+                <span key={index} className='flex h-8 w-8 items-center justify-center rounded-full border-2 text-[11px] font-black stagger-item'
                   style={{ borderColor: 'var(--bg)', background: index === 3 ? 'var(--accent)' : 'var(--surface-3)', color: index === 3 ? 'var(--accent-ink)' : 'var(--ink-soft)' }}>
                   {letter}
                 </span>
@@ -269,7 +275,7 @@ function UserDashboard() {
             {activeRituals.length ? (
               <ul className='mt-4 space-y-2'>
                 {activeRituals.slice(0, 4).map(slot => (
-                  <li key={slot.mealType} className='flex items-center gap-2.5 rounded-xl px-3 py-2' style={{ background: 'var(--surface-2)' }}>
+                  <li key={slot.mealType} className='flex items-center gap-2.5 rounded-xl px-3 py-2 stagger-item' style={{ background: 'var(--surface-2)' }}>
                     <span className='text-lg'>{MEAL_ICONS[slot.mealType] || '🍽️'}</span>
                     <span className='flex-1 truncate text-sm font-semibold capitalize'>{t(`schedule.${slot.mealType}`, slot.mealType)}</span>
                     <span className='flex items-center gap-1 text-xs font-bold' style={{ color: 'var(--plan)' }}>
@@ -296,7 +302,7 @@ function UserDashboard() {
         <section className='mt-12'>
           <p className='t-eyebrow'>{t('dashboard.curatedForYou')}</p>
           <div className='mt-2 flex items-end justify-between gap-3'>
-            <h2 className='section-heading'>{t('dashboard.cravingTitle')}</h2>
+            <h2 ref={cravingsRef} className='section-heading'>{t('dashboard.cravingTitle')}</h2>
             <div className='flex gap-2'>
               <button onClick={() => scrollCate('left')} aria-label='Scroll categories left'
                 className='flex h-9 w-9 items-center justify-center rounded-full border transition-colors active:scale-95'
@@ -323,7 +329,7 @@ function UserDashboard() {
           <p className='t-eyebrow flex items-center gap-1.5'>
             <HiOutlineSparkles /> {t('home.findsEyebrow', { defaultValue: 'Fresh in the stalls' })}
           </p>
-          <h2 className='section-heading mt-2'>{t('dashboard.suggestedFood')}</h2>
+          <h2 ref={findsRef} className='section-heading mt-2'>{t('dashboard.suggestedFood')}</h2>
           <div className='mt-5 flex flex-wrap justify-center gap-5 sm:justify-start'>
             {updatedItemsList?.map(item => <FoodCard key={item._id} data={item} />)}
           </div>

@@ -2,15 +2,19 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { serverUrl } from '../App'
 import { updateRealtimeOrderStatus } from '../redux/userSlice'
-import { HiOutlineReceiptPercent } from 'react-icons/hi2'
+import { HiOutlineReceiptPercent, HiOutlineFire } from 'react-icons/hi2'
+import RecipeCard from './RecipeCard.jsx'
 
 function UserOrderCard({ data }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const [selectedRating, setSelectedRating] = useState({}) // itemId:rating
   const [cancellingId, setCancellingId] = useState("")
+  const [recipeItem, setRecipeItem] = useState(null)
 
   const formatDate = (datestring) => {
     const date = new Date(datestring)
@@ -27,6 +31,19 @@ function UserOrderCard({ data }) {
     if (status === 'out of delivery') return 'badge-brand'
     return 'badge-warning'
   }
+
+  /* The API can hand `shopOrders` back as a single object, so normalise once and
+     read every status from that list. */
+  const shopOrderList = Array.isArray(data?.shopOrders)
+    ? data.shopOrders
+    : data?.shopOrders ? [data.shopOrders] : []
+
+  /* Tracking is only meaningful while a rider is actually carrying the food:
+     a cancelled or fully delivered order has nothing left to follow. */
+  const isCancelled = shopOrderList.some(shopOrder => shopOrder?.status === 'cancelled') || data?.status === 'cancelled'
+  const isDelivered = (shopOrderList.length > 0 && shopOrderList.every(shopOrder => shopOrder?.status === 'delivered')) || data?.status === 'delivered'
+  const isOutForDelivery = shopOrderList.some(shopOrder => shopOrder?.status === 'out of delivery')
+  const canTrack = !isCancelled && !isDelivered && isOutForDelivery
 
   const handleRating = async (itemId, rating) => {
     const isAlreadySelected = selectedRating[itemId] === rating
@@ -60,8 +77,8 @@ function UserOrderCard({ data }) {
   }
 
   return (
-    <article className='grain card card-hover p-4 space-y-4'>
-      <div className='flex justify-between gap-3 border-b pb-3' style={{ borderColor: 'var(--border)' }}>
+    <article className='grain card card-3d card-hover card-3d p-4 space-y-4'>
+      <div className='flex flex-wrap justify-between items-start gap-3 border-b pb-3' style={{ borderColor: 'var(--border)' }}>
         <div>
           <p className='font-bold'>
             <span className='t-eyebrow mr-1.5'>Order</span>#{data._id.slice(-6)}
@@ -83,13 +100,13 @@ function UserOrderCard({ data }) {
         </div>
       </div>
 
-      {data.shopOrders.map((shopOrder, index) => (
+      {shopOrderList.map((shopOrder, index) => (
         <div className='rounded-2xl p-3 space-y-3' style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }} key={index}>
           <p className='font-bold'>{shopOrder.shop.name}</p>
 
           <div className='flex space-x-3 overflow-x-auto pb-2'>
             {shopOrder.shopOrderItems.map((item, index) => (
-              <div key={index} className='w-40 flex-shrink-0 rounded-2xl p-2' style={{ background: 'var(--surface-1)', border: '1px solid var(--border)' }}>
+              <div key={index} className='w-40 flex-shrink-0 rounded-2xl p-2 stagger-item' style={{ background: 'var(--surface-1)', border: '1px solid var(--border)' }}>
                 <img src={item.item.image} alt="" className='h-24 w-full rounded-xl object-cover' />
                 <p className='mt-1 text-sm font-bold'>{item.name}</p>
                 <p className='text-xs' style={{ color: 'var(--ink-muted)' }}>Qty: {item.quantity} × ₹{item.price}</p>
@@ -106,6 +123,17 @@ function UserOrderCard({ data }) {
                       >★</button>
                     ))}
                   </div>
+                )}
+
+                {/* A delivered dish is a recipe waiting to happen */}
+                {shopOrder.status == "delivered" && (
+                  <button
+                    onClick={() => setRecipeItem(item.name)}
+                    className='mt-2 flex items-center gap-1 text-[11px] font-bold transition-transform active:scale-95'
+                    style={{ color: 'var(--vendor)' }}
+                  >
+                    <HiOutlineFire size={12} /> {t('recipe.cookItYourself')} →
+                  </button>
                 )}
               </div>
             ))}
@@ -130,11 +158,21 @@ function UserOrderCard({ data }) {
         </div>
       ))}
 
-      <div className='flex justify-between items-center border-t pt-3' style={{ borderColor: 'var(--border)' }}>
+      <div className='flex flex-wrap justify-between items-center gap-3 border-t pt-3' style={{ borderColor: 'var(--border)' }}>
         <p className='font-display text-lg font-black' style={{ fontFamily: 'var(--font-display)' }}>₹{data.totalAmount}</p>
-        <button className='btn-primary !px-4 !py-2 text-xs' onClick={() => navigate(`/track-order/${data._id}`)}>Track order</button>
+        <div className='flex items-center gap-2'>
+          {canTrack && (
+            <button className='btn-primary !px-4 !py-2 text-xs' onClick={() => navigate(`/track-order/${data._id}`)}>
+              {t('orders.trackOrder', 'Track order')}
+            </button>
+          )}
+          {isCancelled && (
+            <span className='badge badge-danger px-4 py-1.5'>{t('orders.cancelled', 'Cancelled')}</span>
+          )}
+        </div>
       </div>
 
+      <RecipeCard itemName={recipeItem} isOpen={!!recipeItem} onClose={() => setRecipeItem(null)} />
     </article>
   )
 }

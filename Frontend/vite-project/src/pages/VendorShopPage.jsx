@@ -11,9 +11,12 @@ import { dm } from '../api/dm'
 import {
   HiOutlineStar, HiOutlineMapPin, HiOutlineMinus, HiOutlinePlus,
   HiOutlineShoppingBag, HiOutlineCheck, HiOutlineTrash, HiOutlineArrowLeft,
-  HiOutlineChatBubbleLeftRight, HiOutlineShieldCheck, HiOutlineCheckBadge
+  HiOutlineChatBubbleLeftRight, HiOutlineShieldCheck, HiOutlineCheckBadge,
+  HiOutlineInformationCircle, HiOutlineFire, HiOutlineBuildingStorefront
 } from 'react-icons/hi2'
 import { FaWhatsapp } from 'react-icons/fa6'
+import NutritionCard from '../components/NutritionCard.jsx'
+import RecipeCard from '../components/RecipeCard.jsx'
 
 const STATUS_STYLES = {
   pending: 'badge-warning',
@@ -28,8 +31,10 @@ const STATUS_STYLES = {
 function ProduceCard({ listing, qty, onSet, name, t, onNegotiate }) {
   const max = listing.availableQuantity || 0
   const out = max <= 0
+  const [showNutrition, setShowNutrition] = useState(false)
+  const [showRecipe, setShowRecipe] = useState(false)
   return (
-    <article className='card card-hover grain flex flex-col overflow-hidden'>
+    <article className='card card-hover card-3d grain flex flex-col overflow-hidden'>
       {listing.image ? (
         <div className='relative h-40 w-full overflow-hidden'>
           <img src={listing.image} alt={listing.name} loading='lazy'
@@ -65,6 +70,26 @@ function ProduceCard({ listing, qty, onSet, name, t, onNegotiate }) {
         {listing.freshnessNote && (
           <p className='mt-2 line-clamp-2 text-xs italic' style={{ color: 'var(--rescue)' }}>"{listing.freshnessNote}"</p>
         )}
+
+        {/* ---- AI reads on this harvest ---- */}
+        <div className='mt-2.5 flex flex-wrap gap-1.5'>
+          <button
+            onClick={() => setShowNutrition(true)}
+            aria-label={`${t('nutrition.title')} — ${name}`}
+            className='flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-bold transition-transform active:scale-95'
+            style={{ borderColor: 'var(--border-strong)', color: 'var(--ink-soft)' }}
+          >
+            <HiOutlineInformationCircle size={13} /> {t('nutrition.button')}
+          </button>
+          <button
+            onClick={() => setShowRecipe(true)}
+            aria-label={`${t('recipe.whatCanIMake')} — ${name}`}
+            className='flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-bold transition-transform active:scale-95'
+            style={{ borderColor: 'var(--border-strong)', color: 'var(--vendor)' }}
+          >
+            <HiOutlineFire size={13} /> {t('recipe.whatCanIMake')}
+          </button>
+        </div>
 
         <div className='mt-auto pt-4'>
           {onNegotiate && listing.negotiable && !out && (
@@ -115,6 +140,10 @@ function ProduceCard({ listing, qty, onSet, name, t, onNegotiate }) {
           </div>
         </div>
       </div>
+
+      {/* Ask the AI in English (the listing's canonical name), not the localised label */}
+      <NutritionCard itemName={listing.name || name} isOpen={showNutrition} onClose={() => setShowNutrition(false)} />
+      <RecipeCard itemName={listing.name || name} isOpen={showRecipe} onClose={() => setShowRecipe(false)} />
     </article>
   )
 }
@@ -250,7 +279,7 @@ function VendorShopPage() {
     return (
       <div className='min-h-screen lg:pl-[76px]'>
         <MarketNav />
-        <main className='mx-auto max-w-6xl px-4 py-10 sm:px-6'>
+        <main className='mx-auto max-w-6xl px-4 py-6 sm:py-8 lg:py-10 sm:px-6'>
           <div className='skeleton h-12 w-64' />
           <div className='skeleton mt-6 h-56 w-full' style={{ borderRadius: 'var(--radius-xl)' }} />
           <div className='mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
@@ -287,7 +316,7 @@ function VendorShopPage() {
         </button>
 
         {error && !vendor && (
-          <div className='card grain p-10 text-center' style={{ color: 'var(--ink-muted)' }}>{error}</div>
+          <div className='card grain p-5 sm:p-8 lg:p-10 text-center card-3d' style={{ color: 'var(--ink-muted)' }}>{error}</div>
         )}
 
         {/* ============ The stall: story header ============ */}
@@ -334,6 +363,14 @@ function VendorShopPage() {
                 </span>
               </div>
 
+              {/* Anyone can open a stall of their own — the way in sits on the
+                  vendor's profile card, for every role that is not a vendor. */}
+              {userData?.role !== 'vendor' && (
+                <button onClick={() => navigate('/vendor-portal')} className='link-brand mt-3 inline-flex items-center gap-1.5 text-sm'>
+                  <HiOutlineBuildingStorefront size={15} /> {t('vendor.joinCard', 'Join as a vendor')}
+                </button>
+              )}
+
               {(vendor.freshnessNote || listings.some(l => l.freshnessNote)) && (
                 <blockquote className='mt-5 rounded-2xl border-l-4 p-4'
                   style={{ borderColor: 'var(--vendor)', background: 'var(--vendor-soft)' }}>
@@ -345,7 +382,7 @@ function VendorShopPage() {
               )}
 
               {/* ============ Farmer trust card ============ */}
-              <div className='grain card mt-5 p-4'>
+              <div className='grain card card-3d mt-5 p-4'>
                 <div className='flex flex-wrap items-center gap-2'>
                   <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--vendor)' }}>
                     <HiOutlineShieldCheck size={14} /> The farmer
@@ -391,7 +428,7 @@ function VendorShopPage() {
                 </div>
                 <div className='mt-4 flex gap-4 overflow-x-auto pb-2'>
                   {freshArrivals.map(listing => (
-                    <div key={listing._id} className='w-[270px] shrink-0'>
+                    <div key={listing._id} className='w-full min-w-0 max-w-[270px] shrink-0'>
                       <ProduceCard listing={listing} qty={basket[listing._id] || 0} onSet={setQty} name={listingName(listing)} t={t} onNegotiate={startNegotiation} />
                     </div>
                   ))}
@@ -411,7 +448,7 @@ function VendorShopPage() {
               </div>
 
               {showOrders && myOrders.length > 0 && (
-                <div className='card animate-fade-in mt-4 divide-y p-2' style={{ borderColor: 'var(--border)' }}>
+                <div className='card animate-fade-in mt-4 divide-y p-2 card-3d' style={{ borderColor: 'var(--border)' }}>
                   {myOrders.map(order => (
                     <div key={order._id} className='flex flex-wrap items-center gap-3 p-4'>
                       <div className='min-w-0 flex-1'>
@@ -442,7 +479,7 @@ function VendorShopPage() {
               </div>
 
               {listings.length === 0 && (
-                <div className='card mt-4 p-12 text-center'>
+                <div className='card mt-4 p-12 text-center card-3d'>
                   <span className='text-4xl' aria-hidden='true'>🧺</span>
                   <p className='mt-3' style={{ color: 'var(--ink-muted)' }}>{t('vendor.noListings')}</p>
                 </div>
@@ -451,7 +488,7 @@ function VendorShopPage() {
 
             {/* ============ Rate the stall ============ */}
             {userData?.role === 'user' && (
-              <section className='card grain mt-10 p-6'>
+              <section className='card grain mt-10 p-6 card-3d'>
                 <h2 className='t-title'>{t('vendor.rateVendor')}</h2>
                 <div className='mt-3 flex items-center gap-1.5'>
                   {[1, 2, 3, 4, 5].map(star => (

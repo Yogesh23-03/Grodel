@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { HiMinus, HiPlus } from 'react-icons/hi2'
-import { HiOutlineStar } from 'react-icons/hi2'
+import { HiOutlineStar, HiOutlineInformationCircle, HiOutlineFire } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart } from '../redux/userSlice'
 import { useTranslation } from 'react-i18next'
+import NutritionCard from './NutritionCard.jsx'
+import RecipeCard from './RecipeCard.jsx'
 
 /*
  * FoodCard — "crate card"
@@ -16,6 +18,8 @@ function FoodCard({ data }) {
   const { t } = useTranslation()
   const [quantity, setQuantity] = useState(0)
   const [justAdded, setJustAdded] = useState(false)
+  const [showNutrition, setShowNutrition] = useState(false)
+  const [showRecipe, setShowRecipe] = useState(false)
   const dispatch = useDispatch()
   const { cartItems } = useSelector(state => state.user)
 
@@ -41,7 +45,7 @@ function FoodCard({ data }) {
   }
 
   return (
-    <article className='card card-hover grain group flex w-[270px] flex-col overflow-hidden rounded-[1.75rem]'>
+    <article className='card card-hover card-3d grain group flex w-full min-w-0 max-w-[270px] flex-col overflow-hidden rounded-[1.75rem]'>
       {/* --- produce photo --- */}
       <div className='relative h-[185px] w-full overflow-hidden'>
         <img
@@ -77,16 +81,52 @@ function FoodCard({ data }) {
             {t('food.added')}
           </span>
         )}
+
+        {/* sale flash — the owner's discount, straight from the menu */}
+        {data.isOnSale && data.discountPercent > 0 && (
+          <span className='absolute bottom-3 right-3 z-10 rounded-full px-2.5 py-1 text-[11px] font-black shadow-md'
+            style={{ background: 'var(--rescue)', color: 'var(--accent-ink)' }}>
+            {data.discountPercent}% {t('owner.off', 'OFF')}
+          </span>
+        )}
       </div>
 
       {/* --- label --- */}
       <div className='flex flex-1 flex-col p-4 pt-3'>
         <h3 className='t-title !text-[1.05rem] leading-snug'>{data.name}</h3>
 
+        {/* ---- the two AI reads: nutrition + recipe ---- */}
+        <div className='mt-2.5 flex flex-wrap gap-1.5'>
+          <button
+            onClick={() => setShowNutrition(true)}
+            aria-label={`${t('nutrition.title')} — ${data.name}`}
+            className='flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-bold transition-transform active:scale-95'
+            style={{ borderColor: 'var(--border-strong)', color: 'var(--ink-soft)' }}
+          >
+            <HiOutlineInformationCircle size={13} /> {t('nutrition.button')}
+          </button>
+          <button
+            onClick={() => setShowRecipe(true)}
+            aria-label={`${t('recipe.title')} — ${data.name}`}
+            className='flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-bold transition-transform active:scale-95'
+            style={{ borderColor: 'var(--border-strong)', color: 'var(--vendor)' }}
+          >
+            <HiOutlineFire size={13} /> {t('recipe.button')}
+          </button>
+        </div>
+
         <div className='mt-auto flex items-end justify-between pt-4'>
-          <p className='font-display text-2xl font-semibold tracking-tight' style={{ fontFamily: 'var(--font-display)' }}>
-            ₹{data.price}
-          </p>
+          <div>
+            <p className='font-display text-2xl font-semibold tracking-tight' style={{ fontFamily: 'var(--font-display)' }}>
+              ₹{data.price}
+            </p>
+            {data.isOnSale && data.originalPrice > data.price && (
+              <p className='mt-0.5 flex items-center gap-1.5 text-xs font-bold'>
+                <span className='line-through' style={{ color: 'var(--ink-faint)' }}>₹{data.originalPrice}</span>
+                <span style={{ color: 'var(--rescue)' }}>{data.discountPercent}% {t('owner.off', 'OFF')}</span>
+              </p>
+            )}
+          </div>
 
           {/* portion dial */}
           {quantity === 0 ? (
@@ -131,6 +171,9 @@ function FoodCard({ data }) {
           )}
         </div>
       </div>
+
+      <NutritionCard itemName={data.name} isOpen={showNutrition} onClose={() => setShowNutrition(false)} />
+      <RecipeCard itemName={data.name} isOpen={showRecipe} onClose={() => setShowRecipe(false)} />
     </article>
   )
 }

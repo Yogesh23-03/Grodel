@@ -120,7 +120,7 @@ function FarmerOrdersPage() {
             <div className='stagger mt-4 space-y-3'>
               {proposedCoops.map(coop => coop.shares?.map((s, i) => (
                 s.status === 'proposed' && (
-                  <div key={`${coop._id}-${i}`} className='grain card p-4' style={{ borderColor: 'var(--accent-2)' }}>
+                  <div key={`${coop._id}-${i}`} className='grain card p-4 card-3d stagger-item' style={{ borderColor: 'var(--accent-2)' }}>
                     <div className='flex flex-wrap items-start justify-between gap-3'>
                       <div>
                         <p className='t-eyebrow' style={{ color: 'var(--accent-2)' }}>Cooperative bulk order</p>
@@ -149,13 +149,13 @@ function FarmerOrdersPage() {
           <h2 className='t-title flex items-center gap-2'><HiOutlineClipboardDocumentList style={{ color: 'var(--vendor)' }} /> Active orders</h2>
           <div className='stagger mt-4 space-y-3'>
             {active.length === 0 && (
-              <div className='grain card p-10 text-center'>
+              <div className='grain card p-10 text-center card-3d'>
                 <span className='text-4xl' aria-hidden='true'>🧺</span>
                 <p className='mt-3 text-sm' style={{ color: 'var(--ink-muted)' }}>No active orders. New ones arrive here with a chime.</p>
               </div>
             )}
-            {active.map(order => (
-              <article key={order._id} className='grain card p-4'>
+            {active.map((order, i) => (
+              <article key={order._id} className='grain card p-4 card-3d stagger-item' style={{ animationDelay: `${i * 80}ms` }}>
                 <div className='flex flex-wrap items-start justify-between gap-3'>
                   <div className='min-w-0'>
                     <p className='font-bold'>{order.customer?.fullName || 'Buyer'}</p>
@@ -216,8 +216,8 @@ function FarmerOrdersPage() {
           <section className='mt-8'>
             <h2 className='t-title'>Completed & closed</h2>
             <div className='mt-4 space-y-2'>
-              {past.slice(0, 12).map(order => (
-                <div key={order._id} className='grain card flex flex-wrap items-center justify-between gap-2 p-3'>
+              {past.slice(0, 12).map((order, i) => (
+                <div key={order._id} className='grain card flex flex-wrap items-center justify-between gap-2 p-3 card-3d stagger-item' style={{ animationDelay: `${i * 80}ms` }}>
                   <p className='text-sm'>
                     <span className='font-bold'>{order.items.map(i => i.name).join(', ')}</span>
                     <span className='ml-2' style={{ color: 'var(--ink-muted)' }}>₹{order.totalAmount}</span>

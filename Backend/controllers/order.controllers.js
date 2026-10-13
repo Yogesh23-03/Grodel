@@ -25,11 +25,24 @@ let instance = new RazorPay({
 const placeOrder = async (req, res) => {
     try {
         const { cartItems, paymentMethod, deliveryAddress, totalAmount } = req.body
-        if (cartItems.length == 0 || !cartItems) {
+        /* Array check first: the old guard read cartItems.length before checking
+           that cartItems existed, so a missing field threw and answered 500. */
+        if (!Array.isArray(cartItems) || cartItems.length === 0) {
             return res.status(400).json({ message: "cart is empty" })
         }
-        if (!deliveryAddress.text || !deliveryAddress.latitude || !deliveryAddress.longitude) {
-            return res.status(400).json({ message: "send complete deliveryAddress" })
+
+        /* A location is only usable when the address text and a real pair of
+           coordinates arrive. 0/0 is the "never captured" sentinel accounts are
+           created with, so it must not count as a placeable address. */
+        const rawLat = deliveryAddress?.latitude
+        const rawLon = deliveryAddress?.longitude
+        const lat = Number(rawLat)
+        const lon = Number(rawLon)
+        const isPresent = value => value !== null && value !== undefined && value !== ""
+        const hasCoordinates = isPresent(rawLat) && isPresent(rawLon)
+            && Number.isFinite(lat) && Number.isFinite(lon) && !(lat === 0 && lon === 0)
+        if (!deliveryAddress?.text || !hasCoordinates) {
+            return res.status(400).json({ message: "Add a delivery address and pick a location on the map" })
         }
 
         const groupItemsByShop = {}
@@ -121,12 +134,9 @@ const placeOrder = async (req, res) => {
 
         return res.status(201).json(newOrder)
     } catch (error) {
-         {
-  console.log(error.response?.data);
-  console.log(error.response?.status);
-
+        console.error("PLACE ORDER ERROR:", error.response?.data || error.message)
+        return res.status(500).json({ message: "Could not place the order" })
     }
-}
 }
 const verifyPayment = async (req, res) => {
     try {
@@ -542,7 +552,7 @@ const getCurrentOrder = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error.message)
+        console.error("GET CURRENT ORDER ERROR:", error.message)
         return res.status(500).json({ message: `get current order error ${error.message}` })
     }
 }

@@ -17,12 +17,17 @@ import { HiOutlineArrowLeft } from 'react-icons/hi2';
 import MarketNav from '../components/MarketNav.jsx';
 
 function RecenterMap({ location }) {
-  if (location.lat && location.lon) {
-    const map = useMap()
-    map.setView([location.lat, location.lon], 16, { animate: true })
-  }
+  // useMap() MUST be called unconditionally: calling it inside the `if`
+  // changed the hook count between renders and crashed the page with
+  // "Rendered more hooks than during the previous render" as soon as a
+  // location was picked. The recentre itself belongs in an effect.
+  const map = useMap()
+  useEffect(() => {
+    if (location?.lat && location?.lon) {
+      map.setView([location.lat, location.lon], 16, { animate: true })
+    }
+  }, [map, location?.lat, location?.lon])
   return null
-
 }
 
 function CheckOut() {
@@ -31,11 +36,28 @@ function CheckOut() {
   const { cartItems, totalAmount, userData } = useSelector(state => state.user)
   const [addressInput, setAddressInput] = useState("")
   const [paymentMethod, setPaymentMethod] = useState("cod")
+  const [placing, setPlacing] = useState(false)
+  const [checkoutError, setCheckoutError] = useState("")
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const apiKey = import.meta.env.VITE_GEOAPIKEY
   const deliveryFee = totalAmount > 500 ? 0 : 40
   const AmountWithDeliveryFee = totalAmount + deliveryFee
+
+  /* The map slice starts at { lat: null, lon: null }, and Leaflet throws
+     "Invalid LatLng object" if it is handed null — which unmounted this whole
+     page for every customer who had not picked a location yet. Fall back to the
+     customer's saved coordinates, then to a city centre, and only place the
+     draggable pin once a real position exists. */
+  const savedCoords = userData?.location?.coordinates
+  const fallbackCenter = (Array.isArray(savedCoords) && Number.isFinite(savedCoords[0]) && Number.isFinite(savedCoords[1]) && (savedCoords[0] !== 0 || savedCoords[1] !== 0))
+    ? [savedCoords[1], savedCoords[0]]
+    : [12.9716, 77.5946]
+  /* New accounts are stored with coordinates [0, 0] until a location is ever
+     captured, so 0/0 has to count as "not set" here — otherwise the pin lands
+     in the Atlantic and the order is rejected for having no real location. */
+  const hasLocation = Number.isFinite(location?.lat) && Number.isFinite(location?.lon) && (location.lat !== 0 || location.lon !== 0)
+  const mapCenter = hasLocation ? [location.lat, location.lon] : fallbackCenter
 
   const onDragEnd = (e) => {
     const { lat, lng } = e.target._latlng
@@ -58,24 +80,54 @@ function CheckOut() {
     }
   }
 
+  /* Returns the resolved coordinates (or null) so the checkout can finish the
+     order right after geocoding, instead of posting an empty location and
+     getting a 400 back. */
   const getLatLngByAddress = async () => {
     try {
       const result = await axios.get(`https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(addressInput)}&apiKey=${apiKey}`)
-      const { lat, lon } = result.data.features[0].properties
+      const found = result.data?.features?.[0]?.properties
+      if (!found) return null
+      const { lat, lon } = found
       dispatch(setLocation({ lat, lon }))
+      return { lat, lon }
     } catch (error) {
       console.log(error)
+      return null
     }
   }
 
   const handlePlaceOrder = async () => {
+    if (placing) return
+    if (!cartItems?.length) {
+      setCheckoutError(t('checkout.emptyBasket', 'Your basket is empty'))
+      return
+    }
+    if (!addressInput.trim()) {
+      setCheckoutError(t('checkout.needAddress', 'Add a delivery address'))
+      return
+    }
+
+    setPlacing(true)
+    setCheckoutError('')
+
+    /* No pin yet? Try the address the customer typed before giving up — this
+       used to be a silent 400 with nothing on screen at all. */
+    let coords = hasLocation ? { lat: location.lat, lon: location.lon } : null
+    if (!coords) coords = await getLatLngByAddress()
+    if (!coords) {
+      setPlacing(false)
+      setCheckoutError(t('checkout.needLocation', 'Search your address or drop the pin on the map so we know where to deliver'))
+      return
+    }
+
     try {
       const result = await axios.post(`${serverUrl}/api/order/place-order`, {
         paymentMethod,
         deliveryAddress: {
           text: addressInput,
-          latitude: location.lat,
-          longitude: location.lon
+          latitude: coords.lat,
+          longitude: coords.lon
         },
         totalAmount: AmountWithDeliveryFee,
         cartItems
@@ -91,6 +143,9 @@ function CheckOut() {
       }
     } catch (error) {
       console.log(error)
+      setCheckoutError(error?.response?.data?.message || t('checkout.placeFailed', 'Could not place the order. Please try again.'))
+    } finally {
+      setPlacing(false)
     }
   }
 
@@ -127,7 +182,7 @@ function CheckOut() {
   return (
     <div className='min-h-screen lg:pl-[76px]'>
       <MarketNav />
-      <main className='mx-auto w-full max-w-[900px] px-4 pb-16 pt-6 sm:px-6'>
+      <main className='mx-auto w-full max-w-[900px] px-4 pb-20 pt-6 sm:px-6'>
         <header className='flex items-center gap-3'>
           <button onClick={() => navigate("/")} className='btn-ghost !h-10 !w-10 !p-0' aria-label={t('common.back', 'Back')}>
             <HiOutlineArrowLeft size={18} />
@@ -138,11 +193,11 @@ function CheckOut() {
           </div>
         </header>
 
-        <div className='grain card mt-6 space-y-7 p-5 sm:p-6'>
+        <div className='grain card card-3d mt-6 space-y-7 p-5 sm:p-6'>
           <section>
             <h2 className='t-title flex items-center gap-2'><IoLocationSharp style={{ color: 'var(--accent-2)' }} /> {t('checkout.deliveryLocation', 'Delivery location')}</h2>
             <div className='mt-3 flex gap-2'>
-              <input type="text" className='flex-1 px-3 py-2 text-sm' placeholder={t('checkout.addressPlaceholder', 'Enter your delivery address…')} value={addressInput} onChange={(e) => setAddressInput(e.target.value)} />
+              <input type="text" className='w-full min-w-0 flex-1 px-3 py-2 text-sm' placeholder={t('checkout.addressPlaceholder', 'Enter your delivery address…')} value={addressInput} onChange={(e) => setAddressInput(e.target.value)} />
               <button className='btn-ghost !px-3.5 !py-2' onClick={getLatLngByAddress} aria-label={t('checkout.searchAddress', 'Search address')}><IoSearchOutline size={17} /></button>
               <button className='btn-ghost !px-3.5 !py-2' onClick={getCurrentLocation} aria-label={t('checkout.useCurrent', 'Use current location')}><TbCurrentLocation size={17} /></button>
             </div>
@@ -150,7 +205,7 @@ function CheckOut() {
               <div className='h-64 w-full'>
                 <MapContainer
                   className={"w-full h-full"}
-                  center={[location?.lat, location?.lon]}
+                  center={mapCenter}
                   zoom={16}
                 >
                   <TileLayer
@@ -158,7 +213,9 @@ function CheckOut() {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                   <RecenterMap location={location} />
-                  <Marker position={[location?.lat, location?.lon]} draggable eventHandlers={{ dragend: onDragEnd }} />
+                  {hasLocation && (
+                    <Marker position={[location.lat, location.lon]} draggable eventHandlers={{ dragend: onDragEnd }} />
+                  )}
                 </MapContainer>
               </div>
             </div>
@@ -203,7 +260,7 @@ function CheckOut() {
             <h2 className='t-title'>{t('checkout.summary', 'Order summary')}</h2>
             <div className='mt-3 space-y-2 rounded-2xl p-4' style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
               {cartItems.map((item, index) => (
-                <div key={index} className='flex justify-between text-sm' style={{ color: 'var(--ink-soft)' }}>
+                <div key={index} className='flex justify-between text-sm stagger-item' style={{ color: 'var(--ink-soft)' }}>
                   <span>{item.name} x {item.quantity}</span>
                   <span>₹{item.price * item.quantity}</span>
                 </div>
@@ -224,8 +281,17 @@ function CheckOut() {
             </div>
           </section>
 
-          <button className='btn-primary w-full' onClick={handlePlaceOrder}>
-            {paymentMethod == "cod" ? t('checkout.placeOrder') : t('checkout.payOnline')}
+          {checkoutError && (
+            <p className='rounded-2xl px-4 py-3 text-sm font-semibold' role='alert'
+              style={{ background: 'var(--danger-soft)', color: 'var(--danger)', border: '1px solid var(--danger)' }}>
+              {checkoutError}
+            </p>
+          )}
+
+          <button className='btn-primary w-full' onClick={handlePlaceOrder} disabled={placing || !cartItems?.length}>
+            {placing
+              ? t('checkout.placing', 'Placing your order…')
+              : paymentMethod == "cod" ? t('checkout.placeOrder') : t('checkout.payOnline')}
           </button>
         </div>
       </main>

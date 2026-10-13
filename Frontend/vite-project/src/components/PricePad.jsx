@@ -16,7 +16,7 @@ function PricePad({ price, onPriceChange, onSpeak, speakDisabled, readingPrice }
   const buttons = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
   return (
-    <div className='bg-white shadow-lg rounded-2xl border border-gray-100 w-full'>
+    <div className='glass-card border border-gray-100 w-full card-3d'>
       <div className='w-full text-center text-2xl font-bold text-[#07111c] py-3 rounded-t-xl bg-[#fff9f6]'>
         ₹ {price ? price : 0}
       </div>

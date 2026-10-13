@@ -58,7 +58,7 @@ function OwnerOrderCard({ data }) {
   const locked = shopOrder?.status === 'delivered' || shopOrder?.status === 'cancelled'
 
   return (
-    <article className='grain card p-5'>
+    <article className='grain card card-3d p-5'>
       <div className='flex flex-wrap items-start justify-between gap-3'>
         <div className='min-w-0'>
           <p className='notranslate font-bold'>{data.user?.fullName || data.user?.name || 'Customer'}</p>
@@ -80,7 +80,7 @@ function OwnerOrderCard({ data }) {
 
       <div className='mt-3 flex gap-2 overflow-x-auto pb-2'>
         {shopOrder?.shopOrderItems?.map((item, index) => (
-          <div key={index} className='w-32 shrink-0 overflow-hidden rounded-xl' style={{ border: '1px solid var(--border)' }}>
+          <div key={index} className='w-32 shrink-0 overflow-hidden rounded-xl stagger-item' style={{ border: '1px solid var(--border)' }}>
             <img src={item.item?.image} alt='' className='h-20 w-full object-cover' />
             <div className='p-2'>
               <p className='truncate text-xs font-bold'>{item.name}</p>

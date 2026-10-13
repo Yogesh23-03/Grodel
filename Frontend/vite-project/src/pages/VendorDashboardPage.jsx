@@ -8,7 +8,8 @@ import MarketNav from '../components/MarketNav.jsx'
 import PricePad from '../components/PricePad.jsx'
 import {
   FaPlus, FaMinus, FaTrashCan, FaCheck, FaXmark, FaBasketShopping,
-  FaCircleCheck, FaCircleExclamation, FaIndianRupeeSign, FaBoxOpen, FaTruck
+  FaCircleCheck, FaCircleExclamation, FaIndianRupeeSign, FaBoxOpen, FaTruck,
+  FaChartLine, FaMicrophone,
 } from 'react-icons/fa6'
 import { useAudioInstructions } from '../hooks/useAudioInstructions.js'
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition.js'
@@ -45,8 +46,16 @@ function VendorDashboardPage() {
   const [updatingOrderId, setUpdatingOrderId] = useState(null)
   const [showOrders, setShowOrders] = useState(true)
 
+  /* Voice bar: 'command' means the mic is listening for a shop instruction,
+     so the price editor must not swallow that transcript. */
+  const [voiceMode, setVoiceMode] = useState('idle')
+  const [voiceBusy, setVoiceBusy] = useState(false)
+  const [voiceHeard, setVoiceHeard] = useState('')
+  const [voiceReply, setVoiceReply] = useState('')
+  const [commandText, setCommandText] = useState('')
+
   const preferredLanguage = vendorProfile?.preferredLanguage || 'kn'
-  const { transcript, isListening, resetTranscript, startListening } = useSpeechRecognition(preferredLanguage)
+  const { transcript, isListening, resetTranscript, startListening, stopListening } = useSpeechRecognition(preferredLanguage)
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type })
@@ -74,14 +83,48 @@ function VendorDashboardPage() {
   }, [])
 
   useEffect(() => {
-    if (!editingId || !transcript || isListening) return
+    if (!editingId || !transcript || isListening || voiceMode === 'command') return
     axios.post(`${serverUrl}/api/vendor/parse-voice-price`, { transcript, language: preferredLanguage }, { withCredentials: true })
       .then((res) => {
         if (res.data?.price) setEditingPrice(String(res.data.price))
       })
       .catch(() => setError(t('vendor.speakPrice')))
     resetTranscript()
-  }, [transcript, isListening])
+  }, [transcript, isListening, voiceMode])
+
+  /* Speak to your shop: the reply is read aloud, then we refresh what changed. */
+  const runVoiceCommand = async (text) => {
+    const command = String(text || '').trim()
+    if (!command) return
+    setVoiceBusy(true)
+    setVoiceHeard(command)
+    setVoiceReply('')
+    setError('')
+    try {
+      const res = await axios.post(`${serverUrl}/api/vendor/voice-command`, { transcript: command }, { withCredentials: true })
+      const said = res.data?.said || ''
+      setVoiceReply(said)
+      if (said) speakText(said, preferredLanguage)
+      if (res.data?.action === 'open' || res.data?.action === 'close' || res.data?.action === 'fresh') {
+        setVendorProfile((prev) => ({ ...prev, isActive: res.data.isActive, isFreshToday: res.data.isFreshToday }))
+      } else if (['price', 'stock', 'orders'].includes(res.data?.action)) {
+        loadAll()
+      }
+    } catch (err) {
+      const message = err.response?.data?.message || t('vendor.voiceCommandFailed')
+      setError(message)
+      setVoiceReply(message)
+    } finally {
+      setVoiceBusy(false)
+    }
+  }
+
+  useEffect(() => {
+    if (voiceMode !== 'command' || !transcript || isListening) return
+    setVoiceMode('idle')
+    resetTranscript()
+    runVoiceCommand(transcript)
+  }, [transcript, isListening, voiceMode])
 
   // Realtime: new order + status echoes
   useEffect(() => {
@@ -190,7 +233,7 @@ function VendorDashboardPage() {
     return (
       <div className='min-h-screen bg-[#fff9f6] lg:pl-[76px]'>
         <MarketNav />
-        <main className='mx-auto max-w-6xl px-4 py-10'>
+        <main className='mx-auto max-w-6xl px-4 py-6 pb-20 sm:py-8 lg:py-10 lg:pb-8'>
           <div className='skeleton h-10 w-72' />
           <div className='skeleton mt-6 h-20 w-full rounded-2xl' />
           <div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3'>
@@ -212,9 +255,20 @@ function VendorDashboardPage() {
         </div>
       )}
 
-      <main className='mx-auto max-w-6xl px-4 pb-16 pt-8'>
+      <main className='mx-auto max-w-6xl px-4 pb-20 pt-8'>
         <div className='flex flex-wrap items-center justify-between gap-3'>
-          <h1 className='section-heading'>{t('vendor.dashboard')}</h1>
+          <h1 className='flex items-center gap-3 section-heading'>
+            <span className='chef-bob notranslate text-3xl sm:text-4xl' aria-hidden='true'>👨‍🍳</span>
+            {t('vendor.dashboard')}
+          </h1>
+          <div className='flex items-center gap-2'>
+            <button className='btn-ghost !px-3.5 !py-2 text-xs' onClick={() => navigate('/my-analysis')}>
+              <FaChartLine /> {t('analysis.navLink', 'My analysis')}
+            </button>
+            <button className='btn-ghost !px-3.5 !py-2 text-xs' onClick={() => navigate('/my-bulk-orders')}>
+              {t('bulk.navLink', 'Bulk orders')}
+            </button>
+          </div>
           {error && (
             <p className='rounded-full bg-[#fef2f2] px-4 py-2 text-sm font-semibold text-red-600'>{error}</p>
           )}
@@ -234,23 +288,96 @@ function VendorDashboardPage() {
         {vendorProfile?.isFreshToday && (
           <p className='mt-2 text-sm font-semibold text-green-600'>🌿 {t('vendor.freshToday')}</p>
         )}
-        <p className='mt-1 text-xs text-[#8a7d75]'>{vendorProfile?.isActive ? t('vendor.openHint') : t('vendor.closedHint')}</p>
+        <p className='mt-1 text-xs text-[#8a7d75]'>{vendorProfile?.isActive ? t('vendor.closedHint') : t('vendor.openHint')}</p>
+
+        {/* VOICE BAR — the whole shop can be run by speaking */}
+        <section className='card card-3d mt-5 p-5'>
+          <div className='flex flex-wrap items-center justify-between gap-2'>
+            <h2 className='flex items-center gap-2 text-base font-bold text-[#07111c]'>
+              <FaMicrophone className='text-[#ff4d2d]' /> {t('vendor.voiceBarTitle')}
+            </h2>
+            <span className='text-xs text-[#8a7d75]'>{t('vendor.voiceBarHint')}</span>
+          </div>
+
+          <div className='mt-3 flex flex-wrap items-center gap-2'>
+            <button
+              className={`btn-primary flex items-center gap-2 ${isListening && voiceMode === 'command' ? 'animate-pulse' : ''}`}
+              disabled={voiceBusy}
+              onClick={() => {
+                if (isListening && voiceMode === 'command') {
+                  stopListening()
+                  setVoiceMode('idle')
+                  return
+                }
+                setError('')
+                setVoiceMode('command')
+                resetTranscript()
+                startListening()
+              }}
+            >
+              <FaMicrophone />
+              {isListening && voiceMode === 'command' ? t('vendor.listening') : t('vendor.tapToSpeak')}
+            </button>
+            <input
+              value={commandText}
+              onChange={(event) => setCommandText(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' && commandText.trim()) {
+                  runVoiceCommand(commandText)
+                  setCommandText('')
+                }
+              }}
+              placeholder={t('vendor.orType')}
+              className='glass-input min-w-[200px] flex-1 text-sm'
+            />
+            <button
+              className='btn-ghost !px-4 !py-2.5 text-xs'
+              disabled={voiceBusy || !commandText.trim()}
+              onClick={() => {
+                runVoiceCommand(commandText)
+                setCommandText('')
+              }}
+            >
+              {voiceBusy ? t('vendor.voiceCommandThinking') : t('vendor.voiceRun')}
+            </button>
+          </div>
+
+          <div className='mt-3 flex flex-wrap gap-2'>
+            {[t('vendor.openShopCommand'), t('vendor.closeShopCommand'), t('vendor.earningsCommand'), t('vendor.ordersCommand')].map((example) => (
+              <button
+                key={example}
+                className='rounded-full border border-[#e9e2dc] px-3 py-1.5 text-xs font-semibold text-[#6b5e57] disabled:opacity-50'
+                disabled={voiceBusy}
+                onClick={() => runVoiceCommand(example)}
+              >
+                {example}
+              </button>
+            ))}
+          </div>
+
+          {(voiceHeard || voiceReply) && (
+            <div className='mt-3 rounded-xl bg-[#fff3ee] p-3'>
+              {voiceHeard ? <p className='text-xs text-[#8a7d75]'>{t('vendor.voiceCommandHeard')}: “{voiceHeard}”</p> : null}
+              {voiceReply ? <p className='mt-1 text-sm font-semibold text-[#07111c]'>{voiceReply}</p> : null}
+            </div>
+          )}
+        </section>
 
         {/* STATS ROW */}
         <div className='stagger mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3'>
-          <div className='card p-6 text-center'>
+          <div className='card card-3d p-6 text-center'>
             <p className='flex items-center justify-center gap-1 text-4xl font-black text-[#ff4d2d]'>
               <FaIndianRupeeSign className='text-2xl' />{todayEarnings}
             </p>
             <p className='mt-1 text-sm text-[#8a7d75]'>{t('vendor.todayEarnings')}</p>
           </div>
-          <div className='card p-6 text-center'>
+          <div className='card card-3d p-6 text-center'>
             <p className='flex items-center justify-center gap-1 text-4xl font-black text-[#ff4d2d]'>
               <FaBoxOpen className='text-2xl' />{todayOrders}
             </p>
             <p className='mt-1 text-sm text-[#8a7d75]'>{t('vendor.todayOrders')}</p>
           </div>
-          <div className='card p-6 text-center'>
+          <div className='card card-3d p-6 text-center'>
             <p className='flex items-center justify-center gap-1 text-4xl font-black text-[#ff4d2d]'>
               <FaTruck className='text-2xl' />{vendorProfile?.totalOrders || 0}
             </p>
@@ -273,10 +400,10 @@ function VendorDashboardPage() {
         {showOrders && (
           <div className='mt-4 space-y-3'>
             {activeOrders.length === 0 && (
-              <div className='card p-8 text-center text-sm text-[#8a7d75]'>{t('vendor.noActiveOrders')}</div>
+              <div className='card p-8 text-center text-sm text-[#8a7d75] card-3d'>{t('vendor.noActiveOrders')}</div>
             )}
             {activeOrders.map(order => (
-              <div key={order._id} className='card animate-rise-in p-5'>
+              <div key={order._id} className='card animate-rise-in p-5 card-3d'>
                 <div className='flex flex-wrap items-center gap-3'>
                   <div className='min-w-0 flex-1'>
                     <p className='font-bold'>{order.customer?.fullName || 'Customer'}</p>
@@ -344,7 +471,7 @@ function VendorDashboardPage() {
             ))}
 
             {pastOrders.length > 0 && (
-              <div className='card divide-y divide-[#f3e2d9] p-2'>
+              <div className='card divide-y divide-[#f3e2d9] p-2 card-3d'>
                 <p className='px-3 py-2 text-xs font-bold uppercase tracking-widest text-[#8a7d75]'>{t('vendor.pastOrders')}</p>
                 {pastOrders.map(order => (
                   <div key={order._id} className='flex flex-wrap items-center gap-3 p-3 text-sm'>
@@ -366,7 +493,7 @@ function VendorDashboardPage() {
         <div className='mt-8 flex items-center justify-between'>
           <h2 className='text-2xl font-bold'>{t('vendor.myListings')}</h2>
           <button
-            className='flex h-11 w-11 items-center justify-center rounded-full bg-[#ff4d2d] text-white shadow-[0_6px_18px_rgba(255,77,45,0.35)] transition-transform hover:scale-110 active:scale-95'
+            className='btn-glow flex h-11 w-11 items-center justify-center shadow-[0_6px_18px_rgba(255,77,45,0.35)] transition-transform hover:scale-110 active:scale-95'
             onClick={() => navigate('/vendor/add-produce')}
             aria-label={t('vendor.addProduct')}
           >
@@ -375,14 +502,14 @@ function VendorDashboardPage() {
         </div>
 
         {listings.length === 0 && (
-          <div className='card p-10 text-center text-[#8a7d75] mt-4'>
+          <div className='card p-5 sm:p-8 lg:p-10 text-center text-[#8a7d75] mt-4 card-3d'>
             {t('vendor.noListings')}
           </div>
         )}
 
         <div className='stagger mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
           {listings.map((listing) => (
-            <div key={listing._id} className='card overflow-hidden'>
+            <div key={listing._id} className='card overflow-hidden card-3d'>
               {listing.image && (
                 <div className='relative h-40 w-full overflow-hidden'>
                   <img src={listing.image} alt={listing.name} className='h-full w-full object-cover' />
@@ -431,11 +558,11 @@ function VendorDashboardPage() {
                     <PricePad
                       price={editingPrice}
                       onPriceChange={setEditingPrice}
-                      onSpeak={() => { setError(''); resetTranscript(); startListening(); }}
+                      onSpeak={() => { setVoiceMode('price'); setError(''); resetTranscript(); startListening(); }}
                       speakDisabled={isListening}
                       readingPrice={isListening}
                     />
-                    <button className='mt-2 w-full rounded-full bg-[#ff4d2d] px-4 py-2 text-sm font-bold text-white hover:bg-[#e63e20]' onClick={() => savePrice(listing._id)} disabled={savingId === listing._id}>
+                    <button className='btn-glow mt-2 w-full px-4 py-2 text-sm' onClick={() => savePrice(listing._id)} disabled={savingId === listing._id}>
                       {savingId === listing._id ? t('common.loading') : t('common.save')}
                     </button>
                     <button className='link-brand mt-1 block w-full text-center text-sm' onClick={() => { setEditingId(null); setEditingPrice(''); }}>

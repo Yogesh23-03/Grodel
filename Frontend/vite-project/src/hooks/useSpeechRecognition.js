@@ -22,7 +22,10 @@ export function useSpeechRecognition(language = "kn") {
     }
     try {
       const recognition = new SpeechRecognition();
-      recognition.lang = LANG_CODES[language] || "kn-IN";
+        /* An unsupported language falls back to Indian English rather than
+         Kannada, so a Spanish or German speaker is not recognised in the
+         wrong language entirely. */
+      recognition.lang = LANG_CODES[language] || "en-IN";
       recognition.continuous = false;
       recognition.interimResults = false;
       recognition.onstart = () => setIsListening(true);
@@ -43,8 +46,8 @@ export function useSpeechRecognition(language = "kn") {
   const stopListening = () => {
     try {
       recognitionRef.current?.stop();
-    } catch (err) {
-      // ignore
+    } catch {
+      // ignore — stopping an already stopped recogniser is not an error
     }
     setIsListening(false);
   };

@@ -3,6 +3,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import {Provider} from 'react-redux'
+// Design system first, then the app's own stylesheet so app rules win on ties.
+import './styles/theme.css'
 import './index.css'
 import {store} from './redux/store.js'
 import App from './App.jsx'

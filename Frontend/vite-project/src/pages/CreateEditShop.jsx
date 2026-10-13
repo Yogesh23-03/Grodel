@@ -64,7 +64,7 @@ function CreateEditShop() {
           </div>
         </header>
 
-        <form className='grain card mt-6 space-y-5 p-5 sm:p-6' onSubmit={handleSubmit}>
+        <form className='grain card mt-6 space-y-5 p-5 sm:p-6 card-3d' onSubmit={handleSubmit}>
           <div className='flex items-center gap-4'>
             <span className='mode-eat flex h-14 w-14 items-center justify-center rounded-2xl'>
               <HiOutlineBuildingStorefront className='text-2xl' />

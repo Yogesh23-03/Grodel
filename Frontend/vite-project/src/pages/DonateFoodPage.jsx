@@ -79,7 +79,6 @@ function DonateFoodPage() {
     { key: 'where', done: Boolean(selectedTrustId) },
     { key: 'pickup', done: Boolean(pickupAddress.trim() && pickupTime && expiryTime) }
   ]), [foodItems, selectedTrustId, pickupAddress, pickupTime, expiryTime])
-  const completedSteps = steps.filter(step => step.done).length
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -120,7 +119,7 @@ function DonateFoodPage() {
         </div>
       )}
 
-      <main className='mx-auto max-w-[860px] px-4 pb-16 pt-8 sm:px-6'>
+      <main className='mx-auto max-w-[860px] px-4 pb-20 pt-8 sm:px-6'>
         <button onClick={() => navigate('/')} className='link-brand mb-6 inline-flex items-center gap-2 text-sm'>
           <IoIosArrowRoundBack size={22} /> Back
         </button>
@@ -142,7 +141,7 @@ function DonateFoodPage() {
 
         {/* ===== success state: the story ends well ===== */}
         {confirmed ? (
-          <section className='grain card animate-rise-in p-8 text-center sm:p-12'>
+          <section className='grain card card-3d animate-rise-in p-8 text-center sm:p-12'>
             <span className='mx-auto flex h-16 w-16 items-center justify-center rounded-full' style={{ background: 'var(--rescue-soft)', color: 'var(--rescue)' }}>
               <HiOutlineHeart size={30} />
             </span>
@@ -177,7 +176,7 @@ function DonateFoodPage() {
             {/* step indicator */}
             <ol className='mb-6 flex items-center gap-2' aria-label='donation progress'>
               {steps.map((step, index) => (
-                <li key={step.key} className='flex flex-1 items-center gap-2'>
+                <li key={step.key} className='flex flex-1 items-center gap-2 stagger-item' style={{ animationDelay: `${index * 80}ms` }}>
                   <span className='flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-black'
                     style={step.done
                       ? { background: 'var(--rescue)', color: '#08130c' }

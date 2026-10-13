@@ -1,9 +1,9 @@
 const User = require("../models/user.Model")
 const VendorProfile = require("../models/VendorProfile")
 const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
 const genToken = require("../utils/token")
+const { getAdminSlotInfo } = require("../utils/adminSeats")
 const { sendOtpMail } = require("../utils/mail")
 dotenv.config()
 
@@ -33,6 +33,15 @@ const signUp = async (req, res) => {
             return res.status(400).json({ message: "Mobile no must be at least 10 digits." })
         }
 
+        /* Admin is a capped role: signup refuses the overflow so the platform
+           can never accumulate more admins than the operator allows. */
+        if (role === "admin") {
+            const { full, current, max } = await getAdminSlotInfo()
+            if (full) {
+                return res.status(403).json({ message: `Admin seats are full (${current}/${max})` })
+            }
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10)
 
         user = await User.create({
@@ -54,6 +63,15 @@ const signUp = async (req, res) => {
                 preferredLanguage: vendorLanguage,
                 registeredVia: "web"
             })
+        }
+
+        if (role === "admin") {
+            /* Counted after insert, so ===1 means this account is the founder. */
+            const adminCount = await User.countDocuments({ role: "admin" })
+            if (adminCount === 1) {
+                user.isFirstAdmin = true
+                await user.save()
+            }
         }
 
         const token = await genToken(user._id)
@@ -129,7 +147,7 @@ const sendOtp=async (req,res) => {
     await sendOtpMail(email,otp)
     return res.status(200).json({message:"otp sent successfully"})
   } catch (error) {
-    console.log(error)
+    console.error("AUTH ERROR:", error.message)
      return res.status(500).json(`send otp error ${error}`)
   }  
 }
@@ -173,6 +191,14 @@ const googleAuth=async (req,res) => {
         const {fullName,email,mobile,role,preferredLanguage}=req.body
         let user=await User.findOne({email})
         if(!user){
+            /* Same seat cap as the password path — Google sign-in must not be a
+               way around the admin limit. */
+            if (role === "admin") {
+                const { full, current, max } = await getAdminSlotInfo()
+                if (full) {
+                    return res.status(403).json({ message: `Admin seats are full (${current}/${max})` })
+                }
+            }
             user=await User.create({
                 fullName,email,mobile,role
             })
@@ -187,6 +213,13 @@ const googleAuth=async (req,res) => {
                     preferredLanguage: vendorLanguage,
                     registeredVia: "web"
                 })
+            }
+            if (role === "admin") {
+                const adminCount = await User.countDocuments({ role: "admin" })
+                if (adminCount === 1) {
+                    user.isFirstAdmin = true
+                    await user.save()
+                }
             }
         }
 

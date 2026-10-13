@@ -10,6 +10,7 @@ import SignUp from './pages/SignUp.jsx'
 import SignIn from './pages/SignIn.jsx'
 import ForgotPassword from './pages/ForgotPassword.jsx'
 import Home from './pages/Home.jsx'
+import LandingPage from './pages/LandingPage.jsx'
 import CreateEditShop from './pages/CreateEditShop.jsx'
 import AddItem from './pages/AddItem.jsx'
 import EditItem from './pages/EditItem.jsx'
@@ -43,6 +44,11 @@ import InboxPage from './pages/InboxPage.jsx'
 import BuyerOnboardPage from './pages/BuyerOnboardPage.jsx'
 import BuyerMatchesPage from './pages/BuyerMatchesPage.jsx'
 import BuyerPurchasesPage from './pages/BuyerPurchasesPage.jsx'
+import BulkOrderPage from './pages/BulkOrderPage.jsx'
+import MyBulkOrdersPage from './pages/MyBulkOrdersPage.jsx'
+import BusinessAnalysisPage from './pages/BusinessAnalysisPage.jsx'
+
+import Chatbot from './components/Chatbot.jsx'
 
 import GetCurrentUser from './hooks/GetCurrentUser.jsx'
 import useGetCity from './hooks/GetCity.jsx'
@@ -55,8 +61,23 @@ import useUpdateLocation from './hooks/UseUpdateLocation.jsx'
 import { setSocket } from './redux/userSlice'
 
 // Local dev talks to the Express API on :8000 by default; a deployment just
-// sets VITE_API_URL (e.g. https://api.example.com) — no code change needed.
-export const serverUrl = import.meta.env.VITE_API_URL || "http://localhost:8000"
+// sets VITE_SERVER_URL (e.g. https://api.example.com) — no code change needed.
+// VITE_API_URL is still honoured so existing deploys keep working.
+export const serverUrl = import.meta.env.VITE_SERVER_URL
+  || import.meta.env.VITE_API_URL
+  || "http://localhost:8000"
+
+/*
+ * RoleGuard — role-specific routes used to repeat the same ternary in every
+ * element. Centralising it means a new role-restricted page cannot forget the
+ * check, and a wrong role always lands somewhere sensible instead of a blank
+ * screen.
+ */
+const RoleGuard = ({ allowed, children }) => {
+  const role = useSelector(state => state.user.userData?.role)
+  if (!allowed.includes(role)) return <Navigate to='/home' replace />
+  return children
+}
 
 // Scrolls to top and replays the enter animation on every navigation
 const AnimatedRoutes = ({ userData }) => {
@@ -71,44 +92,50 @@ const AnimatedRoutes = ({ userData }) => {
   return (
     <div key={location.pathname} className='animate-page-fade'>
       <Routes location={location}>
-        <Route path="/signup" element={!userData ? <SignUp /> : <Navigate to="/" />} />
-        <Route path="/signin" element={!userData ? <SignIn /> : <Navigate to="/" />} />
-        <Route path="/forgot-password" element={!userData ? <ForgotPassword /> : <Navigate to="/" />} />
-        <Route path="/" element={userData ? <Home /> : <Navigate to="/signin" />} />
-        <Route path="/create-edit-shop" element={userData ? <CreateEditShop /> : <Navigate to="/signin" />} />
-        <Route path="/add-item" element={userData ? <AddItem /> : <Navigate to="/signin" />} />
-        <Route path="/edit-item/:itemId" element={userData ? <EditItem /> : <Navigate to="/signin" />} />
-        <Route path="/cart" element={userData ? <CartPage /> : <Navigate to="/signin" />} />
-        <Route path="/checkout" element={userData ? <CheckOut /> : <Navigate to="/signin" />} />
-        <Route path="/order-placed" element={userData ? <OrderPlaced /> : <Navigate to="/signin" />} />
-        <Route path="/my-orders" element={userData ? <MyOrders /> : <Navigate to="/signin" />} />
-        <Route path="/donate-food" element={userData && ["user", "owner", "supplier", "deliveryBoy"].includes(userData.role) ? <DonateFoodPage /> : <Navigate to="/" />} />
-        <Route path="/my-donations" element={userData ? <MyDonationsPage /> : <Navigate to="/signin" />} />
-        <Route path="/trusts" element={["trustMember", "owner", "admin"].includes(userData?.role) ? <TrustsPage /> : <Navigate to="/" />} />
-        <Route path="/admin" element={userData?.role === "admin" ? <AdminDashboard /> : <Navigate to="/" />} />
-        <Route path="/track-order/:orderId" element={userData ? <TrackOrderPage /> : <Navigate to="/signin" />} />
-        <Route path="/shop/:shopId" element={userData ? <Shop /> : <Navigate to="/signin" />} />
-        <Route path="/start-group-order" element={userData?.role === 'user' ? <StartGroupOrderPage /> : <Navigate to="/" />} />
-        <Route path="/group/:shareableLink" element={<GroupOrderPage />} />
-        <Route path="/join/:shareableLink" element={<JoinGroupOrderPage />} />
-        <Route path="/my-group-orders" element={userData?.role === 'user' ? <MyGroupOrdersPage /> : <Navigate to="/" />} />
-        <Route path="/vendor-portal" element={<VendorPortalPage />} />
-        <Route path="/vendor/register" element={<VendorRegisterPage />} />
-        <Route path="/vendor/add-produce" element={userData?.role === 'vendor' ? <AddProducePage /> : <Navigate to="/" />} />
-        <Route path="/vendor/dashboard" element={userData?.role === 'vendor' ? <VendorDashboardPage /> : <Navigate to="/" />} />
-        <Route path="/vendors/nearby" element={<NearbyVendorsPage />} />
-        <Route path="/vendor/:vendorId" element={<VendorShopPage />} />
-        <Route path="/helper/register-vendor" element={<HelperRegisterPage />} />
-        <Route path="/farmer/register" element={<VendorRegisterPage />} />
-        <Route path="/farmer/dashboard" element={userData?.role === 'vendor' ? <FarmerDashboardPage /> : <Navigate to="/" />} />
-        <Route path="/farmer/orders" element={userData?.role === 'vendor' ? <FarmerOrdersPage /> : <Navigate to="/" />} />
-        <Route path="/farmer/earnings" element={userData?.role === 'vendor' ? <FarmerEarningsPage /> : <Navigate to="/" />} />
-        <Route path="/farmer/assistant" element={userData?.role === 'vendor' ? <FarmerAssistantPage /> : <Navigate to="/" />} />
-        <Route path="/farmers/inbox" element={userData?.role === 'vendor' || userData?.buyerProfile?.onboardingComplete ? <InboxPage /> : <Navigate to="/" />} />
-        <Route path="/buyer/onboard" element={userData ? <BuyerOnboardPage /> : <Navigate to="/signin" />} />
-        <Route path="/buyer/matches" element={userData ? <BuyerMatchesPage /> : <Navigate to="/signin" />} />
-        <Route path="/buyer/purchases" element={userData ? <BuyerPurchasesPage /> : <Navigate to="/signin" />} />
-        <Route path="/meal-schedule" element={userData?.role === 'user' ? <MealSchedulePage /> : <Navigate to="/" />} />
+        <Route path="/signup" element={<div className='page-enter page-enter-route'>{!userData ? <SignUp /> : <Navigate to="/home" />}</div>} />
+        <Route path="/signin" element={<div className='page-enter page-enter-route'>{!userData ? <SignIn /> : <Navigate to="/home" />}</div>} />
+        <Route path="/forgot-password" element={<div className='page-enter page-enter-route'>{!userData ? <ForgotPassword /> : <Navigate to="/home" />}</div>} />
+        <Route path="/" element={userData ? <Navigate to='/home' replace /> : <LandingPage />} />
+        <Route path="/home" element={userData ? <div className='page-enter page-enter-route'><Home /></div> : <Navigate to="/signin" />} />
+        <Route path="/create-edit-shop" element={<div className='page-enter page-enter-route'>{userData ? <CreateEditShop /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/add-item" element={<div className='page-enter page-enter-route'>{userData ? <AddItem /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/edit-item/:itemId" element={<div className='page-enter page-enter-route'>{userData ? <EditItem /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/cart" element={<div className='page-enter page-enter-route'>{userData ? <CartPage /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/checkout" element={<div className='page-enter page-enter-route'>{userData ? <CheckOut /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/order-placed" element={<div className='page-enter page-enter-route'>{userData ? <OrderPlaced /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/my-orders" element={<div className='page-enter page-enter-route'>{userData ? <MyOrders /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/donate-food" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={["user", "owner", "supplier", "deliveryBoy"]}><DonateFoodPage /></RoleGuard>}</div>} />
+        <Route path="/my-donations" element={<div className='page-enter page-enter-route'>{userData ? <MyDonationsPage /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/trusts" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={["trustMember", "owner", "admin"]}><TrustsPage /></RoleGuard>}</div>} />
+        <Route path="/admin" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={["admin"]}><AdminDashboard /></RoleGuard>}</div>} />
+        <Route path="/track-order/:orderId" element={<div className='page-enter page-enter-route'>{userData ? <TrackOrderPage /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/shop/:shopId" element={<div className='page-enter page-enter-route'>{userData ? <Shop /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/start-group-order" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={['user']}><StartGroupOrderPage /></RoleGuard>}</div>} />
+        <Route path="/group/:shareableLink" element={<div className='page-enter page-enter-route'>{<GroupOrderPage />}</div>} />
+        <Route path="/join/:shareableLink" element={<div className='page-enter page-enter-route'>{<JoinGroupOrderPage />}</div>} />
+        <Route path="/my-group-orders" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={['user']}><MyGroupOrdersPage /></RoleGuard>}</div>} />
+
+        {/* ----- bulk ordering & business analysis ----- */}
+        <Route path="/bulk-order/:shopId" element={<div className='page-enter page-enter-route'>{userData ? <BulkOrderPage /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/my-bulk-orders" element={<div className='page-enter page-enter-route'>{userData ? <MyBulkOrdersPage /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/my-analysis" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={['owner', 'vendor', 'deliveryBoy']}><BusinessAnalysisPage /></RoleGuard>}</div>} />
+        <Route path="/vendor-portal" element={<div className='page-enter page-enter-route'>{<VendorPortalPage />}</div>} />
+        <Route path="/vendor/register" element={<div className='page-enter page-enter-route'>{<VendorRegisterPage />}</div>} />
+        <Route path="/vendor/add-produce" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={['vendor']}><AddProducePage /></RoleGuard>}</div>} />
+        <Route path="/vendor/dashboard" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={['vendor']}><VendorDashboardPage /></RoleGuard>}</div>} />
+        <Route path="/vendors/nearby" element={<div className='page-enter page-enter-route'>{<NearbyVendorsPage />}</div>} />
+        <Route path="/vendor/:vendorId" element={<div className='page-enter page-enter-route'>{<VendorShopPage />}</div>} />
+        <Route path="/helper/register-vendor" element={<div className='page-enter page-enter-route'>{<HelperRegisterPage />}</div>} />
+        <Route path="/farmer/register" element={<div className='page-enter page-enter-route'>{<VendorRegisterPage />}</div>} />
+        <Route path="/farmer/dashboard" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={['vendor']}><FarmerDashboardPage /></RoleGuard>}</div>} />
+        <Route path="/farmer/orders" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={['vendor']}><FarmerOrdersPage /></RoleGuard>}</div>} />
+        <Route path="/farmer/earnings" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={['vendor']}><FarmerEarningsPage /></RoleGuard>}</div>} />
+        <Route path="/farmer/assistant" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={['vendor']}><FarmerAssistantPage /></RoleGuard>}</div>} />
+        <Route path="/farmers/inbox" element={<div className='page-enter page-enter-route'>{userData?.role === 'vendor' || userData?.buyerProfile?.onboardingComplete ? <InboxPage /> : <Navigate to="/home" />}</div>} />
+        <Route path="/buyer/onboard" element={<div className='page-enter page-enter-route'>{userData ? <BuyerOnboardPage /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/buyer/matches" element={<div className='page-enter page-enter-route'>{userData ? <BuyerMatchesPage /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/buyer/purchases" element={<div className='page-enter page-enter-route'>{userData ? <BuyerPurchasesPage /> : <Navigate to="/signin" />}</div>} />
+        <Route path="/meal-schedule" element={<div className='page-enter page-enter-route'>{<RoleGuard allowed={['user']}><MealSchedulePage /></RoleGuard>}</div>} />
       </Routes>
     </div>
   )
@@ -178,7 +205,12 @@ const App = () => {
     )
   }
 
-  return <AnimatedRoutes userData={userData} />
+  return (
+    <>
+      <AnimatedRoutes userData={userData} />
+      {userData?.role === 'user' && <Chatbot />}
+    </>
+  )
 }
 
 export default App

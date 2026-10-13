@@ -29,7 +29,7 @@ function CartPage() {
         </div>
 
         {cartItems?.length === 0 ? (
-          <div className='card mt-10 flex flex-col items-center gap-4 p-14 text-center'>
+          <div className='card mt-10 flex flex-col items-center gap-4 p-14 text-center card-3d'>
             <span className='mode-eat flex h-20 w-20 items-center justify-center rounded-full'>
               <HiOutlineShoppingBag className='text-3xl' />
             </span>

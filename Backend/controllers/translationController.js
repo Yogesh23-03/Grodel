@@ -41,7 +41,7 @@ async function translateText(value, targetLang) {
         if (translated) return translated
       }
     } catch (err) {
-      console.log('Google Cloud Translate API failed, trying fallback:', err.message)
+      console.error('GOOGLE TRANSLATE FAILED, TRYING FALLBACK:', err.message)
     }
   }
 
@@ -58,7 +58,7 @@ async function translateText(value, targetLang) {
       }
     }
   } catch (fallbackErr) {
-    console.log('Free translation fallback failed:', fallbackErr.message)
+    console.error('FREE TRANSLATION FALLBACK FAILED:', fallbackErr.message)
   }
 
   return value
@@ -108,7 +108,7 @@ exports.translateBatch = async (req, res) => {
 
     res.json({ translations: unflatten(translationsFlat) })
   } catch (error) {
-    console.log('translateBatch error:', error.message)
+    console.error('TRANSLATE BATCH ERROR:', error.message)
     res.json({ translations: {} })
   }
 }

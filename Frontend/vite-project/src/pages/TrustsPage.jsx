@@ -152,7 +152,7 @@ function TrustsPage() {
   };
 
   const TrustForm = ({ heading, submitLabel }) => (
-    <form className="grain card p-5 sm:p-6" onSubmit={saveTrust}>
+    <form className="grain card card-3d p-5 sm:p-6" onSubmit={saveTrust}>
       <div className="mb-5 flex items-start gap-3">
         <span className="mode-rescue flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl">
           <HiOutlineBuildingLibrary size={22} />
@@ -258,7 +258,7 @@ function TrustsPage() {
     <div className="min-h-screen lg:pl-[76px]">
       <MarketNav />
 
-      <main className="mx-auto w-full max-w-[1050px] px-4 pb-16 pt-6 sm:px-6">
+      <main className="mx-auto w-full max-w-[1050px] px-4 pb-20 pt-6 sm:px-6">
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="t-eyebrow flex items-center gap-1.5" style={{ color: "var(--rescue)" }}>
@@ -297,7 +297,7 @@ function TrustsPage() {
           {trusts.map((trust) => {
             const canEdit = userData?.role === "admin" || String(trustOwnerId(trust)) === String(userData?._id);
             return (
-              <article key={trust._id} className="grain card card-hover overflow-hidden">
+              <article key={trust._id} className="grain card card-3d card-hover card-3d overflow-hidden">
                 {trust.photo && (
                   <img src={trust.photo} alt={trust.name} className="h-40 w-full object-cover" style={{ borderBottom: "1px solid var(--border)" }} />
                 )}
@@ -348,7 +348,7 @@ function TrustsPage() {
         </div>
 
         {trusts.length === 0 && (
-          <div className="grain card mt-8 p-10 text-center">
+          <div className="grain card card-3d mt-8 p-5 sm:p-8 lg:p-10 text-center">
             <span className="text-4xl" aria-hidden="true">🌾</span>
             <p className="mt-3 font-bold">{t("trusts.empty", "No trusts registered yet.")}</p>
             <p className="mt-1 text-sm" style={{ color: "var(--ink-muted)" }}>

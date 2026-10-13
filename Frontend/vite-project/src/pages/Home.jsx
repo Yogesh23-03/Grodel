@@ -12,7 +12,8 @@ function Home() {
     const {userData}=useSelector(state=>state.user)
     const navigate=useNavigate()
   return (
-    <div className='w-full min-h-[100vh] flex flex-col items-center lg:pl-[76px]'>
+    <div className='relative w-full min-h-[100vh] flex flex-col items-center lg:pl-[76px]'>
+      <div className='relative z-10 flex w-full flex-col items-center'>
       {userData.role=="user" && <UserDashboard/>}
       {userData.role=="owner" && <OwnerDashboard/>}
       {userData.role=="deliveryBoy" && <DeliveryBoy/>}
@@ -20,39 +21,40 @@ function Home() {
       {userData.role=="trustMember" && <>
         <MarketNav/>
         <div className='w-full flex flex-col items-center gap-5 px-4'>
-          <div className='grain card p-6 w-[90%] max-w-[760px]'>
+          <div className='grain card p-6 w-full max-w-[760px] card-3d'>
             <p className='t-eyebrow' style={{ color: 'var(--rescue)' }}>Rescue desk</p>
             <h1 className='t-title mt-1'>Trust console</h1>
             <p className='mt-1 mb-5 text-sm' style={{ color: 'var(--ink-soft)' }}>
               Register your trust, accept donations, pay delivery charges and assign riders.
             </p>
-            <button className='btn-primary' style={{ background: 'var(--rescue)', color: '#08130c', boxShadow: 'none' }} onClick={()=>navigate("/trusts")}>Trust details</button>
+            <button className='btn-primary btn-3d w-full sm:w-auto' style={{ background: 'var(--rescue)', color: '#08130c', boxShadow: 'none' }} onClick={()=>navigate("/trusts")}>Trust details</button>
           </div>
           <DonationManagement/>
         </div>
       </>}
       {userData.role=="admin" && <>
         <MarketNav/>
-        <div className='grain card mt-6 p-6 w-[90%] max-w-[560px] text-center'>
+        <div className='grain card mt-6 p-6 w-full max-w-[560px] text-center card-3d'>
           <p className='t-eyebrow' style={{ color: 'var(--plan)' }}>Control room</p>
           <h1 className='t-title mt-1'>Admin</h1>
           <p className='mt-1 mb-5 text-sm' style={{ color: 'var(--ink-soft)' }}>
             Manage users, trusts, donations and delivery operations.
           </p>
-          <button className='btn-primary' onClick={()=>navigate("/admin")}>Open admin page</button>
+          <button className='btn-primary btn-3d w-full sm:w-auto' onClick={()=>navigate("/admin")}>Open admin page</button>
         </div>
       </>}
       {userData.role=="supplier" && <>
         <MarketNav/>
-        <div className='grain card mt-6 p-8 w-[90%] max-w-[560px] text-center'>
+        <div className='grain card mt-6 p-6 sm:p-8 w-full max-w-[560px] text-center card-3d'>
           <p className='t-eyebrow' style={{ color: 'var(--rescue)' }}>Rescue</p>
           <h1 className='t-title mt-1'>Welcome, <span className='notranslate'>{userData.fullName?.split(' ')[0]}</span></h1>
           <p className='mt-2 mb-6 text-sm' style={{ color: 'var(--ink-soft)' }}>
             Share surplus food or supplies with verified trusts near you.
           </p>
-          <button className='btn-primary' style={{ background: 'var(--rescue)', color: '#08130c', boxShadow: 'none' }} onClick={()=>navigate("/donate-food")}>Donate food</button>
+          <button className='btn-primary btn-3d w-full sm:w-auto' style={{ background: 'var(--rescue)', color: '#08130c', boxShadow: 'none' }} onClick={()=>navigate("/donate-food")}>Donate food</button>
         </div>
       </>}
+      </div>
     </div>
   )
 }

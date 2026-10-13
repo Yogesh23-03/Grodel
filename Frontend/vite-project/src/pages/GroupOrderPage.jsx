@@ -199,7 +199,7 @@ function GroupOrderPage() {
       <div className='min-h-screen lg:pl-[76px]'>
         <MarketNav />
         <main className='mx-auto max-w-xl px-4 py-24 text-center'>
-          <div className='grain card p-10'>
+          <div className='grain card card-3d p-5 sm:p-8 lg:p-10'>
             <span className='text-4xl' aria-hidden='true'>🕒</span>
             <h1 className='t-title mt-3'>{t('group.expiredTitle', { defaultValue: 'This table has closed' })}</h1>
             <p className='mt-2 text-sm' style={{ color: 'var(--ink-muted)' }}>
@@ -221,7 +221,7 @@ function GroupOrderPage() {
     <div className='min-h-screen print:bg-white lg:pl-[76px]'>
       <MarketNav />
 
-      <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 print:max-w-none'>
+      <main className='mx-auto max-w-7xl px-4 py-8 pb-20 sm:px-6 lg:pb-8 print:max-w-none'>
         {/* ============ Table header ============ */}
         <header className='grain tile p-6 print:shadow-none'>
           <div className='flex flex-wrap items-center justify-between gap-4'>
@@ -272,7 +272,7 @@ function GroupOrderPage() {
                   <p className='mt-2 flex items-center gap-1.5 text-xs font-bold' style={{ color: 'var(--plan)' }}>
                     <span className='flex -space-x-1' aria-hidden='true'>
                       {option.votes.slice(0, 3).map((_, i) => (
-                        <span key={i} className='h-4 w-4 rounded-full border' style={{ background: toneFor(i), borderColor: 'var(--surface-1)' }} />
+                        <span key={i} className='h-4 w-4 rounded-full border stagger-item' style={{ background: toneFor(i), borderColor: 'var(--surface-1)' }} />
                       ))}
                     </span>
                     {option.votes.length} {t('group.votes', { defaultValue: 'votes' })}
@@ -291,13 +291,13 @@ function GroupOrderPage() {
         {/* ============ Open: build your plate ============ */}
         {group.status === 'open' && !group.votingOpen && (
           <div className='mt-6 grid gap-6 lg:grid-cols-[1.6fr_1fr]'>
-            <section className='grain card p-5 sm:p-6'>
+            <section className='grain card card-3d p-5 sm:p-6'>
               <h2 className='t-title'>{t('group.buildTitle', { defaultValue: 'Build your plate' })}</h2>
               <div className='mt-4 grid gap-3 sm:grid-cols-2'>
                 {menu.map(item => {
                   const qty = quantities[item._id] || 0
                   return (
-                    <div key={item._id} className='flex gap-3 rounded-2xl border p-3 transition-all'
+                    <div key={item._id} className='flex gap-3 rounded-2xl border p-3 transition-all stagger-item'
                       style={{ borderColor: qty > 0 ? 'var(--accent)' : 'var(--border)', background: qty > 0 ? 'var(--accent-soft)' : 'var(--surface-2)' }}>
                       {item.image && <img src={item.image} alt='' className='h-20 w-20 rounded-xl object-cover' />}
                       <div className='flex min-w-0 flex-1 flex-col justify-between'>
@@ -342,11 +342,11 @@ function GroupOrderPage() {
         {/* ============ Locked: pay your share ============ */}
         {group.status === 'locked' && (
           <div className='mt-6 grid gap-6 lg:grid-cols-[1.6fr_1fr]'>
-            <section className='grain card p-5 sm:p-6'>
+            <section className='grain card card-3d p-5 sm:p-6'>
               <h2 className='t-title'>{t('group.payShare', { defaultValue: 'Pay your share' })}</h2>
               <div className='mt-4 space-y-3'>
                 {group.participants.map((p, index) => (
-                  <div key={p._id} className='flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-4'
+                  <div key={p._id} className='flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-4 stagger-item'
                     style={{ borderColor: index === participantIndex ? 'var(--accent)' : 'var(--border)', background: 'var(--surface-2)' }}>
                     <div className='flex min-w-0 items-center gap-3'>
                       <Avatar name={p.guestName} index={index} />
@@ -386,7 +386,7 @@ function GroupOrderPage() {
 
               <div className='mt-5 flex gap-2'>
                 <input value={couponCode} onChange={e => setCouponCode(e.target.value)} placeholder={t('group.couponPlaceholder', { defaultValue: 'Coupon code' })}
-                  className='rounded-full px-4 py-2 text-sm' />
+                  className='w-full min-w-0 rounded-full px-4 py-2 text-sm' />
                 <button onClick={() => request('post', '/apply-coupon', { couponCode })} className='btn-ghost !px-5 !py-2 text-sm'>
                   {t('group.applyCoupon', { defaultValue: 'Apply' })}
                 </button>
@@ -405,7 +405,7 @@ function GroupOrderPage() {
 
         {/* ============ Receipts ============ */}
         {complete && (
-          <section className='grain card mt-6 p-6 print:border-0 print:shadow-none'>
+          <section className='grain card card-3d mt-6 p-6 print:border-0 print:shadow-none'>
             <div className='text-center print:hidden'>
               <span className='mx-auto flex h-16 w-16 items-center justify-center rounded-full text-3xl' style={{ background: 'var(--rescue-soft)' }} aria-hidden='true'>🎉</span>
               <h2 className='t-display mt-3 !text-[1.8rem]' style={{ color: 'var(--rescue)' }}>
@@ -433,7 +433,7 @@ function GroupOrderPage() {
                   </div>
                   <div className='mt-3 space-y-1.5 text-sm'>
                     {p.items.map(item => (
-                      <p key={item.foodId} className='flex justify-between'>
+                      <p key={item.foodId} className='flex justify-between stagger-item' style={{ animationDelay: `${index * 80}ms` }}>
                         <span>{item.name} × {item.quantity}</span>
                         <span style={{ color: 'var(--ink-soft)' }}>₹{money(item.price * item.quantity)}</span>
                       </p>
@@ -475,11 +475,11 @@ function GroupOrderPage() {
 /* --- Social side panel: who's here + the table talk --- */
 const SidePanel = ({ group, isCreator, participantIndex, removeParticipant, request, chatText, setChatText, chatEnd, money, t }) => (
   <aside className='space-y-6'>
-    <section className='grain card p-5'>
+    <section className='grain card card-3d p-5'>
       <h2 className='t-title !text-[1.1rem]'>{t('group.participants', { defaultValue: 'At the table' })}</h2>
       <div className='mt-3 space-y-2.5'>
         {group.participants.map((p, index) => (
-          <div key={p._id} className='rounded-2xl p-3' style={{ background: 'var(--surface-2)' }}>
+          <div key={p._id} className='rounded-2xl p-3 stagger-item' style={{ background: 'var(--surface-2)' }}>
             <div className='flex items-center justify-between gap-2'>
               <div className='flex min-w-0 items-center gap-2.5'>
                 <Avatar name={p.guestName} index={index} size={28} />
@@ -505,11 +505,11 @@ const SidePanel = ({ group, isCreator, participantIndex, removeParticipant, requ
       </div>
     </section>
 
-    <section className='grain card p-5'>
+    <section className='grain card card-3d p-5'>
       <h2 className='t-title !text-[1.1rem]'>{t('group.chatTitle', { defaultValue: 'Table talk' })}</h2>
       <div className='mt-3 max-h-56 space-y-2 overflow-y-auto pr-1'>
         {group.messages?.map((message, index) => (
-          <div key={message._id} className='flex items-start gap-2'>
+          <div key={message._id} className='flex items-start gap-2 stagger-item' style={{ animationDelay: `${index * 80}ms` }}>
             <Avatar name={message.senderName} index={index} size={24} />
             <div className='max-w-[80%] rounded-2xl rounded-bl-md px-3 py-1.5 text-sm'
               style={{ background: 'var(--surface-2)', color: 'var(--ink)' }}>

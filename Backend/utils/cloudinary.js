@@ -15,7 +15,7 @@ try {
         return result.secure_url
     } catch (error) {
         fs.unlinkSync(file)
-        console.log(error)
+        console.error("CLOUDINARY ERROR:", error.message)
         throw error
     }
 }

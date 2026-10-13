@@ -101,7 +101,7 @@ const JoinGroupOrderPage = () => {
           {/* presence dots: one per seated guest */}
           <span className='flex -space-x-1.5' aria-label={`${seats} guests seated`}>
             {Array.from({ length: Math.min(seats, 4) }).map((_, i) => (
-              <span key={i} className='h-5 w-5 rounded-full border-2 animate-breathe'
+              <span key={i} className='h-5 w-5 rounded-full border-2 animate-breathe stagger-item'
                 style={{ borderColor: 'var(--surface-1)', background: 'var(--accent-soft)', animationDelay: `${i * 220}ms` }} />
             ))}
           </span>

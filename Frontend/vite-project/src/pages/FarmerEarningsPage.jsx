@@ -101,13 +101,13 @@ function FarmerEarningsPage() {
 
         <div className='stagger mt-6 space-y-2'>
           {rows.length === 0 && (
-            <div className='grain card p-10 text-center'>
+            <div className='grain card p-10 text-center card-3d'>
               <span className='text-4xl' aria-hidden='true'>🪙</span>
               <p className='mt-3 text-sm' style={{ color: 'var(--ink-muted)' }}>No transactions yet. Your first sale will land here.</p>
             </div>
           )}
           {rows.map(row => (
-            <div key={row.id} className='grain card flex flex-wrap items-center justify-between gap-3 p-4'>
+            <div key={row.id} className='grain card flex flex-wrap items-center justify-between gap-3 p-4 card-3d'>
               <div className='min-w-0'>
                 <p className='truncate text-sm font-bold'>{row.label}</p>
                 <p className='text-xs' style={{ color: 'var(--ink-muted)' }}>
@@ -124,7 +124,7 @@ function FarmerEarningsPage() {
         </div>
 
         {/* community price board contribution */}
-        <section className='grain card mt-8 p-5'>
+        <section className='grain card mt-8 p-5 card-3d'>
           <h2 className='t-title flex items-center gap-2'><HiOutlineChartBar style={{ color: 'var(--rescue)' }} /> Feed the price board</h2>
           <p className='mt-1 text-sm' style={{ color: 'var(--ink-muted)' }}>
             Sold something recently? Publish the price you got (per kg) — it powers fair-price bands for every farmer in your district.
