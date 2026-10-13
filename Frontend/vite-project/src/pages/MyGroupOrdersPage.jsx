@@ -39,7 +39,7 @@ const MyGroupOrdersPage = () => {
     <div className='min-h-screen lg:pl-[76px]'>
       <MarketNav />
       <main className='mx-auto max-w-5xl px-4 py-6 pb-20 sm:py-8 sm:px-6 lg:py-10 lg:pb-8'>
-        <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent)' }}>
+        <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent-text)' }}>
           <HiOutlineUserGroup /> {t('group.eyebrow', { defaultValue: 'Together' })}
         </p>
         <h1 className='t-display mt-1.5'>{t('group.myTables', { defaultValue: 'Your tables' })}</h1>

@@ -197,7 +197,7 @@ function OwnerDashboard() {
               </div>
               <div className='tile grain p-5' style={{ '--tile-tint': 'var(--accent-soft)' }}>
                 <p className='t-eyebrow'>{t('owner.pendingPrep', 'Pending prep')}</p>
-                <p className='mt-2 font-display text-3xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>
+                <p className='mt-2 font-display text-3xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-text)' }}>
                   {pendingPrep}
                 </p>
               </div>

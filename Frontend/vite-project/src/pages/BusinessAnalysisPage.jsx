@@ -328,7 +328,7 @@ function BusinessAnalysisPage() {
 
             {analysis.itemToFeature && (
               <section ref={featureRef} className='grain card card-3d mt-4 p-5'>
-                <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent)' }}>
+                <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent-text)' }}>
                   <HiOutlineSparkles /> {t('analysis.itemToFeature', 'Item to feature')}
                 </p>
                 <div className='mt-3 flex flex-wrap items-center justify-between gap-3'>

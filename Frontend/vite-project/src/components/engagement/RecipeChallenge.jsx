@@ -127,7 +127,7 @@ function RecipeChallenge({ orderId, onEarn }) {
         </div>
         <div
           className={`shrink-0 text-right text-3xl font-black tabular-nums ${urgent ? 'animate-pulse' : ''}`}
-          style={{ color: urgent ? 'var(--danger)' : 'var(--accent)' }}
+          style={{ color: urgent ? 'var(--danger)' : 'var(--accent-text)' }}
         >
           {timeLeft}s
         </div>

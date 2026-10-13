@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 
 const STATUS_STYLES = {
   pending: { background: 'var(--warning-soft)', color: 'var(--warning)' },
-  preparing: { background: 'var(--accent-soft)', color: 'var(--accent)' },
+  preparing: { background: 'var(--accent-soft)', color: 'var(--accent-text)' },
   'out of delivery': { background: 'var(--accent-2-soft)', color: 'var(--accent-2)' },
   delivered: { background: 'var(--success-soft)', color: 'var(--success)' },
   cancelled: { background: 'var(--danger-soft)', color: 'var(--danger)' }

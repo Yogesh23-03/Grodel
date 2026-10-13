@@ -104,7 +104,7 @@ function AddProducePage() {
 
   const detailsForm = (
     <div className='mt-5 grid grid-cols-1 gap-4 md:grid-cols-2'>
-      <label className='text-sm font-bold text-[#4b423d]'>
+      <label className='text-sm font-bold text-[var(--ink-soft)]'>
         {t('vendor.productName')}
         <div className='mt-1 flex gap-2'>
           <input
@@ -116,37 +116,37 @@ function AddProducePage() {
           <button
             aria-label={t('vendor.dictateField', { field: t('vendor.productName') })}
             onClick={() => dictate('name')}
-            className={`flex items-center justify-center rounded-xl px-4 ${isListening && voiceField === 'name' ? 'bg-red-500 text-white animate-soft-pulse' : 'bg-[#fff1ea] text-[#ff4d2d] hover:bg-[#ffe0d5]'}`}
+            className={`flex items-center justify-center rounded-xl px-4 ${isListening && voiceField === 'name' ? 'bg-red-500 text-white animate-soft-pulse' : 'bg-[var(--accent-soft)] text-[color:var(--accent-text)] hover:bg-[var(--accent-soft)]'}`}
           >
             <FaMicrophone />
           </button>
         </div>
       </label>
-      <label className='text-sm font-bold text-[#4b423d]'>
+      <label className='text-sm font-bold text-[var(--ink-soft)]'>
         {t('vendor.category')}
         <select className='mt-1 w-full px-3 py-3 text-sm' value={form.category} onChange={e => updateForm('category', e.target.value)}>
           {CATEGORIES.map(x => <option key={x} value={x}>{t(`vendor.${x}`)}</option>)}
         </select>
       </label>
       <div>
-        <p className='text-sm font-bold text-[#4b423d]'>{t('vendor.setPrice')}</p>
+        <p className='text-sm font-bold text-[var(--ink-soft)]'>{t('vendor.setPrice')}</p>
         <PricePad price={form.price} onPriceChange={price => updateForm('price', price)} onSpeak={() => dictate('price')} speakDisabled={isListening} readingPrice={isListening} />
         {form.name && (
           <div className='mt-2'><PriceBandChip crop={form.name} price={form.price ? Number(form.price) : undefined} /></div>
         )}
       </div>
       <div className='grid grid-cols-2 gap-3'>
-        <label className='text-sm font-bold text-[#4b423d]'>
+        <label className='text-sm font-bold text-[var(--ink-soft)]'>
           {t('vendor.quantity')}
           <input aria-label={t('vendor.quantity')} min='0' type='number' className='mt-1 w-full px-3 py-3 text-sm' value={form.quantity} onChange={e => updateForm('quantity', e.target.value)} />
         </label>
-        <label className='text-sm font-bold text-[#4b423d]'>
+        <label className='text-sm font-bold text-[var(--ink-soft)]'>
           {t('vendor.unit')}
           <select className='mt-1 w-full px-3 py-3 text-sm' value={form.unit} onChange={e => updateForm('unit', e.target.value)}>
             {UNITS.map(x => <option key={x}>{x}</option>)}
           </select>
         </label>
-        <label className='col-span-2 flex items-center gap-2 text-sm font-semibold text-[#4b423d]'>
+        <label className='col-span-2 flex items-center gap-2 text-sm font-semibold text-[var(--ink-soft)]'>
           <input type='checkbox' checked={form.freshToday} onChange={e => updateForm('freshToday', e.target.checked)} />
           🌿 {t('vendor.freshToday')}
         </label>
@@ -156,7 +156,7 @@ function AddProducePage() {
       <div className='col-span-full rounded-2xl p-4' style={{ background: 'var(--surface-2)', border: '1px dashed var(--border-strong)' }}>
         <p className='t-eyebrow' style={{ color: 'var(--vendor)' }}>For direct buyers</p>
         <div className='mt-3 grid grid-cols-2 gap-3 md:grid-cols-4'>
-          <label className='block text-xs font-bold text-[#4b423d]'>Grade
+          <label className='block text-xs font-bold text-[var(--ink-soft)]'>Grade
             <select className='mt-1 w-full px-2 py-2 text-sm' value={form.grade} onChange={e => updateForm('grade', e.target.value)}>
               <option value=''>—</option>
               <option value='A'>A</option>
@@ -164,24 +164,24 @@ function AddProducePage() {
               <option value='C'>C</option>
             </select>
           </label>
-          <label className='block text-xs font-bold text-[#4b423d]'>Harvest date
+          <label className='block text-xs font-bold text-[var(--ink-soft)]'>Harvest date
             <input type='date' className='mt-1 w-full px-2 py-2 text-sm' value={form.harvestDate} onChange={e => updateForm('harvestDate', e.target.value)} />
           </label>
-          <label className='block text-xs font-bold text-[#4b423d]'>Min order qty
+          <label className='block text-xs font-bold text-[var(--ink-soft)]'>Min order qty
             <input type='number' min='0' className='mt-1 w-full px-2 py-2 text-sm' value={form.minOrderQty} onChange={e => updateForm('minOrderQty', e.target.value)} />
           </label>
-          <label className='flex items-end gap-2 pb-1.5 text-xs font-semibold text-[#4b423d]'>
+          <label className='flex items-end gap-2 pb-1.5 text-xs font-semibold text-[var(--ink-soft)]'>
             <input type='checkbox' checked={form.negotiable} onChange={e => updateForm('negotiable', e.target.checked)} />
             Price negotiable
           </label>
-          <label className='block text-xs font-bold text-[#4b423d]'>Bulk tier: from qty
+          <label className='block text-xs font-bold text-[var(--ink-soft)]'>Bulk tier: from qty
             <input type='number' min='0' className='mt-1 w-full px-2 py-2 text-sm' placeholder='e.g. 100' value={form.bulkMinQty} onChange={e => updateForm('bulkMinQty', e.target.value)} />
           </label>
-          <label className='block text-xs font-bold text-[#4b423d]'>Bulk price ₹/unit
+          <label className='block text-xs font-bold text-[var(--ink-soft)]'>Bulk price ₹/unit
             <input type='number' min='0' className='mt-1 w-full px-2 py-2 text-sm' placeholder='₹' value={form.bulkPrice} onChange={e => updateForm('bulkPrice', e.target.value)} />
           </label>
           <div className='col-span-2'>
-            <p className='text-xs font-bold text-[#4b423d]'>Certifications</p>
+            <p className='text-xs font-bold text-[var(--ink-soft)]'>Certifications</p>
             <div className='mt-1 flex flex-wrap gap-1.5'>
               {['organic', 'gi-tag', 'fssai', 'natural-farming'].map(cert => (
                 <button key={cert} type='button'
@@ -198,7 +198,7 @@ function AddProducePage() {
         </div>
       </div>
       {mode === 'manual' && (
-        <label className='text-sm font-bold text-[#4b423d] md:col-span-2'>
+        <label className='text-sm font-bold text-[var(--ink-soft)] md:col-span-2'>
           {t('vendor.optionalPhoto')}
           <input aria-label={t('vendor.optionalPhoto')} type='file' accept='image/*' capture='environment' onChange={handlePhoto} className='mt-1 w-full px-3 py-3 text-sm' />
         </label>
@@ -222,7 +222,7 @@ function AddProducePage() {
         </button>
 
         <h1 className='section-heading mt-4 flex items-center gap-3'>
-          <span className='flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ff4d2d] text-white shadow-[0_8px_24px_rgba(255,77,45,0.35)]'>
+          <span className='flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--accent)] text-white shadow-[0_8px_24px_var(--brand-glow)]'>
             <FaCamera />
           </span>
           {t('vendor.addProduct')}
@@ -230,20 +230,20 @@ function AddProducePage() {
 
         <div className='mt-5 grid gap-4 sm:grid-cols-2'>
           <button
-            className={`card card-hover card-3d p-5 text-left transition-all ${mode === 'ai' ? 'border-[#ff4d2d] ring-2 ring-[#ff4d2d]/20' : ''}`}
+            className={`card card-hover card-3d p-5 text-left transition-all ${mode === 'ai' ? 'border-[var(--accent)] ring-2 ring-[var(--accent-soft)]' : ''}`}
             onClick={() => setMode('ai')}
           >
-            <FaCamera className='text-2xl text-[#ff4d2d]' />
+            <FaCamera className='text-2xl text-[color:var(--accent-text)]' />
             <p className='mt-2 font-bold'>{t('vendor.aiPhotoChoice')}</p>
-            <p className='text-sm text-[#8a7d75]'>{t('vendor.aiPhotoChoiceHelp')}</p>
+            <p className='text-sm text-[var(--ink-muted)]'>{t('vendor.aiPhotoChoiceHelp')}</p>
           </button>
           <button
-            className={`card card-hover card-3d p-5 text-left transition-all ${mode === 'manual' ? 'border-[#ff4d2d] ring-2 ring-[#ff4d2d]/20' : ''}`}
+            className={`card card-hover card-3d p-5 text-left transition-all ${mode === 'manual' ? 'border-[var(--accent)] ring-2 ring-[var(--accent-soft)]' : ''}`}
             onClick={toManual}
           >
-            <span className='text-2xl text-[#ff4d2d]'>✎</span>
+            <span className='text-2xl text-[color:var(--accent-text)]'>✎</span>
             <p className='mt-2 font-bold'>{t('vendor.manualChoice')}</p>
-            <p className='text-sm text-[#8a7d75]'>{t('vendor.manualChoiceHelp')}</p>
+            <p className='text-sm text-[var(--ink-muted)]'>{t('vendor.manualChoiceHelp')}</p>
           </button>
         </div>
 
@@ -270,7 +270,7 @@ function AddProducePage() {
                 </div>
               )}
               <button
-                className='btn-glow mt-4 px-6 py-3 shadow-[0_8px_24px_rgba(255,77,45,0.35)] disabled:opacity-50'
+                className='btn-glow mt-4 px-6 py-3 shadow-[0_8px_24px_var(--brand-glow)] disabled:opacity-50'
                 disabled={!photo || loading}
                 onClick={analyse}
               >
@@ -286,7 +286,7 @@ function AddProducePage() {
           )}
 
           <button
-            className='btn-glow mt-6 flex w-full items-center justify-center gap-2 py-3 shadow-[0_8px_24px_rgba(255,77,45,0.35)] disabled:opacity-50'
+            className='btn-glow mt-6 flex w-full items-center justify-center gap-2 py-3 shadow-[0_8px_24px_var(--brand-glow)] disabled:opacity-50'
             disabled={loading || (mode === 'ai' && !analysis)}
             onClick={save}
           >

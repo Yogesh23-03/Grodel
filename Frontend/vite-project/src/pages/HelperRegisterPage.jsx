@@ -41,17 +41,17 @@ function HelperRegisterPage() {
           <FaArrowLeft />
           <span>{t('vendor.back')}</span>
         </button>
-        <span className='ml-3 font-black text-white text-xl'>GroDel <span className='text-[#ff4d2d]'>Fresh</span></span>
+        <span className='ml-3 font-black text-white text-xl'>GroDel <span className='text-[color:var(--accent-text)]'>Fresh</span></span>
       </header>
 
       <div className='max-w-xl mx-auto px-4 py-8'>
-        <FaHandshake className='text-[#ff4d2d] text-4xl mx-auto' />
-        <h1 className='text-2xl font-bold text-[#07111c] mt-3'>{t('vendor.helperRegistrationTitle')}</h1>
+        <FaHandshake className='text-[color:var(--accent-text)] text-4xl mx-auto' />
+        <h1 className='text-2xl font-bold text-[var(--ink)] mt-3'>{t('vendor.helperRegistrationTitle')}</h1>
         <p className='text-gray-500 text-sm mt-1'>{t('vendor.helperRegistrationSubtitle')}</p>
 
         {registered ? (
           <div className='glass-card border border-gray-100 p-8 text-center mt-6 card-3d'>
-            <FaCheck className='text-[#ff4d2d] text-5xl mx-auto' />
+            <FaCheck className='text-[color:var(--accent-text)] text-5xl mx-auto' />
             <h2 className='text-xl font-bold text-green-600 mt-3'>{t('vendor.registrationSuccess')}</h2>
             <p className='text-gray-500 text-sm mt-2'>{t('vendor.loginHint')}</p>
             <div className='bg-gray-50 rounded-xl p-4 text-left mt-4'>

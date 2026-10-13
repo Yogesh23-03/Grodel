@@ -243,7 +243,7 @@ function UserDashboard() {
           {/* --- Open group tables (social, lime) --- */}
           <section className='tile grain lg:col-span-1 p-6 flex flex-col'
             style={{ '--tile-base': 'var(--surface-1)', '--tile-tint': 'var(--accent-soft)' }}>
-            <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent)' }}>
+            <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent-text)' }}>
               <HiOutlineUserGroup /> {t('home.tablesEyebrow', { defaultValue: 'Together' })}
             </p>
             <h2 className='t-title mt-1'>{t('home.tablesTitle', { defaultValue: 'Open group tables' })}</h2>

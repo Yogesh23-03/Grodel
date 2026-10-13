@@ -82,7 +82,7 @@ function SignIn() {
                         <button className='absolute right-3 cursor-pointer top-[14px] text-gray-500' onClick={() => setShowPassword(prev => !prev)}>{!showPassword ? <FaRegEye /> : <FaRegEyeSlash />}</button>
                     </div>
                 </div>
-                <div className='text-right mb-4 cursor-pointer text-[#ff4d2d] font-medium' onClick={()=>navigate("/forgot-password")}>
+                <div className='text-right mb-4 cursor-pointer text-[color:var(--accent-text)] font-medium' onClick={()=>navigate("/forgot-password")}>
                   Forgot Password
                 </div>
               
@@ -96,7 +96,7 @@ function SignIn() {
 <FcGoogle size={20}/>
 <span>Sign In with Google</span>
             </button>
-            <p className='text-center mt-6 cursor-pointer' onClick={()=>navigate("/signup")}>Want to create a new account ?  <span className='text-[#ff4d2d]'>Sign Up</span></p>
+            <p className='text-center mt-6 cursor-pointer' onClick={()=>navigate("/signup")}>Want to create a new account ?  <span className='text-[color:var(--accent-text)]'>Sign Up</span></p>
             </div>
         </div>
     )

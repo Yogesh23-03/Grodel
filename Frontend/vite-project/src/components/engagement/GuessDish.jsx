@@ -126,7 +126,7 @@ function GuessDish({ orderId, onEarn }) {
           <li key={index} className='animate-rise-in flex items-start gap-3 rounded-2xl px-4 py-3 stagger-item'
             style={{ background: 'var(--surface-2)' }}>
             <span className='flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-black'
-              style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}>
+              style={{ background: 'var(--accent-soft)', color: 'var(--accent-text)' }}>
               {index + 1}
             </span>
             <p className='text-sm leading-relaxed' style={{ color: 'var(--ink-soft)' }}>
@@ -185,7 +185,7 @@ function GuessDish({ orderId, onEarn }) {
         <div className='animate-rise-in mt-4 text-center'>
           <p className='text-base font-black' style={{ color: 'var(--danger)' }}>{t('games.guessDish.wrong')}</p>
           <p className='notranslate mt-3 text-sm' style={{ color: 'var(--ink-soft)' }}>
-            {t('games.guessDish.answer')}: <span className='font-black' style={{ color: 'var(--accent)' }}>{answerKey}</span>
+            {t('games.guessDish.answer')}: <span className='font-black' style={{ color: 'var(--accent-text)' }}>{answerKey}</span>
           </p>
           <button onClick={load} className='btn-primary mt-4 w-full'>{t('games.playAgain')}</button>
         </div>

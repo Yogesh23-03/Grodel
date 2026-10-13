@@ -32,7 +32,7 @@ const FLOATERS = [
 /* Every card below names something that actually ships in this repo. */
 const ROLES = [
   {
-    emoji: '🛒', role: 'Customer', tagline: 'Hungry? We have got you.', color: '#ff4d2d',
+    emoji: '🛒', role: 'Customer', tagline: 'Hungry? We have got you.', color: 'var(--accent-text)',
     features: ['Browse kitchens by city', 'Start or join a group order', 'Voice search for food', 'AI food chatbot', 'Play games while you wait', 'Donate surplus food']
   },
   {
@@ -251,8 +251,8 @@ function LandingPage() {
           style={{
             maxWidth: 560, width: '100%', textAlign: 'center',
             padding: 'clamp(2rem, 5vw, 3.5rem)',
-            border: '1px solid rgba(255,77,45,0.25)',
-            boxShadow: '0 0 60px rgba(255,77,45,0.08), inset 0 0 60px rgba(255,77,45,0.03)'
+            border: '1px solid var(--brand-glow)',
+            boxShadow: '0 0 60px rgba(124,58,237,0.10), inset 0 0 60px rgba(124,58,237,0.04)'
           }}
         >
           <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🍽️</div>
@@ -293,7 +293,7 @@ function LandingPage() {
               className={`g-btn-icon${listening ? ' anim-pulse-glow' : ''}`}
               title='Search by voice'
               aria-label='Search by voice'
-              style={listening ? { color: 'var(--brand)', borderColor: 'rgba(255,77,45,0.5)' } : undefined}
+              style={listening ? { color: 'var(--accent-text)', borderColor: 'var(--brand-glow)' } : undefined}
             >
               🎤
             </button>
@@ -348,8 +348,8 @@ function LandingPage() {
                 <div style={{
                   width: 64, height: 64, borderRadius: '50%', margin: '0 auto 1rem',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  background: 'linear-gradient(135deg, rgba(255,77,45,0.2), rgba(255,140,66,0.2))',
-                  border: '1.5px solid rgba(255,77,45,0.4)', fontSize: '1.7rem'
+                  background: 'linear-gradient(135deg, var(--accent-soft), rgba(255,140,66,0.2))',
+                  border: '1.5px solid var(--brand-glow)', fontSize: '1.7rem'
                 }}>
                   {step.icon}
                 </div>

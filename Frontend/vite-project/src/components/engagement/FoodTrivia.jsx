@@ -140,7 +140,7 @@ function FoodTrivia({ orderId, onEarn }) {
         <h3 className='t-title notranslate'>{t('games.trivia.title')}</h3>
         <div className='mt-6 flex items-center justify-center gap-8'>
           <div>
-            <p className='flex items-center justify-center gap-1 text-3xl font-black tabular-nums' style={{ color: 'var(--accent)' }}>
+            <p className='flex items-center justify-center gap-1 text-3xl font-black tabular-nums' style={{ color: 'var(--accent-text)' }}>
               {score}/{QUESTIONS_PER_SESSION}
               <CoinBurst burst={score} />
             </p>

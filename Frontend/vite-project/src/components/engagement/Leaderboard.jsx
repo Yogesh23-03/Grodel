@@ -91,7 +91,7 @@ function Leaderboard() {
               {row.badge && (
                 <span className='badge badge-muted hidden sm:inline-flex'>{row.badge.name}</span>
               )}
-              <span className='shrink-0 text-sm font-black tabular-nums' style={{ color: 'var(--accent)' }}>
+              <span className='shrink-0 text-sm font-black tabular-nums' style={{ color: 'var(--accent-text)' }}>
                 {scoreOf(row)}
               </span>
             </li>

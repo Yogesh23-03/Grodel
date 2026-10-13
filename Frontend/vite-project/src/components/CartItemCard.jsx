@@ -30,7 +30,7 @@ function CartItemCard({data}) {
               <h1 className='font-medium text-gray-800'>{data.name}</h1>
               <button
                 onClick={() => setShowNutrition(true)}
-                className='text-gray-400 transition-colors hover:text-[#ff4d2d]'
+                className='text-gray-400 transition-colors hover:text-[color:var(--accent-text)]'
                 aria-label={`${t('nutrition.title')} — ${data.name}`}
                 title={t('nutrition.title')}
               >

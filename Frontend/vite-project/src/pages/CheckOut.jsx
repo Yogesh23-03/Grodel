@@ -294,7 +294,7 @@ function CheckOut() {
                 <span>{t('cart.deliveryFee')}</span>
                 <span>{deliveryFee == 0 ? t('checkout.free', 'Free') : `₹${deliveryFee}`}</span>
               </div>
-              <div className='flex justify-between pt-1 font-display text-lg font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>
+              <div className='flex justify-between pt-1 font-display text-lg font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-text)' }}>
                 <span>{t('cart.total')}</span>
                 <span>₹{AmountWithDeliveryFee}</span>
               </div>

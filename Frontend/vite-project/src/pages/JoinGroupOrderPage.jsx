@@ -62,7 +62,7 @@ const JoinGroupOrderPage = () => {
   if (isBackForwardVisit.current) return (
     <div className='flex min-h-screen flex-col items-center justify-center gap-5 p-6 text-center'>
       <span className='flex h-16 w-16 items-center justify-center rounded-3xl text-3xl' style={{ background: 'var(--accent-soft)' }} aria-hidden='true'>
-        <HiOutlineUserGroup style={{ color: 'var(--accent)' }} />
+        <HiOutlineUserGroup style={{ color: 'var(--accent-text)' }} />
       </span>
       <h1 className='t-title text-2xl'>{t('group.alreadyInTitle', { defaultValue: 'You are already at this table' })}</h1>
       <p className='max-w-sm text-sm' style={{ color: 'var(--ink-muted)' }}>
@@ -95,7 +95,7 @@ const JoinGroupOrderPage = () => {
       <div className='grain w-full max-w-md rounded-[2rem] border p-8 shadow-2xl animate-rise-in'
         style={{ background: 'var(--surface-1)', borderColor: 'var(--border)' }}>
         <div className='flex items-start justify-between'>
-          <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent)' }}>
+          <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent-text)' }}>
             <HiOutlineTicket /> {t('group.inviteEyebrow', { defaultValue: 'You are invited' })}
           </p>
           {/* presence dots: one per seated guest */}

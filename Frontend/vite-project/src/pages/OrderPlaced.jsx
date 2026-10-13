@@ -17,7 +17,7 @@ function OrderPlaced() {
           <FaCircleCheck className='animate-rise-in text-6xl' style={{ color: 'var(--success)' }} />
         </span>
         <h1 className='t-display mt-6'>{t('order.placedTitle')}</h1>
-        <p className='mt-3 max-w-md text-[#8a7d75]'>{t('order.placedBody')}</p>
+        <p className='mt-3 max-w-md text-[var(--ink-muted)]'>{t('order.placedBody')}</p>
 
         <div className='mt-8 flex flex-wrap justify-center gap-3'>
           <button

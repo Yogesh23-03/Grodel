@@ -130,7 +130,7 @@ function NutritionCard({ itemName, isOpen, onClose }) {
           <>
             {/* ---- macro rings ---- */}
             <div className='mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4'>
-              <MacroRing value={nutrition.calories} label={t('nutrition.calories')} color='#ff4d2d' target={RING_TARGETS.calories} />
+              <MacroRing value={nutrition.calories} label={t('nutrition.calories')} color='var(--accent-text)' target={RING_TARGETS.calories} />
               <MacroRing value={nutrition.protein} label={t('nutrition.protein')} color='var(--accent-2)' target={RING_TARGETS.protein} />
               <MacroRing value={nutrition.carbohydrates} label={t('nutrition.carbs')} color='var(--warning)' target={RING_TARGETS.carbohydrates} />
               <MacroRing value={nutrition.fat} label={t('nutrition.fat')} color='var(--danger)' target={RING_TARGETS.fat} />

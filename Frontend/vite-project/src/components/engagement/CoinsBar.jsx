@@ -16,7 +16,7 @@ function CoinsBar({ coins = 0, streak = {}, badges = [] }) {
   const progress = Math.min(100, Math.max(0, towardNext))
 
   const stats = [
-    { key: 'coins', Icon: HiOutlineBanknotes, value: coins, label: t('games.yourCoins'), color: 'var(--accent)' },
+    { key: 'coins', Icon: HiOutlineBanknotes, value: coins, label: t('games.yourCoins'), color: 'var(--accent-text)' },
     { key: 'streak', Icon: HiFire, value: streak?.current || 0, label: t('games.streak'), color: 'var(--vendor)' },
     { key: 'badges', Icon: HiOutlineTrophy, value: badges.length, label: t('games.badges'), color: 'var(--plan)' }
   ]
@@ -44,7 +44,7 @@ function CoinsBar({ coins = 0, streak = {}, badges = [] }) {
           />
         </div>
         <p className='mt-2 flex items-center gap-1.5 text-xs' style={{ color: 'var(--ink-muted)' }}>
-          <HiOutlineSparkles style={{ color: 'var(--accent)' }} />
+          <HiOutlineSparkles style={{ color: 'var(--accent-text)' }} />
           {t('games.coinsInfo')}
         </p>
       </div>

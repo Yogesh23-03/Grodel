@@ -132,7 +132,7 @@ function ProduceCard({ listing, qty, onSet, name, t, onNegotiate }) {
                 </button>
                 <span className='w-6 text-center text-sm font-black'>{qty}</span>
                 <button onClick={() => onSet(listing, qty + 1)} disabled={qty >= max} aria-label='increase'
-                  className='flex h-8 w-8 items-center justify-center rounded-full disabled:opacity-40 active:scale-90' style={{ color: 'var(--accent)' }}>
+                  className='flex h-8 w-8 items-center justify-center rounded-full disabled:opacity-40 active:scale-90' style={{ color: 'var(--accent-text)' }}>
                   <HiOutlinePlus size={16} strokeWidth={2.5} />
                 </button>
               </div>
@@ -460,7 +460,7 @@ function VendorShopPage() {
                       <span className={`badge ${STATUS_STYLES[order.status] || 'badge-muted'} px-3 py-1.5`}>
                         {t(`vendorShop.status.${order.status.replace(/ /g, '_')}`, order.status)}
                       </span>
-                      <span className='font-display font-semibold' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>₹{order.totalAmount}</span>
+                      <span className='font-display font-semibold' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-text)' }}>₹{order.totalAmount}</span>
                       {!['delivered', 'cancelled'].includes(order.status) && (
                         <button onClick={() => cancelOrder(order)} className='badge badge-danger px-3 py-1.5'>
                           {t('common.cancel')}
@@ -582,7 +582,7 @@ function VendorShopPage() {
                         </p>
                       </div>
                       <div className='flex items-center gap-2'>
-                        <span className='font-display text-sm font-semibold' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>
+                        <span className='font-display text-sm font-semibold' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-text)' }}>
                           ₹{(listing.pricePerUnit * basket[listing._id]).toFixed(0)}
                         </span>
                         <button onClick={() => setQty(listing, 0)} className='badge badge-danger p-1.5' aria-label='remove'>
@@ -611,7 +611,7 @@ function VendorShopPage() {
                 <div className='mt-4 flex items-center justify-between rounded-2xl px-4 py-3'
                   style={{ background: 'var(--accent-soft)' }}>
                   <span className='text-sm font-bold'>{t('cart.total')}</span>
-                  <span className='font-display text-xl font-semibold' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>
+                  <span className='font-display text-xl font-semibold' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-text)' }}>
                     ₹{basketTotal.toFixed(0)}
                   </span>
                 </div>

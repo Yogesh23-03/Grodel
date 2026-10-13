@@ -148,7 +148,7 @@ function InboxPage() {
               <button key={th._id} onClick={() => setActiveId(th._id)}
                 className='mb-1.5 block w-full rounded-2xl px-3 py-2.5 text-left transition-all'
                 style={String(th._id) === String(activeId)
-                  ? { background: 'var(--accent-soft)', color: 'var(--accent)' }
+                  ? { background: 'var(--accent-soft)', color: 'var(--accent-text)' }
                   : { background: 'transparent', color: 'var(--ink)' }}>
                 <p className='truncate text-sm font-bold'>{isFarmer ? th.buyerId?.fullName : th.listingId?.name || 'Farmer'}</p>
                 <p className='truncate text-xs' style={{ color: 'var(--ink-muted)' }}>

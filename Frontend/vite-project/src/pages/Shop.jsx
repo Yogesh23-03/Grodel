@@ -33,7 +33,7 @@ function Shop() {
     <div className='min-h-screen lg:pl-[76px]'>
       <MarketNav />
       <button
-        className='fixed left-4 top-24 z-30 flex items-center gap-2 rounded-full border border-white/10 bg-[#07111c]/70 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur-xl transition-transform hover:scale-105 active:scale-95 lg:left-[92px]'
+        className='fixed left-4 top-24 z-30 flex items-center gap-2 rounded-full border border-white/10 bg-[var(--bg)]/70 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur-xl transition-transform hover:scale-105 active:scale-95 lg:left-[92px]'
         onClick={() => navigate("/")}
       >
         <FaArrowLeftLong />
@@ -47,7 +47,7 @@ function Shop() {
             <FaStore className='mb-3 text-4xl text-white drop-shadow-md' />
             <h1 className='text-3xl font-extrabold tracking-tight text-white drop-shadow-lg md:text-5xl'>{shop.name}</h1>
             <div className='mt-2 flex items-center gap-2'>
-              <FaLocationDot size={20} className='text-[#ff4d2d]' />
+              <FaLocationDot size={20} className='text-[color:var(--accent-text)]' />
               <p className='text-base font-medium text-gray-200 md:text-lg'>{shop.address}</p>
             </div>
             <button
@@ -64,7 +64,7 @@ function Shop() {
 
       <div className='mx-auto max-w-7xl px-4 py-10 md:px-6'>
         <h2 className='section-heading mb-8 flex items-center justify-center gap-3'>
-          <FaUtensils className='text-[#ff4d2d]' />
+          <FaUtensils className='text-[color:var(--accent-text)]' />
           {t('shop.ourMenu')}
         </h2>
 
@@ -87,7 +87,7 @@ function Shop() {
             ))}
           </div>
         ) : (
-          <p className='card p-12 text-center text-[#8a7d75] card-3d'>{t('shop.noItems')}</p>
+          <p className='card p-12 text-center text-[var(--ink-muted)] card-3d'>{t('shop.noItems')}</p>
         )}
       </div>
     </div>

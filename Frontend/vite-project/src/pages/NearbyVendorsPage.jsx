@@ -85,13 +85,13 @@ function NearbyVendorsPage() {
         <div ref={headingRef} className='flex flex-wrap items-end justify-between gap-3'>
           <div>
             <h1 className='section-heading flex items-center gap-3'>
-              <span className='flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ff4d2d] text-white shadow-[0_8px_24px_rgba(255,77,45,0.35)]'>
+              <span className='flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--accent)] text-white shadow-[0_8px_24px_var(--brand-glow)]'>
                 <FaStore />
               </span>
               {t('vendor.farmersNearYou', 'Farmers nearby')}
             </h1>
-            <p className='mt-2 flex items-center gap-1.5 text-sm text-[#8a7d75]'>
-              <FaLocationDot className='text-[#ff4d2d]' />
+            <p className='mt-2 flex items-center gap-1.5 text-sm text-[var(--ink-muted)]'>
+              <FaLocationDot className='text-[color:var(--accent-text)]' />
               {coords
                 ? `${coords.lat.toFixed(3)}, ${coords.lng.toFixed(3)}`
                 : t('vendor.locateVendors')}
@@ -118,8 +118,8 @@ function NearbyVendorsPage() {
               key={cat}
               onClick={() => setCategory(cat)}
               className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all active:scale-95 ${category === cat
-                ? 'bg-[#ff4d2d] text-white shadow-[0_6px_18px_rgba(255,77,45,0.3)]'
-                : 'border border-[#f3e2d9] bg-white text-[#4b423d] hover:border-[#ff4d2d] hover:text-[#ff4d2d]'}`}
+                ? 'bg-[var(--accent)] text-white shadow-[0_6px_18px_var(--brand-glow)]'
+                : 'border border-[var(--border)] bg-white text-[var(--ink-soft)] hover:border-[var(--accent)] hover:text-[color:var(--accent-text)]'}`}
             >
               {cat === 'all' ? t('vendor.allCategories') : t(`vendor.${cat}`)}
             </button>
@@ -161,7 +161,7 @@ function NearbyVendorsPage() {
         {!loading && !locating && vendors.length === 0 && (
           <div className='card mt-6 flex flex-col items-center gap-3 p-12 text-center card-3d'>
             <FaStore className='text-4xl text-[#f0cabc]' />
-            <p className='text-[#8a7d75]'>{message || t('vendor.noVendorsNearby')}</p>
+            <p className='text-[var(--ink-muted)]'>{message || t('vendor.noVendorsNearby')}</p>
             <button onClick={() => locateAndFetch(category)} className='link-brand text-sm'>
               {t('vendor.tryAgain')}
             </button>
@@ -170,7 +170,7 @@ function NearbyVendorsPage() {
 
         {!loading && !locating && vendors.length > 0 && visibleVendors.length === 0 && (
           <div className='card mt-6 p-12 text-center card-3d'>
-            <p className='text-[#8a7d75]'>No farms match these filters. Try relaxing them.</p>
+            <p className='text-[var(--ink-muted)]'>No farms match these filters. Try relaxing them.</p>
           </div>
         )}
 
@@ -186,8 +186,8 @@ function NearbyVendorsPage() {
                     )}
                   </div>
                 ) : (
-                  <div className='relative flex h-40 w-full items-center justify-center bg-gradient-to-br from-[#fff1ea] to-[#ffe0d5]'>
-                    <FaLeaf className='text-4xl text-[#ff4d2d]' />
+                  <div className='relative flex h-40 w-full items-center justify-center bg-gradient-to-br from-[var(--accent-soft)] to-[var(--vendor-soft)]'>
+                    <FaLeaf className='text-4xl text-[color:var(--accent-text)]' />
                     {vendor.isFreshToday && (
                       <span className='badge badge-success absolute right-3 top-3 bg-white/95'>🌿 {t('vendor.freshToday')}</span>
                     )}
@@ -203,12 +203,12 @@ function NearbyVendorsPage() {
                       {vendor.farmer?.organic && <span className='badge badge-success'>Organic</span>}
                     </div>
                     <span className='flex shrink-0 items-center gap-1 text-sm text-yellow-500'>
-                      <FaStar /> <b className='text-[#1c1512]'>{vendor.rating?.average || '0'}</b>
-                      <span className='text-xs text-[#8a7d75]'>({vendor.rating?.count || 0})</span>
+                      <FaStar /> <b className='text-[var(--ink)]'>{vendor.rating?.average || '0'}</b>
+                      <span className='text-xs text-[var(--ink-muted)]'>({vendor.rating?.count || 0})</span>
                     </span>
                   </div>
-                  <p className='mt-1 flex items-center gap-1.5 text-sm text-[#8a7d75]'>
-                    <FaLocationDot className='shrink-0 text-[#ff4d2d]' />
+                  <p className='mt-1 flex items-center gap-1.5 text-sm text-[var(--ink-muted)]'>
+                    <FaLocationDot className='shrink-0 text-[color:var(--accent-text)]' />
                     <span className='truncate'>
                       {[vendor.location?.landmark, vendor.location?.district].filter(Boolean).join(', ') || t('vendor.locationPending')}
                     </span>
@@ -217,17 +217,17 @@ function NearbyVendorsPage() {
                     )}
                   </p>
 
-                  <div className='mt-3 space-y-1.5 border-t border-dashed border-[#f3e2d9] pt-3'>
+                  <div className='mt-3 space-y-1.5 border-t border-dashed border-[var(--border)] pt-3'>
                     {topListings(vendor).map((listing) => (
                       <div className='flex items-center justify-between gap-2 text-sm' key={listing._id}>
-                        <span className='truncate text-[#4b423d]'>{listing.name}</span>
-                        <span className='shrink-0 font-bold text-[#ff4d2d]'>
-                          ₹{listing.pricePerUnit || 0}<span className='text-xs font-medium text-[#8a7d75]'>/{listing.unit || 'kg'}</span>
+                        <span className='truncate text-[var(--ink-soft)]'>{listing.name}</span>
+                        <span className='shrink-0 font-bold text-[color:var(--accent-text)]'>
+                          ₹{listing.pricePerUnit || 0}<span className='text-xs font-medium text-[var(--ink-muted)]'>/{listing.unit || 'kg'}</span>
                         </span>
                       </div>
                     ))}
                     {(vendor.listings || []).length > 3 && (
-                      <p className='text-xs text-[#8a7d75]'>+{(vendor.listings || []).length - 3} {t('vendor.moreItems')}</p>
+                      <p className='text-xs text-[var(--ink-muted)]'>+{(vendor.listings || []).length - 3} {t('vendor.moreItems')}</p>
                     )}
                   </div>
 

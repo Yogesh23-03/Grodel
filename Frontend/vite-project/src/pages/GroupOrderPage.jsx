@@ -226,7 +226,7 @@ function GroupOrderPage() {
         <header className='grain tile p-6 print:shadow-none'>
           <div className='flex flex-wrap items-center justify-between gap-4'>
             <div>
-              <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent)' }}>
+              <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent-text)' }}>
                 <HiOutlineTicket /> {t('group.eyebrow', { defaultValue: 'Together' })}
               </p>
               <h1 className='t-display mt-1.5 !text-[1.9rem]'>{group.restaurantName}</h1>
@@ -303,7 +303,7 @@ function GroupOrderPage() {
                       <div className='flex min-w-0 flex-1 flex-col justify-between'>
                         <div>
                           <strong className='block truncate'>{item.name}</strong>
-                          <p className='font-display text-sm font-semibold' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>
+                          <p className='font-display text-sm font-semibold' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-text)' }}>
                             ₹{money(item.price)}
                           </p>
                         </div>
@@ -461,7 +461,7 @@ function GroupOrderPage() {
             </div>
             <p className='mt-6 text-right text-lg font-bold'>
               {t('group.groupTotal', { defaultValue: 'Group total' })}:{' '}
-              <span className='font-display text-2xl' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>
+              <span className='font-display text-2xl' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-text)' }}>
                 ₹{money(group.totalAmount)}
               </span>
             </p>

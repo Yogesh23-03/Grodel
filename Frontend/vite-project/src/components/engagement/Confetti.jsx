@@ -7,7 +7,7 @@ import React from 'react'
  * Math.random(): rendering stays pure (so React may re-render freely without
  * re-shuffling pieces mid-flight), and the burst looks the same every time.
  */
-const COLORS = ['#cdf060', '#5eead4', '#e8956d', '#b7a6f2', '#ecc56a', '#8fd6a4', '#f08c7d']
+const COLORS = ['#7c3aed', '#a855f7', '#f5a524', '#f472b6', '#c084fc', '#34d399', '#f87171']
 const PIECE_COUNT = 50
 
 /* Hash → 0..1. Math.sin is pure, so this is safe to call during render. */

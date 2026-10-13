@@ -73,7 +73,7 @@ function TrendingNow({ city }) {
             <li key={item.name} className='flex items-center justify-between gap-3 rounded-2xl px-3.5 py-2.5'
               style={{ background: 'var(--surface-2)' }}>
               <span className='notranslate min-w-0 truncate text-sm font-bold' style={{ color: 'var(--ink)' }}>{item.name}</span>
-              <span className='shrink-0 text-xs font-black tabular-nums' style={{ color: 'var(--accent)' }}>
+              <span className='shrink-0 text-xs font-black tabular-nums' style={{ color: 'var(--accent-text)' }}>
                 {item.count}/hr
               </span>
             </li>
@@ -95,7 +95,7 @@ function TrendingNow({ city }) {
       )}
 
       <p className='mt-5 border-t pt-4 text-xs' style={{ borderColor: 'var(--border)', color: 'var(--ink-muted)' }}>
-        <span className='font-black' style={{ color: 'var(--accent)' }}>{data.todayOrders}</span> {t('games.trending.ordersToday')}
+        <span className='font-black' style={{ color: 'var(--accent-text)' }}>{data.todayOrders}</span> {t('games.trending.ordersToday')}
       </p>
     </div>
   )

@@ -4,9 +4,9 @@
 /* ================================================================
    GRODEL · FLOATING FOOD UNIVERSE — base tokens
 
-   Brand #ff4d2d on a deep #07111c room; #fff9f6 is the light room.
-   Accents: amber (produce/vendors) · teal (eat) ·
-   violet (plan) · green (rescue/success).
+   Brand #7c3aed (aubergine) on a deep #0a0714 indigo room;
+   #faf8fd is the light room. Accents: mango (produce/vendors) ·
+   rose (eat) · orchid (plan) · mint (rescue/success).
 
    These token *names* are the app-wide contract — 69 files consume
    them. theme.css (loaded first) owns the utility vocabulary
@@ -16,49 +16,51 @@
 
 :root {
   /* ----- Surfaces (dark room) ----- */
-  --bg: #07111c;
-  --bg-lift: #0b1a2b;
-  --surface-1: #0d1b2a;
-  --surface-2: #112236;
-  --surface-3: #162d42;
-  --glass: rgba(13, 27, 42, 0.72);
-  --glass-strong: rgba(7, 17, 28, 0.86);
-  --overlay: rgba(4, 10, 18, 0.70);
+  --bg: #0a0714;
+  --bg-lift: #110b20;
+  --surface-1: #150e28;
+  --surface-2: #1c1334;
+  --surface-3: #251a44;
+  --glass: rgba(21, 14, 40, 0.72);
+  --glass-strong: rgba(10, 7, 20, 0.86);
+  --overlay: rgba(6, 4, 12, 0.72);
 
   /* ----- Ink ----- */
-  --ink: #eef4fb;
-  --ink-soft: #b9c7d6;
-  --ink-muted: #8194a8;
-  --ink-faint: #5b6c80;
+  --ink: #f4f0ff;
+  --ink-soft: #c4b8e0;
+  --ink-muted: #9086b0;
+  --ink-faint: #635a80;
 
-  /* ----- Brand #ff4d2d + supporting hues ----- */
-  --accent: #ff4d2d;            /* brand — primary action */
-  --accent-ink: #ffffff;        /* text on brand */
-  --accent-soft: rgba(255, 77, 45, 0.14);
-  --accent-2: #0d9488;          /* teal — "eat" mode */
-  --accent-2-soft: rgba(13, 148, 136, 0.14);
-  --vendor: #ff8c42;            /* amber — produce & vendors */
-  --vendor-soft: rgba(255, 140, 66, 0.15);
-  --rescue: #10b981;            /* green — donations */
-  --rescue-soft: rgba(16, 185, 129, 0.14);
-  --plan: #7c3aed;              /* violet — meal rituals */
-  --plan-soft: rgba(124, 58, 237, 0.16);
+  /* ----- Brand: aubergine + mango -----
+     Deliberately not the red/orange every delivery app wears. Violet carries
+     the primary action (5.9:1 with white); mango keeps the warmth. */
+  --accent: #7c3aed;            /* aubergine — primary action */
+  --accent-ink: #ffffff;        /* text on aubergine */
+  --accent-soft: rgba(124, 58, 237, 0.16);
+  --accent-2: #f472b6;          /* rose — "eat" mode */
+  --accent-2-soft: rgba(244, 114, 182, 0.14);
+  --vendor: #f5a524;            /* mango — produce & vendors */
+  --vendor-soft: rgba(245, 165, 36, 0.15);
+  --rescue: #34d399;            /* mint — donations */
+  --rescue-soft: rgba(52, 211, 153, 0.14);
+  --plan: #c084fc;              /* orchid — meal rituals */
+  --plan-soft: rgba(192, 132, 252, 0.16);
 
   /* ----- Status ----- */
-  --danger: #ef4444;
-  --danger-soft: rgba(239, 68, 68, 0.14);
-  --success: #10b981;
-  --success-soft: rgba(16, 185, 129, 0.14);
-  --warning: #f59e0b;
-  --warning-soft: rgba(245, 158, 11, 0.14);
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.14);
+  --success: #34d399;
+  --success-soft: rgba(52, 211, 153, 0.14);
+  --warning: #f5a524;
+  --warning-soft: rgba(245, 165, 36, 0.14);
 
   /* ----- Lines & depth ----- */
   --border: rgba(255, 255, 255, 0.10);
   --border-strong: rgba(255, 255, 255, 0.20);
-  --shadow-ambient: 0 24px 60px rgba(2, 8, 16, 0.60), 0 4px 14px rgba(2, 8, 16, 0.45);
-  --shadow-rest: 0 2px 6px rgba(2, 8, 16, 0.45), 0 10px 28px rgba(2, 8, 16, 0.35);
+  --shadow-ambient: 0 24px 60px rgba(4, 2, 10, 0.62), 0 4px 14px rgba(4, 2, 10, 0.46);
+  --shadow-rest: 0 2px 6px rgba(4, 2, 10, 0.46), 0 10px 28px rgba(4, 2, 10, 0.36);
   /* legacy name kept: .btn-primary / .btn-3d / App.jsx inline styles read it */
-  --shadow-lime: 0 10px 30px rgba(255, 77, 45, 0.30);
+  --shadow-lime: 0 10px 30px rgba(124, 58, 237, 0.32);
 
   /* ----- Type ----- */
   --font-display: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -85,45 +87,46 @@
 
 /* ----- Market day (light) ----- */
 html[data-theme='light'] {
-  --bg: #fff9f6;
-  --bg-lift: #fff3ee;
+  --bg: #faf8fd;
+  --bg-lift: #f4f0fb;
   --surface-1: #ffffff;
-  --surface-2: #fff4ef;
-  --surface-3: #ffe8df;
-  --glass: rgba(255, 255, 255, 0.72);
-  --glass-strong: rgba(255, 255, 255, 0.90);
-  --overlay: rgba(30, 20, 16, 0.42);
+  --surface-2: #f6f2fd;
+  --surface-3: #ece5fa;
+  --glass: rgba(255, 255, 255, 0.74);
+  --glass-strong: rgba(255, 255, 255, 0.92);
+  --overlay: rgba(24, 14, 40, 0.42);
 
-  --ink: #1a120e;
-  --ink-soft: #4a3b34;
-  --ink-muted: #7c6a60;
-  --ink-faint: #a99a90;
+  --ink: #1a1130;
+  --ink-soft: #453a5e;
+  --ink-muted: #6f6688;
+  --ink-faint: #9c95b0;
 
-  /* Deeper brand on cream so text/buttons clear WCAG AA */
-  --accent: #e63e20;
+  /* Deeper brand on the light room so text/buttons clear WCAG AA
+     (violet-700 on white is 7.3:1 with white text). */
+  --accent: #6d28d9;
   --accent-ink: #ffffff;
-  --accent-soft: rgba(230, 62, 32, 0.10);
-  --accent-2: #0f766e;
-  --accent-2-soft: rgba(15, 118, 110, 0.10);
-  --vendor: #b4552f;
-  --vendor-soft: rgba(180, 85, 47, 0.11);
-  --rescue: #0f7a55;
-  --rescue-soft: rgba(15, 122, 85, 0.11);
-  --plan: #6d5bd0;
-  --plan-soft: rgba(109, 91, 208, 0.10);
+  --accent-soft: rgba(109, 40, 217, 0.10);
+  --accent-2: #be185d;
+  --accent-2-soft: rgba(190, 24, 93, 0.10);
+  --vendor: #b45309;
+  --vendor-soft: rgba(180, 83, 9, 0.11);
+  --rescue: #047857;
+  --rescue-soft: rgba(4, 120, 87, 0.11);
+  --plan: #7e22ce;
+  --plan-soft: rgba(126, 34, 206, 0.10);
 
-  --danger: #b3402f;
-  --danger-soft: rgba(179, 64, 47, 0.10);
-  --success: #0f7a55;
-  --success-soft: rgba(15, 122, 85, 0.11);
-  --warning: #9a6b0d;
-  --warning-soft: rgba(154, 107, 13, 0.11);
+  --danger: #be123c;
+  --danger-soft: rgba(190, 18, 60, 0.10);
+  --success: #047857;
+  --success-soft: rgba(4, 120, 87, 0.11);
+  --warning: #92610a;
+  --warning-soft: rgba(146, 97, 10, 0.11);
 
-  --border: rgba(26, 18, 14, 0.11);
-  --border-strong: rgba(26, 18, 14, 0.24);
-  --shadow-ambient: 0 24px 50px rgba(120, 60, 40, 0.14), 0 4px 12px rgba(120, 60, 40, 0.08);
-  --shadow-rest: 0 1px 3px rgba(120, 60, 40, 0.07), 0 8px 22px rgba(120, 60, 40, 0.08);
-  --shadow-lime: 0 10px 26px rgba(230, 62, 32, 0.22);
+  --border: rgba(26, 17, 48, 0.11);
+  --border-strong: rgba(26, 17, 48, 0.24);
+  --shadow-ambient: 0 24px 50px rgba(60, 40, 110, 0.14), 0 4px 12px rgba(60, 40, 110, 0.08);
+  --shadow-rest: 0 1px 3px rgba(60, 40, 110, 0.07), 0 8px 22px rgba(60, 40, 110, 0.08);
+  --shadow-lime: 0 10px 26px rgba(109, 40, 217, 0.22);
 
   color-scheme: light;
 }
@@ -473,10 +476,10 @@ html[data-theme='light'] .link-brand { color: var(--accent-2); }
 .badge-success { background: var(--success-soft); color: var(--success); }
 .badge-warning { background: var(--warning-soft); color: var(--warning); }
 .badge-danger { background: var(--danger-soft); color: var(--danger); }
-.badge-brand { background: var(--accent-soft); color: var(--accent); }
+.badge-brand { background: var(--accent-soft); color: var(--accent-text); }
 .badge-accent { background: var(--accent-2-soft); color: var(--accent-2); }
 .badge-muted { background: var(--surface-2); color: var(--ink-muted); }
-html[data-theme='light'] .badge-brand { color: var(--accent); }
+html[data-theme='light'] .badge-brand { color: var(--accent-text); }
 
 /* ---------------- Toast & modals ---------------- */
 .toast {
@@ -551,14 +554,14 @@ html[data-theme='light'] .badge-brand { color: var(--accent); }
    layered above this and below page content. */
 html:not([data-theme='light']) body {
   background:
-    radial-gradient(1100px 700px at 88% -8%, rgba(255, 77, 45, 0.07), transparent 60%),
-    radial-gradient(900px 650px at -8% 100%, rgba(13, 148, 136, 0.07), transparent 55%),
+    radial-gradient(1100px 700px at 88% -8%, rgba(124, 58, 237, 0.09), transparent 60%),
+    radial-gradient(900px 650px at -8% 100%, rgba(245, 165, 36, 0.07), transparent 55%),
     var(--bg);
 }
 html[data-theme='light'] body {
   background:
-    radial-gradient(1100px 700px at 88% -8%, rgba(255, 77, 45, 0.10), transparent 60%),
-    radial-gradient(900px 650px at -8% 100%, rgba(255, 140, 66, 0.10), transparent 55%),
+    radial-gradient(1100px 700px at 88% -8%, rgba(124, 58, 237, 0.10), transparent 60%),
+    radial-gradient(900px 650px at -8% 100%, rgba(245, 165, 36, 0.10), transparent 55%),
     var(--bg);
 }
 
@@ -609,7 +612,7 @@ html:not([data-theme='light']) [class~="bg-gray-100"] { background-color: var(--
 html:not([data-theme='light']) [class~="bg-gray-200"] { background-color: var(--surface-3) !important; }
 
 html:not([data-theme='light']) [class*="bg-[#07111c]"] {
-  background-image: linear-gradient(180deg, #13273d, #0d1b2a) !important;
+  background-image: linear-gradient(180deg, #1c1334, #150e28) !important;
   box-shadow: inset 0 1px 0 rgba(240, 235, 221, 0.07), var(--shadow-rest) !important;
 }
 html:not([data-theme='light']) [class*="bg-[#07111c]/"] {
@@ -668,16 +671,16 @@ html:not([data-theme='light']) [class~="text-purple-700"] { color: var(--plan) !
 html:not([data-theme='light']) [class~="hover:bg-gray-100"]:hover,
 html:not([data-theme='light']) [class~="hover:bg-gray-50"]:hover { background-color: var(--surface-3) !important; }
 
-/* Legacy brand orange (#ff4d2d) is now the brand itself, so these remaps
-   only have to keep hover/text/border variants pointing at the real tokens.
-   #ff4d2d carries white text (--accent-ink), so pairings stay AA-legible. */
+/* Legacy hard-coded brand orange (#ff4d2d) now resolves to the aubergine
+   brand, so these remaps only keep hover/text/border variants on-token.
+   --accent-ink stays white for AA contrast on aubergine. */
 html:not([data-theme='light']) [class*="bg-[#ff4d2d]"] { background-color: var(--accent) !important; }
 html:not([data-theme='light']) [class*="bg-[#ff4d2d]"][class~="text-white"] { color: var(--accent-ink) !important; }
 html:not([data-theme='light']) [class*="hover:bg-[#e63e20]"]:hover,
 html:not([data-theme='light']) [class*="hover:bg-[#e64526]"]:hover,
 html:not([data-theme='light']) [class*="hover:bg-[#e64528]"]:hover,
 html:not([data-theme='light']) [class*="hover:bg-[#e64323]"]:hover,
-html:not([data-theme='light']) [class~="hover:bg-orange-600"]:hover { background-color: #e63b1c !important; }
+html:not([data-theme='light']) [class~="hover:bg-orange-600"]:hover { background-color: #6d28d9 !important; }
 html:not([data-theme='light']) [class*="text-[#ff4d2d]"] { color: var(--accent) !important; }
 html:not([data-theme='light']) [class*="border-[#ff4d2d]"] { border-color: var(--accent) !important; }
 html:not([data-theme='light']) [class*="bg-[#ff4d2d]/10"] { background-color: var(--accent-soft) !important; }
@@ -694,7 +697,7 @@ html[data-theme='light'] [class*="hover:bg-[#e63e20]"]:hover,
 html[data-theme='light'] [class*="hover:bg-[#e64526]"]:hover,
 html[data-theme='light'] [class*="hover:bg-[#e64528]"]:hover,
 html[data-theme='light'] [class*="hover:bg-[#e64323]"]:hover,
-html[data-theme='light'] [class~="hover:bg-orange-600"]:hover { background-color: #c9331a !important; }
+html[data-theme='light'] [class~="hover:bg-orange-600"]:hover { background-color: #5b21b6 !important; }
 html[data-theme='light'] [class*="text-[#ff4d2d]"] { color: var(--accent) !important; }
 html[data-theme='light'] [class*="border-[#ff4d2d]"] { border-color: var(--accent) !important; }
 html[data-theme='light'] [class*="bg-[#ff4d2d]/10"] { background-color: var(--accent-soft) !important; }
@@ -774,7 +777,7 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 .glass-card:hover {
   box-shadow:
     var(--shadow-depth-3),
-    0 0 0 1px rgba(255,77,45,0.16),
+    0 0 0 1px rgba(124,58,237,0.20),
     inset 0 1px 0 rgba(255,255,255,0.18);
   transform: translateY(-5px);
 }
@@ -801,8 +804,8 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 }
 
 .btn-glow {
-  background: linear-gradient(135deg, #ff4d2d, #ff6b47);
-  box-shadow: 0 4px 20px rgba(255,77,45,0.4);
+  background: linear-gradient(135deg, #6d28d9, #7c3aed);
+  box-shadow: 0 4px 20px rgba(124,58,237,0.42);
   transition: all 0.2s ease;
   border: none;
   color: white;
@@ -816,13 +819,13 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 }
 
 .btn-glow:hover {
-  box-shadow: 0 8px 32px rgba(255,77,45,0.55);
+  box-shadow: 0 8px 32px rgba(124,58,237,0.58);
   transform: translateY(-2px) scale(1.02);
 }
 
 .btn-glow:active {
   transform: translateY(0) scale(0.98);
-  box-shadow: 0 2px 10px rgba(255,77,45,0.3);
+  box-shadow: 0 2px 10px rgba(124,58,237,0.32);
 }
 
 .btn-outline-glass {
@@ -845,7 +848,7 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 }
 
 .grad-text {
-  background: linear-gradient(135deg, #ff4d2d 0%, #ff8c42 50%, #ffd700 100%);
+  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 45%, #f5a524 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -858,7 +861,7 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 
 .card-3d:hover {
   transform: perspective(800px) rotateX(3deg) rotateY(-2deg) translateY(-6px);
-  box-shadow: 0 24px 64px rgba(255,77,45,0.18);
+  box-shadow: 0 24px 64px rgba(124,58,237,0.20);
 }
 
 @keyframes pageSlideIn {
@@ -938,11 +941,11 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255,77,45,0.3);
+  background: rgba(124,58,237,0.35);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255,77,45,0.6);
+  background: rgba(124,58,237,0.65);
 }
 
 /* The route wrapper in App.jsx carries .page-enter so every page fades in.

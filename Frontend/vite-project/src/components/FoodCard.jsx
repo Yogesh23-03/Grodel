@@ -155,7 +155,7 @@ function FoodCard({ data }) {
                 onClick={() => setQuantity(q => q + 1)}
                 aria-label='Increase quantity'
                 className='flex h-8 w-8 items-center justify-center rounded-full transition-colors active:scale-90'
-                style={{ color: 'var(--accent)' }}
+                style={{ color: 'var(--accent-text)' }}
               >
                 <HiPlus size={16} strokeWidth={2.5} />
               </button>

@@ -277,7 +277,7 @@ function AdminDashboard() {
                   onClick={() => setSection(item.key)}
                   className='flex shrink-0 items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-all lg:w-full'
                   style={active
-                    ? { background: 'var(--brand-soft)', color: 'var(--brand)', border: '1px solid rgba(255,77,45,0.3)' }
+                    ? { background: 'var(--brand-soft)', color: 'var(--accent-text)', border: '1px solid var(--brand-glow)' }
                     : { background: 'var(--glass-bg)', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}
                 >
                   <span>{item.emoji}</span>
@@ -319,7 +319,7 @@ function AdminDashboard() {
                               style={{
                                 height,
                                 minWidth: 4,
-                                background: 'linear-gradient(to top, #ff4d2d, #ff8c42)',
+                                background: 'linear-gradient(to top, var(--accent), var(--vendor))',
                                 borderRadius: '4px 4px 0 0'
                               }}
                             />

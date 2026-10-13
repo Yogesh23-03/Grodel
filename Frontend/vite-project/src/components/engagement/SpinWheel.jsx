@@ -187,9 +187,9 @@ function SpinWheel({ orderId, onEarn }) {
           ) : (
             <>
               <p className='t-eyebrow flex items-center justify-center gap-1.5'>
-                <HiOutlineTrophy style={{ color: 'var(--accent)' }} /> {t('games.spin.youWon')}
+                <HiOutlineTrophy style={{ color: 'var(--accent-text)' }} /> {t('games.spin.youWon')}
               </p>
-              <p className='animate-coin-pop mt-2 text-lg font-black' style={{ color: 'var(--accent)' }}>
+              <p className='animate-coin-pop mt-2 text-lg font-black' style={{ color: 'var(--accent-text)' }}>
                 {t(`games.spin.prizes.${prizeKey(prize)}`)}
               </p>
               <p className='mt-1 text-xs' style={{ color: 'var(--ink-faint)' }}>{t('games.coinsInfo')}</p>

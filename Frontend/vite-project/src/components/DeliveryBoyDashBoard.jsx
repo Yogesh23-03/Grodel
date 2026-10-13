@@ -323,7 +323,7 @@ function DeliveryBoyDashboard() {
           </div>
           <div className='tile grain p-5' style={{ '--tile-tint': 'var(--accent-soft)' }}>
             <p className='t-eyebrow'>{t('db.deliveredToday', 'Delivered today')}</p>
-            <p className='mt-2 font-display text-3xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>
+            <p className='mt-2 font-display text-3xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-text)' }}>
               {totalDelivered}
             </p>
           </div>

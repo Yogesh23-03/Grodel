@@ -288,15 +288,15 @@ function VendorDashboardPage() {
         {vendorProfile?.isFreshToday && (
           <p className='mt-2 text-sm font-semibold text-green-600'>🌿 {t('vendor.freshToday')}</p>
         )}
-        <p className='mt-1 text-xs text-[#8a7d75]'>{vendorProfile?.isActive ? t('vendor.closedHint') : t('vendor.openHint')}</p>
+        <p className='mt-1 text-xs text-[var(--ink-muted)]'>{vendorProfile?.isActive ? t('vendor.closedHint') : t('vendor.openHint')}</p>
 
         {/* VOICE BAR — the whole shop can be run by speaking */}
         <section className='card card-3d mt-5 p-5'>
           <div className='flex flex-wrap items-center justify-between gap-2'>
-            <h2 className='flex items-center gap-2 text-base font-bold text-[#07111c]'>
-              <FaMicrophone className='text-[#ff4d2d]' /> {t('vendor.voiceBarTitle')}
+            <h2 className='flex items-center gap-2 text-base font-bold text-[var(--ink)]'>
+              <FaMicrophone className='text-[color:var(--accent-text)]' /> {t('vendor.voiceBarTitle')}
             </h2>
-            <span className='text-xs text-[#8a7d75]'>{t('vendor.voiceBarHint')}</span>
+            <span className='text-xs text-[var(--ink-muted)]'>{t('vendor.voiceBarHint')}</span>
           </div>
 
           <div className='mt-3 flex flex-wrap items-center gap-2'>
@@ -357,8 +357,8 @@ function VendorDashboardPage() {
 
           {(voiceHeard || voiceReply) && (
             <div className='mt-3 rounded-xl bg-[#fff3ee] p-3'>
-              {voiceHeard ? <p className='text-xs text-[#8a7d75]'>{t('vendor.voiceCommandHeard')}: “{voiceHeard}”</p> : null}
-              {voiceReply ? <p className='mt-1 text-sm font-semibold text-[#07111c]'>{voiceReply}</p> : null}
+              {voiceHeard ? <p className='text-xs text-[var(--ink-muted)]'>{t('vendor.voiceCommandHeard')}: “{voiceHeard}”</p> : null}
+              {voiceReply ? <p className='mt-1 text-sm font-semibold text-[var(--ink)]'>{voiceReply}</p> : null}
             </div>
           )}
         </section>
@@ -366,29 +366,29 @@ function VendorDashboardPage() {
         {/* STATS ROW */}
         <div className='stagger mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3'>
           <div className='card card-3d p-6 text-center'>
-            <p className='flex items-center justify-center gap-1 text-4xl font-black text-[#ff4d2d]'>
+            <p className='flex items-center justify-center gap-1 text-4xl font-black text-[color:var(--accent-text)]'>
               <FaIndianRupeeSign className='text-2xl' />{todayEarnings}
             </p>
-            <p className='mt-1 text-sm text-[#8a7d75]'>{t('vendor.todayEarnings')}</p>
+            <p className='mt-1 text-sm text-[var(--ink-muted)]'>{t('vendor.todayEarnings')}</p>
           </div>
           <div className='card card-3d p-6 text-center'>
-            <p className='flex items-center justify-center gap-1 text-4xl font-black text-[#ff4d2d]'>
+            <p className='flex items-center justify-center gap-1 text-4xl font-black text-[color:var(--accent-text)]'>
               <FaBoxOpen className='text-2xl' />{todayOrders}
             </p>
-            <p className='mt-1 text-sm text-[#8a7d75]'>{t('vendor.todayOrders')}</p>
+            <p className='mt-1 text-sm text-[var(--ink-muted)]'>{t('vendor.todayOrders')}</p>
           </div>
           <div className='card card-3d p-6 text-center'>
-            <p className='flex items-center justify-center gap-1 text-4xl font-black text-[#ff4d2d]'>
+            <p className='flex items-center justify-center gap-1 text-4xl font-black text-[color:var(--accent-text)]'>
               <FaTruck className='text-2xl' />{vendorProfile?.totalOrders || 0}
             </p>
-            <p className='mt-1 text-sm text-[#8a7d75]'>{t('vendor.totalOrders')}</p>
+            <p className='mt-1 text-sm text-[var(--ink-muted)]'>{t('vendor.totalOrders')}</p>
           </div>
         </div>
 
         {/* INCOMING ORDERS */}
         <div className='mt-8 flex flex-wrap items-center justify-between gap-3'>
           <h2 className='flex items-center gap-2 text-2xl font-bold'>
-            <FaBasketShopping className='text-[#ff4d2d]' />
+            <FaBasketShopping className='text-[color:var(--accent-text)]' />
             {t('vendor.incomingOrders')}
             {pendingCount > 0 && <span className='badge badge-warning px-2.5 py-1'>{pendingCount}</span>}
           </h2>
@@ -400,33 +400,33 @@ function VendorDashboardPage() {
         {showOrders && (
           <div className='mt-4 space-y-3'>
             {activeOrders.length === 0 && (
-              <div className='card p-8 text-center text-sm text-[#8a7d75] card-3d'>{t('vendor.noActiveOrders')}</div>
+              <div className='card p-8 text-center text-sm text-[var(--ink-muted)] card-3d'>{t('vendor.noActiveOrders')}</div>
             )}
             {activeOrders.map(order => (
               <div key={order._id} className='card animate-rise-in p-5 card-3d'>
                 <div className='flex flex-wrap items-center gap-3'>
                   <div className='min-w-0 flex-1'>
                     <p className='font-bold'>{order.customer?.fullName || 'Customer'}</p>
-                    <p className='mt-0.5 text-sm text-[#8a7d75]'>
+                    <p className='mt-0.5 text-sm text-[var(--ink-muted)]'>
                       {order.items.map(i => `${i.name} ×${i.quantity}${i.unit ? ` ${i.unit}` : ''}`).join(', ')}
                     </p>
                     {order.note && <p className='mt-1 text-xs italic text-[#d97706]'>"{order.note}"</p>}
-                    <p className='mt-1 text-xs text-[#8a7d75]'>📍 {order.deliveryAddress?.text} · 📞 {order.contactPhone || order.customer?.mobile}</p>
+                    <p className='mt-1 text-xs text-[var(--ink-muted)]'>📍 {order.deliveryAddress?.text} · 📞 {order.contactPhone || order.customer?.mobile}</p>
                   </div>
                   <div className='text-right'>
                     <span className={`badge ${STATUS_STYLES[order.status] || 'badge-muted'} px-3 py-1.5`}>
                       {t(`vendorShop.status.${order.status.replace(/ /g, '_')}`)}
                     </span>
-                    <p className='mt-1 text-lg font-black text-[#ff4d2d]'>₹{order.totalAmount}</p>
+                    <p className='mt-1 text-lg font-black text-[color:var(--accent-text)]'>₹{order.totalAmount}</p>
                   </div>
                 </div>
-                <div className='mt-4 flex flex-wrap gap-2 border-t border-dashed border-[#f3e2d9] pt-3'>
+                <div className='mt-4 flex flex-wrap gap-2 border-t border-dashed border-[var(--border)] pt-3'>
                   {order.status === 'pending' && (
                     <>
                       <button
                         onClick={() => advanceOrder(order, 'confirmed')}
                         disabled={updatingOrderId === order._id}
-                        className='flex items-center gap-1.5 rounded-full bg-[#ff4d2d] px-4 py-2 text-xs font-bold text-white hover:bg-[#e63e20]'
+                        className='flex items-center gap-1.5 rounded-full bg-[var(--accent)] px-4 py-2 text-xs font-bold text-white hover:bg-[var(--accent-strong)]'
                       >
                         <FaCheck /> {t('vendorShop.status.confirmed')}
                       </button>
@@ -443,7 +443,7 @@ function VendorDashboardPage() {
                     <button
                       onClick={() => advanceOrder(order, 'ready')}
                       disabled={updatingOrderId === order._id}
-                      className='flex items-center gap-1.5 rounded-full bg-[#ff4d2d] px-4 py-2 text-xs font-bold text-white hover:bg-[#e63e20]'
+                      className='flex items-center gap-1.5 rounded-full bg-[var(--accent)] px-4 py-2 text-xs font-bold text-white hover:bg-[var(--accent-strong)]'
                     >
                       <FaCheck /> {t('vendorShop.status.ready')}
                     </button>
@@ -452,7 +452,7 @@ function VendorDashboardPage() {
                     <button
                       onClick={() => advanceOrder(order, 'out of delivery')}
                       disabled={updatingOrderId === order._id}
-                      className='flex items-center gap-1.5 rounded-full bg-[#ff4d2d] px-4 py-2 text-xs font-bold text-white hover:bg-[#e63e20]'
+                      className='flex items-center gap-1.5 rounded-full bg-[var(--accent)] px-4 py-2 text-xs font-bold text-white hover:bg-[var(--accent-strong)]'
                     >
                       <FaTruck /> {t('vendorShop.status.out_of_delivery')}
                     </button>
@@ -471,8 +471,8 @@ function VendorDashboardPage() {
             ))}
 
             {pastOrders.length > 0 && (
-              <div className='card divide-y divide-[#f3e2d9] p-2 card-3d'>
-                <p className='px-3 py-2 text-xs font-bold uppercase tracking-widest text-[#8a7d75]'>{t('vendor.pastOrders')}</p>
+              <div className='card divide-y divide-[var(--border)] p-2 card-3d'>
+                <p className='px-3 py-2 text-xs font-bold uppercase tracking-widest text-[var(--ink-muted)]'>{t('vendor.pastOrders')}</p>
                 {pastOrders.map(order => (
                   <div key={order._id} className='flex flex-wrap items-center gap-3 p-3 text-sm'>
                     <span className='min-w-0 flex-1 truncate'>
@@ -481,7 +481,7 @@ function VendorDashboardPage() {
                     <span className={`badge ${STATUS_STYLES[order.status] || 'badge-muted'}`}>
                       {t(`vendorShop.status.${order.status.replace(/ /g, '_')}`)}
                     </span>
-                    <span className='font-bold text-[#ff4d2d]'>₹{order.totalAmount}</span>
+                    <span className='font-bold text-[color:var(--accent-text)]'>₹{order.totalAmount}</span>
                   </div>
                 ))}
               </div>
@@ -493,7 +493,7 @@ function VendorDashboardPage() {
         <div className='mt-8 flex items-center justify-between'>
           <h2 className='text-2xl font-bold'>{t('vendor.myListings')}</h2>
           <button
-            className='btn-glow flex h-11 w-11 items-center justify-center shadow-[0_6px_18px_rgba(255,77,45,0.35)] transition-transform hover:scale-110 active:scale-95'
+            className='btn-glow flex h-11 w-11 items-center justify-center shadow-[0_6px_18px_var(--brand-glow)] transition-transform hover:scale-110 active:scale-95'
             onClick={() => navigate('/vendor/add-produce')}
             aria-label={t('vendor.addProduct')}
           >
@@ -502,7 +502,7 @@ function VendorDashboardPage() {
         </div>
 
         {listings.length === 0 && (
-          <div className='card p-5 sm:p-8 lg:p-10 text-center text-[#8a7d75] mt-4 card-3d'>
+          <div className='card p-5 sm:p-8 lg:p-10 text-center text-[var(--ink-muted)] mt-4 card-3d'>
             {t('vendor.noListings')}
           </div>
         )}
@@ -524,28 +524,28 @@ function VendorDashboardPage() {
                     {listing.isAvailableToday ? t('vendor.available') : t('vendor.unavailable')}
                   </span>
                 </div>
-                <p className='mt-1 text-sm text-[#8a7d75]'>
+                <p className='mt-1 text-sm text-[var(--ink-muted)]'>
                   {t(`vendor.${listing.category || 'other'}`, { defaultValue: listing.category || 'Other' })} · {listing.availableQuantity || 0} {listing.unit || 'kg'}
                 </p>
                 <div className='mt-2 flex items-center justify-between'>
                   <div>
-                    <span className='text-xl font-black text-[#ff4d2d]'>₹{listing.pricePerUnit || 0}</span>
-                    <span className='text-sm text-[#8a7d75]'>/{t('vendor.perUnit', { unit: listing.unit || 'kg' })}</span>
+                    <span className='text-xl font-black text-[color:var(--accent-text)]'>₹{listing.pricePerUnit || 0}</span>
+                    <span className='text-sm text-[var(--ink-muted)]'>/{t('vendor.perUnit', { unit: listing.unit || 'kg' })}</span>
                   </div>
                   <div className='flex items-center gap-2'>
-                    <button className='flex h-8 w-8 items-center justify-center rounded-full bg-[#fff1ea] text-[#ff4d2d] hover:bg-[#ffe0d5]' onClick={() => changeQuantity(listing._id, -1)} aria-label='decrease'><FaMinus size={11} /></button>
+                    <button className='flex h-8 w-8 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[color:var(--accent-text)] hover:bg-[var(--accent-soft)]' onClick={() => changeQuantity(listing._id, -1)} aria-label='decrease'><FaMinus size={11} /></button>
                     <span className='w-5 text-center font-bold'>{listing.availableQuantity || 0}</span>
-                    <button className='flex h-8 w-8 items-center justify-center rounded-full bg-[#fff1ea] text-[#ff4d2d] hover:bg-[#ffe0d5]' onClick={() => changeQuantity(listing._id, 1)} aria-label='increase'><FaPlus size={11} /></button>
+                    <button className='flex h-8 w-8 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[color:var(--accent-text)] hover:bg-[var(--accent-soft)]' onClick={() => changeQuantity(listing._id, 1)} aria-label='increase'><FaPlus size={11} /></button>
                   </div>
                 </div>
                 <div className='mt-3 flex flex-wrap gap-2'>
-                  <button className='rounded-full bg-[#fff1ea] px-3 py-1.5 text-sm font-semibold text-[#ff4d2d] hover:bg-[#ffe0d5]' onClick={() => {
+                  <button className='rounded-full bg-[var(--accent-soft)] px-3 py-1.5 text-sm font-semibold text-[color:var(--accent-text)] hover:bg-[var(--accent-soft)]' onClick={() => {
                     setEditingId(listing._id)
                     setEditingPrice(String(listing.pricePerUnit || ''))
                   }}>
                     ₹ {t('vendor.setPrice')}
                   </button>
-                  <button className='rounded-full bg-[#fff1ea] px-3 py-1.5 text-sm font-semibold text-[#4b423d] hover:bg-[#ffe0d5]' onClick={() => toggleAvailable(listing._id)}>
+                  <button className='rounded-full bg-[var(--accent-soft)] px-3 py-1.5 text-sm font-semibold text-[var(--ink-soft)] hover:bg-[var(--accent-soft)]' onClick={() => toggleAvailable(listing._id)}>
                     {listing.isAvailableToday ? t('vendor.unavailable') : t('vendor.available')}
                   </button>
                   <button className='rounded-full bg-[#fef2f2] px-3 py-1.5 text-sm font-semibold text-red-500 hover:bg-red-100' onClick={() => removeListing(listing._id)} aria-label='delete'>

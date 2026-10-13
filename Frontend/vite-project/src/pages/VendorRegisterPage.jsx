@@ -218,12 +218,12 @@ function VendorRegisterPage() {
             <FaArrowLeft />
             <span>{t('common.back')}</span>
           </button>
-          <span className='font-black text-white text-xl'>GroDel <span className='text-[#ff4d2d]'>Fresh</span></span>
+          <span className='font-black text-white text-xl'>GroDel <span className='text-[color:var(--accent-text)]'>Fresh</span></span>
         </header>
 
         <div className='max-w-3xl mx-auto px-4 py-8'>
           <div className='glass-card border border-gray-100 p-8 text-center card-3d'>
-            <FaCheck className='text-[#ff4d2d] text-5xl mx-auto' />
+            <FaCheck className='text-[color:var(--accent-text)] text-5xl mx-auto' />
             <h1 className='text-2xl font-bold text-green-600 mt-3'>
               {result.created ? t('vendor.youAreIn') : t('vendor.youWereIn')}
             </h1>
@@ -256,12 +256,12 @@ function VendorRegisterPage() {
           </div>
 
           <section className='glass-card border border-gray-100 p-6 mt-5 card-3d'>
-            <h2 className='text-lg font-bold text-[#07111c]'>{t('vendor.directionsTitle')}</h2>
+            <h2 className='text-lg font-bold text-[var(--ink)]'>{t('vendor.directionsTitle')}</h2>
             <p className='text-gray-500 text-sm mt-1'>{t('vendor.voiceBarHint')}</p>
             <ol className='mt-4 space-y-3'>
               {runShopSteps.map((line, index) => (
                 <li key={line} className='flex items-start gap-3 stagger-item' style={{ animationDelay: `${index * 80}ms` }}>
-                  <span className='shrink-0 h-7 w-7 rounded-full bg-[#ff4d2d]/10 text-[#ff4d2d] font-bold flex items-center justify-center text-sm'>{index + 1}</span>
+                  <span className='shrink-0 h-7 w-7 rounded-full bg-[var(--accent-soft)] text-[color:var(--accent-text)] font-bold flex items-center justify-center text-sm'>{index + 1}</span>
                   <span className='text-gray-700 text-sm'>{line}</span>
                 </li>
               ))}
@@ -280,11 +280,11 @@ function VendorRegisterPage() {
           <FaArrowLeft />
           <span>{t('vendor.back')}</span>
         </button>
-        <span className='font-black text-white text-xl'>GroDel <span className='text-[#ff4d2d]'>Fresh</span></span>
+        <span className='font-black text-white text-xl'>GroDel <span className='text-[color:var(--accent-text)]'>Fresh</span></span>
       </header>
 
       <div className='max-w-3xl mx-auto px-4 py-6'>
-        <h1 className='text-2xl sm:text-3xl font-bold text-[#07111c]'>{t('vendor.joinTitle')}</h1>
+        <h1 className='text-2xl sm:text-3xl font-bold text-[var(--ink)]'>{t('vendor.joinTitle')}</h1>
         <p className='text-gray-500 mt-2'>{t('vendor.joinIntro')}</p>
 
         <div className='flex flex-wrap gap-2 mt-4'>
@@ -297,7 +297,7 @@ function VendorRegisterPage() {
                 resetTranscript()
                 spokenStep.current = -1
               }}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition ${language === lang.code ? 'bg-[#ff4d2d] text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-[#ff4d2d]'}`}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition ${language === lang.code ? 'bg-[var(--accent)] text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-[var(--accent)]'}`}
             >
               {lang.label}
             </button>
@@ -320,7 +320,7 @@ function VendorRegisterPage() {
             <span>{Math.round(((step + 1) / TOTAL_STEPS) * 100)}%</span>
           </div>
           <div className='h-2 bg-gray-200 rounded-full mt-2 overflow-hidden'>
-            <div className='h-full bg-[#ff4d2d] transition-all' style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%` }} />
+            <div className='h-full bg-[var(--accent)] transition-all' style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%` }} />
           </div>
         </div>
 
@@ -328,14 +328,14 @@ function VendorRegisterPage() {
         <div className='glass-card border border-gray-100 p-6 mt-5 card-3d'>
           <div className='flex items-start gap-3'>
             {current?.kind === 'photo'
-              ? <FaCamera className='text-[#ff4d2d] text-3xl shrink-0' />
-              : <FaMicrophone className='text-[#ff4d2d] text-3xl shrink-0' />}
-            <h2 className='text-xl font-bold text-[#07111c]'>{current?.ask}</h2>
+              ? <FaCamera className='text-[color:var(--accent-text)] text-3xl shrink-0' />
+              : <FaMicrophone className='text-[color:var(--accent-text)] text-3xl shrink-0' />}
+            <h2 className='text-xl font-bold text-[var(--ink)]'>{current?.ask}</h2>
           </div>
 
           <div className='flex flex-wrap items-center gap-2 mt-4'>
             <button
-              className={`inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold ${isListening ? 'bg-red-500 text-white' : 'bg-[#ff4d2d] text-white'}`}
+              className={`inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold ${isListening ? 'bg-red-500 text-white' : 'bg-[var(--accent)] text-white'}`}
               onClick={isListening ? stopListening : listen}
             >
               <FaMicrophone /> {isListening ? t('vendor.listeningNow') : t('vendor.tapToAnswer')}
@@ -387,7 +387,7 @@ function VendorRegisterPage() {
               </button>
               {analysis && (
                 <div className='mt-3 bg-gray-50 rounded-lg p-3'>
-                  <p className='font-semibold text-[#ff4d2d]'>{analysis.name}</p>
+                  <p className='font-semibold text-[color:var(--accent-text)]'>{analysis.name}</p>
                   <p className='text-gray-500 text-xs'>
                     {analysis.category} · {analysis.unit}
                     {analysis.suggestedPrice ? ` · ₹${analysis.suggestedPrice}` : ''}
@@ -433,14 +433,14 @@ function VendorRegisterPage() {
 
         {/* Directions the vendor will follow to run the shop */}
         <section className='glass-card border border-gray-100 p-6 mt-5 card-3d'>
-          <h2 className='flex items-center gap-2 text-lg font-bold text-[#07111c]'>
-            <FaClipboardCheck className='text-[#ff4d2d]' /> {t('vendor.directionsTitle')}
+          <h2 className='flex items-center gap-2 text-lg font-bold text-[var(--ink)]'>
+            <FaClipboardCheck className='text-[color:var(--accent-text)]' /> {t('vendor.directionsTitle')}
           </h2>
           <div className='grid sm:grid-cols-2 gap-3 mt-4'>
-            <p className='flex items-start gap-2 text-sm text-gray-600'><FaMicrophone className='text-[#ff4d2d] mt-0.5 shrink-0' /> {t('vendor.directionOpen')}</p>
-            <p className='flex items-start gap-2 text-sm text-gray-600'><FaCamera className='text-[#ff4d2d] mt-0.5 shrink-0' /> {t('vendor.directionAdd')}</p>
-            <p className='flex items-start gap-2 text-sm text-gray-600'><FaIndianRupeeSign className='text-[#ff4d2d] mt-0.5 shrink-0' /> {t('vendor.directionPrice')}</p>
-            <p className='flex items-start gap-2 text-sm text-gray-600'><FaBasketShopping className='text-[#ff4d2d] mt-0.5 shrink-0' /> {t('vendor.directionOrders')}</p>
+            <p className='flex items-start gap-2 text-sm text-gray-600'><FaMicrophone className='text-[color:var(--accent-text)] mt-0.5 shrink-0' /> {t('vendor.directionOpen')}</p>
+            <p className='flex items-start gap-2 text-sm text-gray-600'><FaCamera className='text-[color:var(--accent-text)] mt-0.5 shrink-0' /> {t('vendor.directionAdd')}</p>
+            <p className='flex items-start gap-2 text-sm text-gray-600'><FaIndianRupeeSign className='text-[color:var(--accent-text)] mt-0.5 shrink-0' /> {t('vendor.directionPrice')}</p>
+            <p className='flex items-start gap-2 text-sm text-gray-600'><FaBasketShopping className='text-[color:var(--accent-text)] mt-0.5 shrink-0' /> {t('vendor.directionOrders')}</p>
           </div>
           <p className='text-gray-400 text-xs mt-3'>{t('vendor.directionEarnings')}</p>
         </section>

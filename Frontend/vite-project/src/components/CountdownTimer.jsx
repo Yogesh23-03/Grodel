@@ -18,7 +18,7 @@ const CountdownTimer = ({ expiresAt, onExpire }) => {
   const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0')
   const seconds = String(totalSeconds % 60).padStart(2, '0')
 
-  return <span className={`font-bold tabular-nums ${remaining < 5 * 60 * 1000 ? 'text-red-600' : 'text-[#07111c]'}`}>{minutes}:{seconds}</span>
+  return <span className={`font-bold tabular-nums ${remaining < 5 * 60 * 1000 ? 'text-red-600' : 'text-[var(--ink)]'}`}>{minutes}:{seconds}</span>
 }
 
 export default CountdownTimer

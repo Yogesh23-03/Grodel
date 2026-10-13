@@ -99,7 +99,7 @@ function RecipeCard({ itemName, isOpen, onClose }) {
                   { Icon: HiOutlineUserGroup, label: t('recipe.servings'), value: recipe.servings }
                 ].map(({ Icon, label, value }) => (
                   <div key={label} className='rounded-2xl px-3 py-3 text-center' style={{ background: 'var(--surface-2)' }}>
-                    {React.createElement(Icon, { size: 18, className: 'mx-auto', style: { color: 'var(--accent)' } })}
+                    {React.createElement(Icon, { size: 18, className: 'mx-auto', style: { color: 'var(--accent-text)' } })}
                     <p className='mt-1 text-sm font-black'>{value || '—'}</p>
                     <p className='text-[10px] font-bold uppercase tracking-wide' style={{ color: 'var(--ink-muted)' }}>{label}</p>
                   </div>
@@ -189,7 +189,7 @@ function RecipeCard({ itemName, isOpen, onClose }) {
 
             {recipe.servingSuggestion && (
               <p className='mt-8 rounded-2xl px-4 py-3 text-sm font-semibold text-center'
-                style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}>
+                style={{ background: 'var(--accent-soft)', color: 'var(--accent-text)' }}>
                 🍽️ {recipe.servingSuggestion}
               </p>
             )}

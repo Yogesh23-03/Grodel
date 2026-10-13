@@ -61,7 +61,7 @@ function FoodFact({ dishName, restaurantName }) {
       <div className='p-5 sm:p-6'>
         <p className='t-eyebrow'>{t('games.fact.about')}</p>
         <p className='mt-3 text-3xl' aria-hidden='true'>{fact.emoji}</p>
-        <p className='mt-3 text-sm font-black uppercase tracking-wide' style={{ color: 'var(--accent)' }}>
+        <p className='mt-3 text-sm font-black uppercase tracking-wide' style={{ color: 'var(--accent-text)' }}>
           {t('games.fact.title')}
         </p>
         <p className='mt-2 text-sm leading-relaxed' style={{ color: 'var(--ink-soft)' }}>{fact.fact}</p>

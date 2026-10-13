@@ -17,7 +17,7 @@ function PricePad({ price, onPriceChange, onSpeak, speakDisabled, readingPrice }
 
   return (
     <div className='glass-card border border-gray-100 w-full card-3d'>
-      <div className='w-full text-center text-2xl font-bold text-[#07111c] py-3 rounded-t-xl bg-[#fff9f6]'>
+      <div className='w-full text-center text-2xl font-bold text-[var(--ink)] py-3 rounded-t-xl bg-[#fff9f6]'>
         ₹ {price ? price : 0}
       </div>
       <div className='grid grid-cols-3 gap-2 p-3'>
@@ -26,7 +26,7 @@ function PricePad({ price, onPriceChange, onSpeak, speakDisabled, readingPrice }
             key={digit}
             type='button'
             onClick={() => append(digit)}
-            className='py-3 rounded-xl bg-[#07111c]/5 hover:bg-[#ff4d2d]/10 text-[#07111c] text-lg font-bold'
+            className='py-3 rounded-xl bg-[var(--glass-bg)] hover:bg-[var(--accent-soft)] text-[var(--ink)] text-lg font-bold'
           >
             {digit}
           </button>
@@ -35,7 +35,7 @@ function PricePad({ price, onPriceChange, onSpeak, speakDisabled, readingPrice }
           type='button'
           onClick={onSpeak}
           disabled={speakDisabled}
-          className='py-3 rounded-xl bg-[#ff4d2d]/10 hover:bg-[#ff4d2d]/20 text-[#ff4d2d] text-lg flex items-center justify-center gap-1'
+          className='py-3 rounded-xl bg-[var(--accent-soft)] hover:bg-[var(--accent-soft)] text-[color:var(--accent-text)] text-lg flex items-center justify-center gap-1'
         >
           <FaMicrophone />
           {readingPrice ? <span className='text-xs font-semibold'>{t('vendor.listening')}</span> : null}
@@ -43,7 +43,7 @@ function PricePad({ price, onPriceChange, onSpeak, speakDisabled, readingPrice }
         <button
           type='button'
           onClick={() => append("0")}
-          className='py-3 rounded-xl bg-[#07111c]/5 hover:bg-[#ff4d2d]/10 text-[#07111c] text-lg font-bold'
+          className='py-3 rounded-xl bg-[var(--glass-bg)] hover:bg-[var(--accent-soft)] text-[var(--ink)] text-lg font-bold'
         >
           0
         </button>

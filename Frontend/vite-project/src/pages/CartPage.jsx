@@ -49,7 +49,7 @@ function CartPage() {
             <div className='glass-panel sticky bottom-24 mt-6 flex items-center justify-between gap-3 p-5 lg:bottom-6'>
               <div>
                 <h1 className='t-eyebrow'>{t('cart.total')}</h1>
-                <span className='font-display text-2xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent)' }}>₹{totalAmount}</span>
+                <span className='font-display text-2xl font-black' style={{ fontFamily: 'var(--font-display)', color: 'var(--accent-text)' }}>₹{totalAmount}</span>
               </div>
               <button
                 className='btn-primary'
