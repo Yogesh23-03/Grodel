@@ -100,7 +100,7 @@
   --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* ----- Motion ----- */
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-spring: cubic-bezier(0.32, 0.94, 0.4, 1);
 
   /* ----- Aurora ----- */
   --aurora-1: rgba(255, 77, 45, 0.16);
@@ -210,7 +210,7 @@ html[data-theme='light'] {
   will-change: transform;
 }
 .tilt-3d:hover {
-  transform: perspective(800px) rotateX(4deg) rotateY(-3deg) translateY(-6px);
+  transform: perspective(900px) rotateX(2deg) rotateY(-1.5deg) translateY(-3px);
   box-shadow: var(--shadow-brand);
 }
 .tilt-3d:active { transform: translateY(-2px) scale(0.995); }
@@ -341,7 +341,7 @@ html[data-theme='light'] .noise::after { opacity: 0.018; }
 
 /* Magnetic press feedback for pill buttons */
 .magnetic { transition: transform 200ms var(--ease-spring), box-shadow 200ms ease; }
-.magnetic:hover { transform: scale(1.03) translateY(-2px); }
+.magnetic:hover { transform: scale(1.015) translateY(-1px); }
 .magnetic:active { transform: scale(0.97); }
 
 /* ================================================================
@@ -360,7 +360,7 @@ html[data-theme='light'] .noise::after { opacity: 0.018; }
               border-color 200ms ease;
 }
 .g-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-depth-3), 0 0 0 1px rgba(255, 77, 45, 0.18);
   border-color: rgba(255, 77, 45, 0.28);
 }
@@ -400,7 +400,7 @@ html[data-theme='light'] .noise::after { opacity: 0.018; }
   transition: transform 200ms var(--ease-spring), box-shadow 200ms ease;
   white-space: nowrap;
 }
-.g-btn:hover { box-shadow: var(--shadow-brand-lg); transform: scale(1.03) translateY(-2px); }
+.g-btn:hover { box-shadow: var(--shadow-brand-lg); transform: scale(1.015) translateY(-1px); }
 .g-btn:active { transform: scale(0.97); }
 
 .g-btn-ghost {
@@ -441,7 +441,7 @@ html[data-theme='light'] .noise::after { opacity: 0.018; }
   background: var(--glass-bg-2);
   border-color: var(--brand);
   color: var(--brand);
-  transform: scale(1.08);
+  transform: scale(1.04);
 }
 
 /* ----- Inputs ----- */
@@ -655,12 +655,12 @@ html[data-theme='light'] .g-table td { border-bottom-color: rgba(26, 18, 14, 0.0
 /* ----- Entrance stagger (index.css owns `.stagger-item`; this is the
          explicit-delay variant used on new decorative wrappers) ----- */
 @keyframes g-fade-up {
-  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  from { opacity: 0; transform: translateY(8px) scale(1); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .g-rise {
   opacity: 0;
-  animation: g-fade-up 500ms var(--ease-spring) forwards;
+  animation: g-fade-up 240ms var(--ease-out) forwards;
 }
 
 /* ----- Market rail item (kept in sync with index.css shell) ----- */

@@ -45,6 +45,43 @@ const placeOrder = async (req, res) => {
             return res.status(400).json({ message: "Add a delivery address and pick a location on the map" })
         }
 
+        /* Idempotency guard. The client submits once, but a retried request or
+           a resubmitted basket would otherwise create an identical second order.
+           Inside a one-minute window the original is returned instead. */
+        const basketSignature = cartItems
+            .map(i => `${i.id}:${i.quantity}`)
+            .sort()
+            .join('|')
+        const recentOrders = await Order.find({
+            user: req.userId,
+            createdAt: { $gte: new Date(Date.now() - 60 * 1000) }
+        }).sort({ createdAt: -1 }).limit(5)
+        const replayed = recentOrders.find(order => {
+            const existing = (order.shopOrders || [])
+                .flatMap(shopOrder => shopOrder.shopOrderItems || [])
+                .map(i => `${String(i.item)}:${i.quantity}`)
+                .sort()
+                .join('|')
+            return existing === basketSignature
+        })
+        if (replayed) {
+            if (paymentMethod == "online") {
+                return res.status(200).json({
+                    razorOrder: {
+                        id: replayed.razorpayOrderId,
+                        amount: Math.round(Number(replayed.totalAmount) * 100),
+                        currency: 'INR'
+                    },
+                    orderId: replayed._id
+                })
+            }
+            await replayed.populate("shopOrders.shopOrderItems.item", "name image price")
+            await replayed.populate("shopOrders.shop", "name")
+            await replayed.populate("shopOrders.owner", "name socketId")
+            await replayed.populate("user", "name email mobile")
+            return res.status(200).json(replayed)
+        }
+
         const groupItemsByShop = {}
 
         cartItems.forEach(item => {

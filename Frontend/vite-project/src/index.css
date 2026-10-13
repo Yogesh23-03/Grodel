@@ -76,9 +76,9 @@
   --radius-sm: 0.6rem; --radius-md: 1rem; --radius-lg: 1.5rem; --radius-xl: 2rem;
 
   /* ----- Motion ----- */
-  --dur-fast: 140ms; --dur-base: 240ms; --dur-slow: 420ms; --dur-page: 520ms;
+  --dur-fast: 140ms; --dur-base: 240ms; --dur-slow: 320ms; --dur-page: 520ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.4, 0.44, 1);
+  --ease-spring: cubic-bezier(0.32, 0.94, 0.4, 1);
 
   color-scheme: dark;
 }
@@ -217,7 +217,7 @@ html[data-theme='light'] .grain::after { opacity: 0.02; }
   transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
 }
 .card-hover:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-ambient);
   border-color: var(--border-strong);
 }
@@ -251,7 +251,7 @@ html[data-theme='light'] .grain::after { opacity: 0.02; }
     var(--tile-base, var(--surface-1));
 }
 .tile > * { position: relative; z-index: 1; }
-.tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-ambient); }
+.tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-ambient); }
 
 .tile-eat { --tile-base: var(--surface-1); --tile-tint: var(--accent-2-soft); }
 .tile-market { --tile-base: var(--surface-1); --tile-tint: var(--vendor-soft); }
@@ -286,7 +286,17 @@ button, a, input, textarea, select {
     border-color var(--dur-fast) ease,
     color var(--dur-fast) ease,
     box-shadow var(--dur-base) var(--ease-out),
-    transform var(--dur-base) var(--ease-spring),
+    opacity var(--dur-fast) ease;
+}
+/* Transform feedback belongs to buttons alone. When inputs and selects
+   inherited it, focusing and typing nudged the field around. */
+button:not(:disabled) {
+  transition:
+    transform 140ms var(--ease-out),
+    background-color var(--dur-fast) ease,
+    border-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    box-shadow var(--dur-base) var(--ease-out),
     opacity var(--dur-fast) ease;
 }
 button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
@@ -336,11 +346,11 @@ html[data-theme='light'] .link-brand { color: var(--accent-2); }
 .overflow-x-auto::-webkit-scrollbar { height: 6px; }
 
 /* ---------------- Motion library ---------------- */
-@keyframes page-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes rise-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes page-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes modal-in { from { opacity: 0; transform: translateY(26px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes toast-in { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes modal-in { from { opacity: 0; transform: translateY(14px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes soft-pulse { 0%, 100% { opacity: 0.55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
 @keyframes shimmer { from { background-position: -400px 0; } to { background-position: 400px 0; } }
 @keyframes bounce-dot { 0%, 80%, 100% { transform: scale(0.5); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
@@ -374,7 +384,7 @@ html[data-theme='light'] .link-brand { color: var(--accent-2); }
 @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes scooter-ride { from { left: 0%; } to { left: calc(100% - 1.75rem); } }
 @keyframes chef-bob { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-6px) rotate(4deg); } }
-@keyframes card-entry { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes card-entry { from { opacity: 0; transform: translateY(8px) scale(1); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes coin-burst { from { opacity: 1; transform: translate3d(0, 0, 0) scale(0.45); } to { opacity: 0; transform: translate3d(var(--coin-x, 0px), var(--coin-y, -70px), 0) scale(1.15); } }
 
 .food-float-1 { animation: float-1 4s ease-in-out infinite; }
@@ -391,10 +401,10 @@ html[data-theme='light'] .link-brand { color: var(--accent-2); }
   /* `backwards` (not `both`): the entry transform is dropped once it
      finishes, so a settled card never becomes a containing block for the
      fixed chrome it sits under. */
-  animation: card-entry 420ms var(--ease-out) backwards;
+  animation: card-entry 220ms var(--ease-out) backwards;
 }
 .card-3d:hover {
-  transform: translateY(-6px) rotateX(4deg) rotateY(-4deg) scale(1.015);
+  transform: translateY(-3px) rotateX(2deg) rotateY(-2deg);
   box-shadow: var(--shadow-ambient);
   border-color: var(--border-strong);
 }
@@ -402,13 +412,13 @@ html[data-theme='light'] .link-brand { color: var(--accent-2); }
 @media (hover: none) { .card-3d { transform: none; } }
 
 .btn-3d { transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out); }
-.btn-3d:hover { transform: translateY(-2px) scale(1.02); box-shadow: var(--shadow-lime); }
+.btn-3d:hover { transform: translateY(-1px) scale(1.01); box-shadow: var(--shadow-lime); }
 .btn-3d:active { transform: translateY(1px) scale(0.97); }
 
 .stagger-item { animation: rise-in var(--dur-slow) var(--ease-out) both; }
 
 /* Scroll reveal — the element stays invisible until the observer marks it. */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 560ms var(--ease-out), transform 560ms var(--ease-out); }
+.reveal { opacity: 0; transform: translateY(10px); transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out); }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 .coin-burst-layer { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
@@ -852,20 +862,20 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 }
 
 @keyframes pageSlideIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .page-enter {
-  animation: pageSlideIn 0.4s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation: pageSlideIn 260ms var(--ease-out) forwards;
 }
 
 @keyframes staggerUp {
-  from { opacity: 0; transform: translateY(18px) scale(0.98); }
+  from { opacity: 0; transform: translateY(8px) scale(1); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .stagger-item {
   opacity: 0;
-  animation: staggerUp 0.45s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation: staggerUp 240ms var(--ease-out) forwards;
 }
 
 @keyframes floatY {
@@ -885,12 +895,12 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
 .float-c { animation: floatY3 7s ease-in-out infinite; }
 
 @keyframes revealUp {
-  from { opacity: 0; transform: translateY(32px); }
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .reveal { opacity: 0; }
 .reveal.visible {
-  animation: revealUp 0.6s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation: revealUp 360ms var(--ease-out) forwards;
 }
 
 @keyframes shimmer {
@@ -920,9 +930,11 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
   from { opacity: 0; transform: scale(0.8); }
   to   { opacity: 1; transform: scale(1); }
 }
-.count-reveal { animation: countUp 0.5s ease forwards; }
+.count-reveal { animation: countUp 300ms var(--ease-out) forwards; }
 
-* { scroll-behavior: smooth; }
+/* Programmatic scroll on navigation must be instant. It used to be smooth,
+   so entering a page animated the viewport and read as the content sliding. */
+* { scroll-behavior: auto; }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
@@ -941,5 +953,5 @@ html:not([data-theme='light']) [class~="border-red-100"] { border-color: var(--b
    they scroll away with a long page. Without a fill mode the transform is gone
    the moment the 400ms animation ends. */
 .page-enter-route {
-  animation: pageSlideIn 0.4s cubic-bezier(0.22,1,0.36,1);
+  animation: pageSlideIn 260ms var(--ease-out);
 }

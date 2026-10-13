@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { TbCurrentLocation } from "react-icons/tb";
 import { IoSearchOutline, IoLocationSharp } from "react-icons/io5";
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
@@ -11,7 +11,7 @@ import axios from 'axios';
 import { FaMobileScreenButton } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { serverUrl } from '../App';
-import { addMyOrder } from '../redux/userSlice';
+import { addMyOrder, clearCart } from '../redux/userSlice';
 import { useTranslation } from 'react-i18next';
 import { HiOutlineArrowLeft } from 'react-icons/hi2';
 import MarketNav from '../components/MarketNav.jsx';
@@ -37,6 +37,10 @@ function CheckOut() {
   const [addressInput, setAddressInput] = useState("")
   const [paymentMethod, setPaymentMethod] = useState("cod")
   const [placing, setPlacing] = useState(false)
+  /* A ref, not the `placing` state: the state value captured in this closure
+     is still false for a click that lands before React re-renders and disables
+     the button, which is how a fast double tap created two identical orders. */
+  const placingRef = useRef(false)
   const [checkoutError, setCheckoutError] = useState("")
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -98,12 +102,16 @@ function CheckOut() {
   }
 
   const handlePlaceOrder = async () => {
-    if (placing) return
+    if (placingRef.current) return
+    placingRef.current = true
+
     if (!cartItems?.length) {
+      placingRef.current = false
       setCheckoutError(t('checkout.emptyBasket', 'Your basket is empty'))
       return
     }
     if (!addressInput.trim()) {
+      placingRef.current = false
       setCheckoutError(t('checkout.needAddress', 'Add a delivery address'))
       return
     }
@@ -116,10 +124,15 @@ function CheckOut() {
     let coords = hasLocation ? { lat: location.lat, lon: location.lon } : null
     if (!coords) coords = await getLatLngByAddress()
     if (!coords) {
+      placingRef.current = false
       setPlacing(false)
       setCheckoutError(t('checkout.needLocation', 'Search your address or drop the pin on the map so we know where to deliver'))
       return
     }
+
+    /* Flips only once the server has accepted the order, so the guard stays
+       armed through a retry instead of letting a second request through. */
+    let accepted = false
 
     try {
       const result = await axios.post(`${serverUrl}/api/order/place-order`, {
@@ -134,9 +147,14 @@ function CheckOut() {
       }, { withCredentials: true })
 
       if (paymentMethod == "cod") {
+        accepted = true
+        /* The basket must not outlive an accepted order — leaving it full is
+           what allowed the same order to be placed a second time. */
+        dispatch(clearCart())
         dispatch(addMyOrder(result.data))
         navigate("/order-placed")
       } else {
+        accepted = true
         const orderId = result.data.orderId
         const razorOrder = result.data.razorOrder
         openRazorpayWindow(orderId, razorOrder)
@@ -145,6 +163,7 @@ function CheckOut() {
       console.log(error)
       setCheckoutError(error?.response?.data?.message || t('checkout.placeFailed', 'Could not place the order. Please try again.'))
     } finally {
+      if (!accepted) placingRef.current = false
       setPlacing(false)
     }
   }
@@ -163,6 +182,7 @@ function CheckOut() {
             razorpay_payment_id: response.razorpay_payment_id,
             orderId
           }, { withCredentials: true })
+          dispatch(clearCart())
           dispatch(addMyOrder(result.data))
           navigate("/order-placed")
         } catch (error) {

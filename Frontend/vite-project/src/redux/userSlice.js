@@ -80,6 +80,13 @@ const userSlice = createSlice({
     addMyOrder: (state, action) => {
       state.myOrders = [action.payload, ...state.myOrders];
     },
+    /* Added because the basket survived a successful order: returning to
+       checkout (back button, "order more", or a fast double tap) re-submitted
+       the exact same basket and the server created the order a second time. */
+    clearCart: (state) => {
+      state.cartItems = [];
+      state.totalAmount = 0;
+    },
     updateOrderStatus: (state, action) => {
       const { orderId, shopId, status } = action.payload;
       const order = state.myOrders.find(o => o._id === orderId);
@@ -130,6 +137,7 @@ export const {
   removeCartItem,
   setMyOrders,
   addMyOrder,
+  clearCart,
   updateOrderStatus,
   setSearchItems,
   setTotalAmount,
