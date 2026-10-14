@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import { serverUrl } from '../App';
-import { ClipLoader } from 'react-spinners';
+import GlowSpinner from '../components/ui/GlowSpinner.jsx'
 function ForgotPassword() {
   const [step, setStep] = useState(1)
   const [email,setEmail]=useState("")
@@ -70,7 +70,7 @@ const [loading,setLoading]=useState(false)
                     <input type="email" className='glass-input w-full' placeholder='Enter your Email' onChange={(e)=>setEmail(e.target.value)} value={email} required/>
                 </div>
                 <button className={`w-full font-semibold py-2 rounded-lg transition duration-200 bg-[var(--accent)] text-white hover:bg-[var(--accent-strong)] cursor-pointer`} onClick={handleSendOtp} disabled={loading}>
-                {loading?<ClipLoader size={20} color='white'/>:"Send Otp"}
+                {loading?<GlowSpinner size={20} color='white' />:"Send Otp"}
             </button>
                  {err && <p className='text-red-600 text-center my-[10px]'>*{err}</p>}
           </div>}
@@ -83,7 +83,7 @@ const [loading,setLoading]=useState(false)
                     <input type="email" className='glass-input w-full' placeholder='Enter OTP' onChange={(e)=>setOtp(e.target.value)} value={otp} required/>
                 </div>
                 <button className={`w-full font-semibold py-2 rounded-lg transition duration-200 bg-[var(--accent)] text-white hover:bg-[var(--accent-strong)] cursor-pointer`} onClick={handleVerifyOtp} disabled={loading}>
-                {loading?<ClipLoader size={20} color='white'/>:"Verify"}
+                {loading?<GlowSpinner size={20} color='white' />:"Verify"}
             </button>
                 {err && <p className='text-red-600 text-center my-[10px]'>*{err}</p>}
           </div>}
@@ -99,7 +99,7 @@ const [loading,setLoading]=useState(false)
                     <input type="email" className='glass-input w-full' placeholder='Confirm Password' onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword} required/>
                 </div>
                 <button className={`w-full font-semibold py-2 rounded-lg transition duration-200 bg-[var(--accent)] text-white hover:bg-[var(--accent-strong)] cursor-pointer`} onClick={handleResetPassword} disabled={loading}>
-                {loading?<ClipLoader size={20} color='white'/>:"Reset Password"}
+                {loading?<GlowSpinner size={20} color='white' />:"Reset Password"}
             </button>
                 {err && <p className='text-red-600 text-center my-[10px]'>*{err}</p>}
           </div>}

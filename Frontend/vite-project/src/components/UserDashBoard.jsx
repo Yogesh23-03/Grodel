@@ -113,7 +113,7 @@ function UserDashboard() {
 
         {/* ============ Search results ============ */}
         {searchItems && searchItems.length > 0 && (
-          <section className='card grain animate-rise-in mt-8 p-6 card-3d'>
+          <section className='card grain tilt mt-8 p-6'>
             <h2 className='t-title'>{t('dashboard.searchResults')}</h2>
             <div className='mt-4 flex flex-wrap gap-5'>
               {searchItems.map(item => <FoodCard data={item} key={item._id} />)}
@@ -125,7 +125,7 @@ function UserDashboard() {
         <div ref={bentoRef} className='mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-[auto_auto] stagger'>
 
           {/* --- Tonight's kitchens (eat, wide) --- */}
-          <section className='tile tile-eat grain lg:col-span-3 p-6'>
+          <section className='tile tilt float-card grain lg:col-span-3 p-6'>
             <div className='flex items-center justify-between gap-3'>
               <div>
                 <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent-2)' }}>
@@ -159,7 +159,7 @@ function UserDashboard() {
           </section>
 
           {/* --- Rescue today (rescue, tall on lg) --- */}
-          <section className='tile tile-rescue grain lg:row-span-2 flex flex-col p-6'>
+          <section className='tile tilt float-card grain lg:row-span-2 flex flex-col p-6' style={{ '--float-delay': '0.4s' }}>
             <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--rescue)' }}>
               <HiOutlineHeart /> {t('home.rescueEyebrow', { defaultValue: 'Rescue' })}
             </p>
@@ -198,7 +198,7 @@ function UserDashboard() {
           </section>
 
           {/* --- Farmers at the market (market, wide) --- */}
-          <section className='tile tile-market grain lg:col-span-2 p-6'>
+          <section className='tile tilt float-card grain lg:col-span-2 p-6' style={{ '--float-delay': '0.8s' }}>
             <div className='flex items-center justify-between gap-3'>
               <div>
                 <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--vendor)' }}>
@@ -241,8 +241,8 @@ function UserDashboard() {
           </section>
 
           {/* --- Open group tables (social, lime) --- */}
-          <section className='tile grain lg:col-span-1 p-6 flex flex-col'
-            style={{ '--tile-base': 'var(--surface-1)', '--tile-tint': 'var(--accent-soft)' }}>
+          <section className='tile tilt float-card grain lg:col-span-1 p-6 flex flex-col'
+            style={{ '--tile-base': 'var(--surface-1)', '--tile-tint': 'var(--accent-soft)', '--float-delay': '1.2s' }}>
             <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--accent-text)' }}>
               <HiOutlineUserGroup /> {t('home.tablesEyebrow', { defaultValue: 'Together' })}
             </p>
@@ -266,7 +266,7 @@ function UserDashboard() {
           </section>
 
           {/* --- Your usual (plan, ritual) --- */}
-          <section className='tile tile-plan grain lg:col-span-1 p-6 flex flex-col'>
+          <section className='tile tile-plan grain lg:col-span-1 p-6 flex flex-col' style={{ '--float-delay': '1.6s' }}>
             <p className='t-eyebrow flex items-center gap-1.5' style={{ color: 'var(--plan)' }}>
               <HiOutlineCalendarDays /> {t('home.planEyebrow', { defaultValue: 'Rituals' })}
             </p>

@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { ClipLoader } from 'react-spinners'
+import GlowSpinner from '../components/ui/GlowSpinner.jsx'
 import {
   HiOutlineSparkles, HiOutlineArrowLeft, HiOutlineArrowPath, HiOutlineCheckCircle,
   HiOutlineExclamationTriangle, HiOutlineExclamationCircle, HiOutlineLightBulb,
@@ -338,7 +338,7 @@ function BusinessAnalysisPage() {
                   {role === 'owner' && (
                     <button type='button' className='btn-primary' onClick={boostItem} disabled={boosting}>
                       {boosting
-                        ? <ClipLoader size={14} color='currentColor' />
+                        ? <GlowSpinner size={14} />
                         : <HiOutlineBolt />}
                       <span className='ml-2'>{t('analysis.boost', 'Boost with 10% off')}</span>
                     </button>

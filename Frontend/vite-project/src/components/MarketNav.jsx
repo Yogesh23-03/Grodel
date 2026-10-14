@@ -159,12 +159,15 @@ function MarketNav() {
         aria-label={modeLabel(mode)}
         aria-current={active ? 'page' : undefined}
         title={modeLabel(mode)}
-        className='flex flex-col items-center justify-center gap-0.5 rounded-2xl transition-all active:scale-95'
-        style={active
-          ? { background: mode.soft, color: mode.color, width: withLabel ? '3.9rem' : '3rem', padding: withLabel ? '0.45rem 0' : '0.55rem 0' }
-          : { color: 'var(--ink-muted)', width: withLabel ? '3.9rem' : '3rem', padding: withLabel ? '0.45rem 0' : '0.55rem 0' }}
+        className='flex flex-col items-center justify-center gap-0.5 rounded-2xl transition-all active:scale-95'        style={active
+          /* Active chrome glows in the mode's own highlight colour, so the
+             current section reads from across the room. The 'eat' mode is
+             the electric-cyan one, which is the primary active state. */
+          ? { background: mode.soft, color: mode.color, boxShadow: '0 0 18px ' + mode.soft, width: withLabel ? '3.9rem' : '3rem', padding: withLabel ? '0.45rem 0' : '0.55rem 0' }
+          : { color: 'var(--ink-muted)', width: withLabel ? '3.9rem' : '3rem', padding: withLabel ? '0.45rem 0' : '0.55rem 0' }
+        }
       >
-        <mode.Icon size={withLabel ? 22 : 23} strokeWidth={active ? 2.2 : 1.7} />
+        <mode.Icon size={withLabel ? 22 : 23} strokeWidth={active ? 2 : 1.7} />
         {withLabel && <span className='text-[10px] font-bold tracking-wide'>{modeLabel(mode)}</span>}
       </button>
     )

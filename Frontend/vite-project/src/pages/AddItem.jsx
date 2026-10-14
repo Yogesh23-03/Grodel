@@ -5,7 +5,7 @@ import { FaUtensils } from "react-icons/fa"
 import axios from 'axios'
 import { serverUrl } from '../App'
 import { setMyShopData } from '../redux/ownerSlice'
-import { ClipLoader } from 'react-spinners'
+import GlowSpinner from '../components/ui/GlowSpinner.jsx'
 import { HiOutlineArrowLeft } from 'react-icons/hi2'
 import MarketNav from '../components/MarketNav.jsx'
 import AIDescriptionWriter from '../components/AIDescriptionWriter.jsx'
@@ -148,7 +148,7 @@ function AddItem() {
           />
 
           <button className='btn-primary w-full' disabled={loading}>
-            {loading ? <ClipLoader size={20} color='currentColor' /> : 'Save to menu'}
+            {loading ? <GlowSpinner size={20} /> : 'Save to menu'}
           </button>
         </form>
       </main>

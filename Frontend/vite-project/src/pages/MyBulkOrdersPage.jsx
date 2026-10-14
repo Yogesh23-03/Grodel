@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { ClipLoader } from 'react-spinners'
+import GlowSpinner from '../components/ui/GlowSpinner.jsx'
 import {
   HiOutlineCalendarDays, HiOutlineMapPin, HiOutlineUser, HiOutlineArrowLeft,
   HiOutlineCheckCircle, HiOutlineXCircle, HiOutlineClock
@@ -196,7 +196,7 @@ function MyBulkOrdersPage() {
                         disabled={busyId === order._id || order.status === 'accepted'}
                         onClick={() => updateStatus(order._id, 'accepted')}>
                         {busyId === order._id
-                          ? <ClipLoader size={14} color='currentColor' />
+                          ? <GlowSpinner size={14} />
                           : <HiOutlineCheckCircle />}
                         <span className='ml-2'>{t('bulk.accept', 'Accept')}</span>
                       </button>

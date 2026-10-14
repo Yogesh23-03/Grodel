@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
-import { ClipLoader } from 'react-spinners'
+import GlowSpinner from './ui/GlowSpinner.jsx'
 import { HiOutlineSparkles, HiOutlinePhoto, HiOutlineCheckCircle, HiOutlineXCircle, HiOutlineArrowPath } from 'react-icons/hi2'
 import { serverUrl } from '../App'
 
@@ -201,7 +201,7 @@ function AIDescriptionWriter({ onDescriptionGenerated, dishName = '' }) {
           </p>
         )}        <button type='button' className='btn-primary w-full' onClick={generate} disabled={loading || !name.trim()}>
           {loading
-            ? <><ClipLoader size={16} color='currentColor' /> <span className='ml-2'>{t('menu.ai.generating', 'Generating…')}</span></>
+            ? <><GlowSpinner size={16} /> <span className='ml-2'>{t('menu.ai.generating', 'Generating…')}</span></>
             : <><HiOutlineSparkles /> <span className='ml-2'>{t('menu.ai.generate', 'Generate description')}</span></>
           }
         </button>

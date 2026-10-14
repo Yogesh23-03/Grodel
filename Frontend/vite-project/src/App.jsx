@@ -10,7 +10,6 @@ import SignUp from './pages/SignUp.jsx'
 import SignIn from './pages/SignIn.jsx'
 import ForgotPassword from './pages/ForgotPassword.jsx'
 import Home from './pages/Home.jsx'
-import LandingPage from './pages/LandingPage.jsx'
 import CreateEditShop from './pages/CreateEditShop.jsx'
 import AddItem from './pages/AddItem.jsx'
 import EditItem from './pages/EditItem.jsx'
@@ -50,6 +49,8 @@ import BusinessAnalysisPage from './pages/BusinessAnalysisPage.jsx'
 
 import Chatbot from './components/Chatbot.jsx'
 import AuroraBg from './components/AuroraBg.jsx'
+import FloatingFoodBackground from './components/FloatingFoodBackground.jsx'
+import GlobalTilt from './components/ui/GlobalTilt.jsx'
 
 import GetCurrentUser from './hooks/GetCurrentUser.jsx'
 import useGetCity from './hooks/GetCity.jsx'
@@ -96,7 +97,9 @@ const AnimatedRoutes = ({ userData }) => {
         <Route path="/signup" element={<div className='page-enter page-enter-route'>{!userData ? <SignUp /> : <Navigate to="/home" />}</div>} />
         <Route path="/signin" element={<div className='page-enter page-enter-route'>{!userData ? <SignIn /> : <Navigate to="/home" />}</div>} />
         <Route path="/forgot-password" element={<div className='page-enter page-enter-route'>{!userData ? <ForgotPassword /> : <Navigate to="/home" />}</div>} />
-        <Route path="/" element={userData ? <Navigate to='/home' replace /> : <LandingPage />} />
+        {/* No marketing landing page — the app opens at sign-in. A signed-in
+            visitor is sent to their own role's dashboard instead. */}
+        <Route path="/" element={<Navigate to={userData ? '/home' : '/signin'} replace />} />
         <Route path="/home" element={userData ? <div className='page-enter page-enter-route'><Home /></div> : <Navigate to="/signin" />} />
         <Route path="/create-edit-shop" element={<div className='page-enter page-enter-route'>{userData ? <CreateEditShop /> : <Navigate to="/signin" />}</div>} />
         <Route path="/add-item" element={<div className='page-enter page-enter-route'>{userData ? <AddItem /> : <Navigate to="/signin" />}</div>} />
@@ -208,7 +211,11 @@ const App = () => {
 
   return (
     <>
+      {/* AuroraBg paints the fixed ambient room; GlobalTilt mounts the one
+          window listener that gives every `.tilt` element its 3D hover. */}
       <AuroraBg />
+      <FloatingFoodBackground />
+      <GlobalTilt />
       <AnimatedRoutes userData={userData} />
       {userData?.role === 'user' && <Chatbot />}
     </>

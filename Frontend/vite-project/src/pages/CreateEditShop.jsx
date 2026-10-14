@@ -5,7 +5,7 @@ import { FaUtensils } from "react-icons/fa"
 import axios from 'axios'
 import { serverUrl } from '../App'
 import { setMyShopData } from '../redux/ownerSlice'
-import { ClipLoader } from 'react-spinners'
+import GlowSpinner from '../components/ui/GlowSpinner.jsx'
 import { HiOutlineArrowLeft, HiOutlineBuildingStorefront } from 'react-icons/hi2'
 import MarketNav from '../components/MarketNav.jsx'
 
@@ -112,7 +112,7 @@ function CreateEditShop() {
           </label>
 
           <button className='btn-primary w-full' disabled={loading}>
-            {loading ? <ClipLoader size={20} color='currentColor' /> : (myShopData ? 'Save changes' : 'Open shop')}
+            {loading ? <GlowSpinner size={20} /> : (myShopData ? 'Save changes' : 'Open shop')}
           </button>
         </form>
       </main>

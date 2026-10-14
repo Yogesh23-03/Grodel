@@ -45,14 +45,19 @@ function FoodCard({ data }) {
   }
 
   return (
-    <article className='card card-hover card-3d grain group flex w-full min-w-0 max-w-[270px] flex-col overflow-hidden rounded-[1.75rem]'>
+    /* `.tilt` supplies both the lift and the pointer-driven 3D rotation that
+       card-hover + card-3d used to fake, and GlobalTilt drives it from one
+       window listener instead of per-card React state. */
+    <article className='card tilt grain group flex w-full min-w-0 max-w-[270px] flex-col overflow-hidden rounded-[1.75rem]'>
       {/* --- produce photo --- */}
       <div className='relative h-[185px] w-full overflow-hidden'>
+        {/* Parallax: the photo drifts and grows slightly more than its
+            container, so the card reads as a window with depth behind it. */}
         <img
           src={data.image}
           alt={data.name}
           loading='lazy'
-          className='h-full w-full object-cover transition-transform duration-700 group-hover:scale-105'
+          className='h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.09] group-hover:translate-x-1 group-hover:-translate-y-1'
         />
         <div className='absolute inset-0 bg-gradient-to-t from-[var(--surface-1)] via-transparent to-transparent opacity-70' />
 
@@ -60,7 +65,7 @@ function FoodCard({ data }) {
         <span
           title={isVeg ? t('food.veg') : t('food.nonVeg')}
           aria-label={isVeg ? t('food.veg') : t('food.nonVeg')}
-          className='absolute left-3.5 top-3.5 z-10 flex h-5 w-5 items-center justify-center rounded-[6px] border-2 bg-[var(--surface-1)] shadow-md'
+          className='absolute left-3.5 top-3.5 z-10 flex h-5 w-5 items-center justify-center rounded-[6px] border-2 bg-[var(--surface-1)] shadow-md depth-1'
           style={{ borderColor: isVeg ? 'var(--rescue)' : 'var(--danger)' }}
         >
           <span className='h-2 w-2 rounded-full' style={{ background: isVeg ? 'var(--rescue)' : 'var(--danger)' }} />
@@ -68,7 +73,7 @@ function FoodCard({ data }) {
 
         {/* rating chip */}
         {rating > 0 && (
-          <span className='absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-bold backdrop-blur-md'
+          <span className='depth-1 absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-bold backdrop-blur-md'
             style={{ background: 'var(--glass-strong)', color: 'var(--ink)' }}>
             <HiOutlineStar size={12} style={{ color: 'var(--warning)' }} />
             {Number(rating).toFixed(1)}

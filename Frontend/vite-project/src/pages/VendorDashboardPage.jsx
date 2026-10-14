@@ -493,7 +493,7 @@ function VendorDashboardPage() {
         <div className='mt-8 flex items-center justify-between'>
           <h2 className='text-2xl font-bold'>{t('vendor.myListings')}</h2>
           <button
-            className='btn-glow flex h-11 w-11 items-center justify-center shadow-[0_6px_18px_var(--brand-glow)] transition-transform hover:scale-110 active:scale-95'
+            className='btn-glow flex h-11 w-11 items-center justify-center !p-0 shadow-[0_6px_18px_var(--brand-glow)] transition-transform hover:scale-110 active:scale-95'
             onClick={() => navigate('/vendor/add-produce')}
             aria-label={t('vendor.addProduct')}
           >

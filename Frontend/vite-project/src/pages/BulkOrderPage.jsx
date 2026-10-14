@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ClipLoader } from 'react-spinners'
+import GlowSpinner from '../components/ui/GlowSpinner.jsx'
 import {
   HiOutlineArrowLeft, HiOutlineBuildingStorefront, HiOutlineCalendarDays,
   HiOutlineCheckCircle, HiOutlineExclamationTriangle, HiOutlineShoppingBag
@@ -306,7 +306,7 @@ function BulkOrderPage() {
 
               <button type='submit' className='btn-primary mt-5 w-full' disabled={placing || selected.length === 0}>
                 {placing
-                  ? <><ClipLoader size={16} color='currentColor' /> <span className='ml-2'>{t('bulk.placing', 'Placing…')}</span></>
+                  ? <><GlowSpinner size={16} /> <span className='ml-2'>{t('bulk.placing', 'Placing…')}</span></>
                   : <><HiOutlineBuildingStorefront /> <span className='ml-2'>{t('bulk.place', 'Place bulk order')}</span></>}
               </button>
               <p className='mt-3 text-center text-xs' style={{ color: 'var(--ink-faint)' }}>

@@ -17,6 +17,7 @@ origins and secrets correctly.
 - [ ] `JWT_SECRET` is a fresh, long random value — not the local one
 - [ ] `VITE_SERVER_URL` is set in Vercel to the Render URL, no trailing slash
 - [ ] `VITE_RAZORPAY_KEY_ID` is set in Vercel; the **secret** key is only on Render
+- [ ] `VITE_FIREBASE_API_KEY` and `VITE_GEOAPIKEY` are set in Vercel (see the frontend table below)
 - [ ] MongoDB Atlas → Network Access allows Render (`0.0.0.0/0`, or Render's egress IPs)
 - [ ] Cloudinary → allowed origins includes the Vercel domain
 - [ ] Razorpay → webhook URL points at the Render URL
@@ -56,6 +57,22 @@ like `/track-order/123` doesn't 404) and the security headers.
 in the Vercel build. Vite gives real environment variables precedence over `.env`
 files anyway — set the values in the Vercel dashboard and treat that as the
 source of truth.
+
+### Frontend environment variables
+
+Every one of these is inlined at build time, so changing a value needs a
+redeploy, not a restart.
+
+| Variable | Set it to | Why it matters |
+|----------|-----------|----------------|
+| `VITE_SERVER_URL` | the Render origin, no trailing slash | Every API and socket call. `VITE_API_URL` is honoured as an alias |
+| `VITE_FIREBASE_API_KEY` | the Firebase web API key | `src/firebase.js` calls `initializeApp` at import time — without it the auth screens throw |
+| `VITE_RAZORPAY_KEY_ID` | the public key id | Checkout. The matching secret stays on Render only |
+| `VITE_GEOAPIKEY` | a geocoding key | Address lookup and city detection |
+
+The remaining Firebase values (`authDomain`, `projectId`, `storageBucket`,
+`messagingSenderId`, `appId`) are public client config and are committed in
+`src/firebase.js` on purpose — they are not secrets.
 
 ---
 
@@ -109,6 +126,14 @@ must **redeploy**; a restart is not enough.
 `AI_NOT_CONFIGURED` error and each controller maps it to a 503 rather than a 500.
 
 ---
+
+## Known limitations
+
+**Scheduled work only runs while the service is awake.** Group-order and
+meal-schedule processing is driven by a `setInterval` in `Backend/index.js`
+(every 60s). On Render's free plan the service sleeps after inactivity, so
+nothing is processed until the next request wakes it. Move those two calls to a
+Render cron job, or run on an always-on plan, if that timing matters.
 
 ## Post-deploy smoke test
 
