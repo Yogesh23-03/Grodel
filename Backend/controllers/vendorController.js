@@ -883,8 +883,14 @@ const deleteListing = async (req, res) => {
 const getNearbyVendors = async (req, res) => {
   try {
     const { lat, lng, category } = req.query
-    const radius = parseFloat(req.query.radius || 25)
+    // 50km is the discovery horizon: a tighter default silently hid farms that
+    // a buyer in the same district would happily travel to. Callers can still
+    // narrow it with ?radius=.
+    const radius = parseFloat(req.query.radius || 50)
 
+    /* No coordinates (denied geolocation, or the browser has none) must not
+       mean "no farmers" — every active farm is returned, with distanceKm left
+       null so the card shows "location not shared" instead of a distance. */
     const vendors = await VendorProfile.find({ isActive: true })
     const result = []
 

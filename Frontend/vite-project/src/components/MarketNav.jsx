@@ -159,7 +159,7 @@ function MarketNav() {
         aria-label={modeLabel(mode)}
         aria-current={active ? 'page' : undefined}
         title={modeLabel(mode)}
-        className='flex flex-col items-center justify-center gap-0.5 rounded-2xl transition-all active:scale-95'        style={active
+        className={`flex shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl transition-all active:scale-95 ${withLabel ? 'min-h-11' : ''}`}        style={active
           /* Active chrome glows in the mode's own highlight colour, so the
              current section reads from across the room. The 'eat' mode is
              the electric-cyan one, which is the primary active state. */
@@ -173,8 +173,28 @@ function MarketNav() {
     )
   }
 
+  /* Below 1024px `.rail` is display:none (index.css), so the dock is the
+     *only* chrome on a phone or tablet — it therefore carries the work
+     destinations too, not just the four modes. It reuses the same
+     modeItems/workItems arrays and the same navigate()/setSheet() calls the
+     rail uses, so no destination ends up with two handlers. */
+  const DockLink = ({ item }) => {
+    const label = item.label || t(`nav.${item.key}`)
+    return (
+      <button
+        onClick={() => navigate(item.path)}
+        aria-label={label}
+        title={label}
+        className='flex min-h-11 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl px-2.5 py-2 transition-all active:scale-95'
+        style={{ color: 'var(--ink-muted)' }}
+      >
+        <item.Icon size={22} strokeWidth={1.7} />
+        <span className='whitespace-nowrap text-[10px] font-bold tracking-wide'>{label}</span>
+      </button>
+    )
+  }
+
   const dockItems = [
-    ...modeItems,
     isCustomer && { key: 'cart', node: (
       <button onClick={() => navigate('/cart')} aria-label={t('cart.myCart')} className='relative flex flex-col items-center justify-center gap-0.5 rounded-2xl px-3 py-2.5 transition-all active:scale-95' style={{ color: 'var(--ink-muted)' }}>
         <HiOutlineShoppingBag size={22} strokeWidth={1.7} />
@@ -268,12 +288,28 @@ function MarketNav() {
 
       {/* ============ Mobile dock ============ */}
       <nav className='dock' aria-label='GroDel navigation'>
+        {modeItems.map(mode => <ModeButton key={mode.key} mode={mode} withLabel />)}
+
+        {workItems.length > 0 && (
+          <span aria-hidden='true' className='mx-1 h-9 w-px shrink-0 self-center rounded-full' style={{ background: 'var(--border)' }} />
+        )}
+        {workItems.map(item => <DockLink key={item.key} item={item} />)}
+
         {dockItems.map(item => item.node
           ? <React.Fragment key={item.key}>{item.node}</React.Fragment>
           : <ModeButton key={item.key} mode={item} withLabel />)}
+
+        {isCustomer && (
+          <button onClick={() => setSheet('search')} aria-label={t('nav.search', 'Search')} title={t('nav.search', 'Search')}
+            className='flex min-h-11 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl px-2.5 py-2 transition-all active:scale-95'
+            style={{ color: 'var(--ink-muted)' }}>
+            <HiOutlineMagnifyingGlass size={22} strokeWidth={1.7} />
+            <span className='whitespace-nowrap text-[10px] font-bold tracking-wide'>{t('nav.search', 'Search')}</span>
+          </button>
+        )}
         {isDmUser && (
           <button onClick={() => setSheet('bell')} aria-label='Notifications'
-            className='relative flex flex-col items-center justify-center gap-0.5 rounded-2xl px-2.5 py-2.5 transition-all active:scale-95'
+            className='relative flex min-h-11 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl px-2.5 py-2 transition-all active:scale-95'
             style={{ color: unreadCount > 0 ? 'var(--accent-2)' : 'var(--ink-muted)' }}>
             <HiOutlineBell size={22} strokeWidth={1.7} />
             {unreadCount > 0 && (
@@ -285,7 +321,7 @@ function MarketNav() {
           </button>
         )}
         <button onClick={() => setSheet('you')} aria-label={t('nav.you')}
-          className='flex flex-col items-center justify-center gap-0.5 rounded-2xl px-2.5 py-2.5 transition-all active:scale-95'>
+          className='flex min-h-11 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl px-2.5 py-2 transition-all active:scale-95'>
           <span className='flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-black'
             style={{ background: 'var(--vendor)', color: '#1c1006' }} translate='no'>
             {userData?.fullName?.trim()?.charAt(0)?.toUpperCase() || '?'}

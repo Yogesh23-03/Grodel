@@ -81,7 +81,12 @@ function NutritionCard({ itemName, isOpen, onClose }) {
      which would otherwise become the containing block for `position: fixed`. */
   return createPortal(
     <div
-      className='fixed inset-0 z-[9999] flex items-end justify-center bg-black/50 backdrop-blur-sm sm:items-center'
+      className='fixed inset-0 z-[9999] flex items-end justify-center sm:items-center'
+      style={{
+        background: 'rgba(7,17,28,0.85)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)'
+      }}
       onClick={onClose}
       role='dialog'
       aria-modal='true'

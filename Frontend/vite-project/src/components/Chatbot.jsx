@@ -91,7 +91,10 @@ function Chatbot() {
         onClick={() => setIsOpen(value => !value)}
         aria-label={t('chatbot.title')}
         title={t('chatbot.title')}
-        className='fixed bottom-6 right-6 z-[9998] flex h-14 w-14 items-center justify-center rounded-full shadow-2xl transition-transform hover:scale-110 active:scale-95'
+        /* `.chat-launcher` (index.css) supplies the bottom offset: 1.5rem
+           normally, lifted clear of the mobile dock below 1024px, where this
+           button would otherwise cover the dock's profile item. */
+        className='chat-launcher fixed right-6 z-[9998] flex h-14 w-14 items-center justify-center rounded-full shadow-2xl transition-transform hover:scale-110 active:scale-95'
         style={{ background: 'var(--accent)', color: 'var(--accent-ink)', boxShadow: 'var(--shadow-lime)' }}
       >
         {isOpen ? <HiOutlineXMark size={24} /> : <HiOutlineChatBubbleLeftRight size={24} />}
@@ -107,7 +110,7 @@ function Chatbot() {
         <div
           /* Full screen on phones, floating panel from `sm` up — the old fixed
              360px panel left a cramped column on small screens. */
-          className='grain inset-0 z-[9999] flex h-full w-full flex-col overflow-hidden border shadow-2xl sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[520px] sm:w-[360px] sm:rounded-3xl'
+          className='chat-panel grain inset-0 z-[9999] flex h-full w-full flex-col overflow-hidden border shadow-2xl sm:inset-auto sm:right-6 sm:h-[520px] sm:w-[360px] sm:rounded-3xl'
           /* inline, not the `fixed` utility: .grain is unlayered CSS and sets
              position: relative, which outranks Tailwind's layered utilities. */
           style={{ position: 'fixed', background: 'var(--surface-1)', borderColor: 'var(--border)' }}

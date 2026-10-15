@@ -716,7 +716,36 @@ html[data-theme='light'] .badge-brand { color: var(--accent-text); }
 }
 .dock::-webkit-scrollbar { height: 0; display: none; }
 @media (min-width: 1024px) { .dock { display: none; } }
-@media (max-width: 1023px) { .rail { display: none; } }
+/* `(width < 1024px)`, not `(max-width: 1023px)`: the two are complements only
+   when the viewport is a whole number of pixels. At a fractional width — which
+   is any device with devicePixelRatio != 1, i.e. most phones — 1023 < w < 1024
+   satisfies NEITHER old query, so the rail and the dock were both visible and
+   the rail overhung pages that had already dropped their `lg:pl-[76px]`
+   padding. Matching Tailwind's own `lg:` (width >= 1024px) as an exact
+   complement means the rail is shown precisely when `lg:` styling applies. */
+@media (width < 1024px) { .rail { display: none; } }
+
+/* Below 1024px the dock owns the bottom band, but the chat layer paints at
+   z-index 9998/9999 — hundreds of times the dock's 60 — so it cannot be
+   layered underneath. It has to be moved instead. Left at `bottom: 1.5rem`
+   the launcher sat squarely inside the dock's band and covered its
+   right-hand items, which on a phone meant the profile button was
+   unreachable. Both offsets are stated here, next to the dock they clear,
+   rather than scattered through the chatbot's class list. The safe-area
+   term mirrors `.dock`'s own inset so the two shift together on notched
+   screens instead of drifting apart. */
+.chat-launcher { bottom: 1.5rem; }
+@media (width < 1024px) {
+  .chat-launcher { bottom: calc(7rem + env(safe-area-inset-bottom)); }
+}
+
+/* The panel is full-screen below 640px, so it only needs a corner offset
+   from `sm` up — and below 1024px it must clear the lifted launcher,
+   otherwise the button that closes the panel would be hidden behind it. */
+@media (min-width: 640px) { .chat-panel { bottom: 6rem; } }
+@media (min-width: 640px) and (width < 1024px) {
+  .chat-panel { bottom: calc(12rem + env(safe-area-inset-bottom)); }
+}
 
 /* AuroraBg renders a fixed, pointer-events:none layer at z-index 0.
    The route wrapper has to sit above it — and because it must never

@@ -47,29 +47,66 @@ function RecipeCard({ itemName, isOpen, onClose }) {
     ? t(`recipe.${difficultyKey}`)
     : recipe?.difficulty
 
-  /* Portalled to <body> so card-level transforms can never trap the overlay. */
+  /* Portalled to <body> so card-level transforms can never trap the overlay.
+     Positioned with inline styles rather than the `.animate-page-fade` class
+     it used to carry: that class (index.css) also sets `position: relative;
+     z-index: 1`, which sits later in the sheet than Tailwind's `fixed` /
+     `z-[9999]` utilities and so won the cascade — leaving the reader in
+     normal document flow, i.e. shoved below the page instead of covering it.
+     The inner card uses `animate-modal-in`, the same entrance the other
+     dialogs use. */
   return createPortal(
-    <div className='animate-page-fade fixed inset-0 z-[9999] overflow-y-auto' style={{ background: 'var(--bg)', color: 'var(--ink)' }}>
-      {/* ---- sticky header ---- */}
-      <header
-        className='sticky top-0 z-10 flex items-center gap-3 border-b px-4 py-3 backdrop-blur-2xl sm:px-6'
-        style={{ borderColor: 'var(--border)', background: 'var(--glass-strong)' }}
+    <div
+      className='fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto p-4'
+      style={{
+        background: 'rgba(7,17,28,0.85)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)'
+      }}
+      onClick={onClose}
+      role='dialog'
+      aria-modal='true'
+      aria-label={t('recipe.title')}
+    >
+      <div
+        className='animate-modal-in grain relative max-h-[90vh] w-full max-w-[680px] overflow-y-auto rounded-3xl border'
+        style={{
+          background: 'var(--bg-2, #0d1b2a)',
+          borderColor: 'rgba(255,255,255,0.1)',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
+          color: 'var(--ink)'
+        }}
+        onClick={event => event.stopPropagation()}
       >
-        <button onClick={onClose} className='btn-ghost !h-10 !w-10 !p-0' aria-label={t('common.back')}>
-          <HiOutlineArrowLeft size={18} />
-        </button>
-        <div className='min-w-0 flex-1'>
-          <p className='t-eyebrow'>{t('recipe.title')}</p>
-          <h1 className='t-title mt-0.5 truncate notranslate'>
-            {t('recipe.howToMake')} {recipe?.dishName || itemName}
-          </h1>
-        </div>
-        <button onClick={onClose} className='btn-ghost !h-10 !w-10 !p-0 sm:hidden' aria-label={t('common.close')}>
-          <HiOutlineXMark size={18} />
-        </button>
-      </header>
+        {/* ---- sticky header ---- */}
+        <header
+          className='sticky top-0 z-10 flex items-center gap-3 border-b px-4 py-3 pr-14 backdrop-blur-2xl sm:px-6 sm:pr-16'
+          style={{ borderColor: 'var(--border)', background: 'var(--glass-strong)' }}
+        >
+          <button onClick={onClose} className='btn-ghost !h-10 !w-10 !p-0' aria-label={t('common.back')}>
+            <HiOutlineArrowLeft size={18} />
+          </button>
+          <div className='min-w-0 flex-1'>
+            <p className='t-eyebrow'>{t('recipe.title')}</p>
+            <h1 className='t-title mt-0.5 truncate notranslate'>
+              {t('recipe.howToMake')} {recipe?.dishName || itemName}
+            </h1>
+          </div>
+          {/* Absolute, per the requested design. It lives inside the sticky
+              header (a positioned ancestor) so it stays pinned to the corner
+              while the card scrolls, instead of scrolling out of reach.
+              Inline styles so the pill button classes cannot win the cascade. */}
+          <button
+            onClick={onClose}
+            className='btn-ghost !h-10 !w-10 !p-0'
+            style={{ position: 'absolute', top: '1rem', right: '1rem', zIndex: 10 }}
+            aria-label={t('common.close')}
+          >
+            <HiOutlineXMark size={18} />
+          </button>
+        </header>
 
-      <main className='mx-auto w-full max-w-[820px] px-4 pb-24 pt-6 sm:px-6'>
+        <main className='w-full px-4 pb-10 pt-6 sm:px-6'>
         {loading && (
           <div className='flex flex-col items-center gap-3 py-24'>
             <div className='loading-dots'><span /><span /><span /></div>
@@ -196,6 +233,7 @@ function RecipeCard({ itemName, isOpen, onClose }) {
           </>
         )}
       </main>
+      </div>
     </div>,
     document.body
   )
